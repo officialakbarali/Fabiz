@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.Data;
+package com.officialakbarali.fabiz.data;
 
 import android.content.ContentValues;
 import android.content.Context;
