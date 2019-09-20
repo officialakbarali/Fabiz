@@ -29,8 +29,10 @@ public class FabizDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //RE-CREATING CUSTOMER TABLE
+        //DELETING OLD CUSTOMER TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.Customer.TABLE_NAME);
+
+        //RE-CREATING EVERY TABLES
         onCreate(db);
     }
 }
