@@ -12,11 +12,11 @@ public class FabizProvider {
         fabizDbHelper = new FabizDbHelper(context);
     }
 
-    //SETTING CUSTOMER TABLE HANDLERS
-    public Cursor customerQuery(String[] projection, String selection, String[] selectionArgs,
+
+    public Cursor query(String tableName, String[] projection, String selection, String[] selectionArgs,
                                 String sortOrder) {
         SQLiteDatabase database = fabizDbHelper.getReadableDatabase();
-        return database.query(FabizContract.Customer.TABLE_NAME,
+        return database.query(tableName,
                 projection,
                 selection,
                 selectionArgs,
@@ -25,19 +25,19 @@ public class FabizProvider {
                 sortOrder);
     }
 
-    public long customerInsert(ContentValues values) {
+    public long insert(String tableName, ContentValues values) {
         SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        return database.insert(FabizContract.Customer.TABLE_NAME, null, values);
+        return database.insert(tableName, null, values);
     }
 
-    public int customerUpdate(ContentValues values, String selection, String[] selectionArgs) {
+    public int update(String tableName, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        return database.update(FabizContract.Customer.TABLE_NAME, values, selection, selectionArgs);
+        return database.update(tableName, values, selection, selectionArgs);
     }
 
-    public int customerDelete(String selection, String[] selectionArgs) {
+    public int delete(String tableName, String selection, String[] selectionArgs) {
         SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        return database.delete(FabizContract.Customer.TABLE_NAME, selection, selectionArgs);
+        return database.delete(tableName, selection, selectionArgs);
     }
 
 }

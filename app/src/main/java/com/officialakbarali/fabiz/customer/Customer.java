@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.officialakbarali.fabiz.R;
@@ -38,20 +40,49 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         });
 
+        Button searchButton = findViewById(R.id.search_cust_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = findViewById(R.id.cust_search);
+                if (!editText.getText().toString().trim().matches("")) {
+                    Spinner filterSpinner = findViewById(R.id.cust_filter);
+                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
+                    showCustomer(selection, new String[]{editText.getText().toString().trim() + "%"});
+                } else {
+                    showCustomer(null, null);
+                }
+
+            }
+        });
+
         recyclerView = findViewById(R.id.cust_recycler);
         customerAdapter = new CustomerAdapter(this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(customerAdapter);
-        showCustomer();
     }
 
-    private void showCustomer() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showCustomer(null, null);
+    }
+
+    @Override
+    public void onClick(String mCustomerCurrentRaw, String mCustomerSelectedName) {
+        Toast.makeText(Customer.this, "Customer Name:" + mCustomerSelectedName, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void showCustomer(String selection, String[] selectionArg) {
         FabizProvider provider = new FabizProvider(this);
         String[] projection = {FabizContract.Customer._ID, FabizContract.Customer.COLUMN_NAME, FabizContract.Customer.COLUMN_PHONE,
                 FabizContract.Customer.COLUMN_EMAIL, FabizContract.Customer.COLUMN_ADDRESS};
-        Cursor custCursor = provider.customerQuery(projection, null, null, null);
+        Cursor custCursor = provider.query(FabizContract.Customer.TABLE_NAME, projection,
+                selection, selectionArg
+                , FabizContract.Customer.COLUMN_NAME + " ASC");
 
         List<CustomerDetail> customerList = new ArrayList<>();
         while (custCursor.moveToNext()) {
@@ -65,8 +96,30 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         customerAdapter.swapAdapter(customerList);
     }
 
-    @Override
-    public void onClick(String mCustomerCurrentRaw, String mCustomerSelectedName) {
-        Toast.makeText(Customer.this, "Customer Name:" + mCustomerSelectedName, Toast.LENGTH_SHORT).show();
+
+    private String getSelection(String filterFromForm) {
+        String caseSelection;
+
+        switch (filterFromForm) {
+            case "Name":
+                caseSelection = FabizContract.Customer.COLUMN_NAME;
+                break;
+            case "Id":
+                caseSelection = FabizContract.Item._ID;
+                break;
+            case "Phone":
+                caseSelection = FabizContract.Customer.COLUMN_PHONE;
+                break;
+            case "Email":
+                caseSelection = FabizContract.Customer.COLUMN_EMAIL;
+                break;
+            case "Address":
+                caseSelection = FabizContract.Customer.COLUMN_ADDRESS;
+                break;
+            default:
+                caseSelection = FabizContract.Customer.COLUMN_NAME;
+        }
+
+        return caseSelection + " LIKE ?";
     }
 }

@@ -4,14 +4,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".customer.Customer">
-
-    <Button
-            android:id="@+id/add_cust"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:text="Add Customer" />
+        tools:context=".item.Item">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -24,10 +17,10 @@
                 android:text="Search" />
 
         <Spinner
-                android:id="@+id/cust_filter"
+                android:id="@+id/item_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/customer_search_list" />
+                android:entries="@array/item_search_list" />
 
     </LinearLayout>
 
@@ -38,13 +31,13 @@
             android:orientation="horizontal">
 
         <EditText
-                android:id="@+id/cust_search"
+                android:id="@+id/item_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3" />
 
         <Button
-                android:id="@+id/search_cust_button"
+                android:id="@+id/search_item_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -53,7 +46,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cust_recycler"
+            android:id="@+id/item_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

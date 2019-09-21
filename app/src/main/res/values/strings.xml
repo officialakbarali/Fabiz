@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">Fabiz</string>
+<string name="app_name">Fabiz</string>
+
+<string-array name="customer_search_list">
+    <item>Name</item>
+    <item>Id</item>
+    <item>Phone</item>
+    <item>Email</item>
+    <item>Address</item>
+</string-array>
+
+<string-array name="item_search_list">
+    <item>Name</item>
+    <item>Id</item>
+    <item>Brand</item>
+    <item>Category</item>
+</string-array>
 </resources>

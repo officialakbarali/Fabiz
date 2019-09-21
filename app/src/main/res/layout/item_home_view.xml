@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tool="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginStart="5dp"
@@ -11,37 +12,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            tool:text="Id: 20" />
 
     <TextView
-            android:id="@+id/email"
+            android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            tool:text="Price: 20" />
 
     <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            tool:text="Name: 40" />
 
 
     <TextView
-            android:id="@+id/phone"
+            android:id="@+id/brand"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            tool:text="Brand: 15" />
 
     <TextView
-            android:id="@+id/address"
+            android:id="@+id/category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            tool:text="Category: 15" />
 
     <View
             android:layout_width="match_parent"
@@ -50,4 +56,5 @@
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:background="@android:color/black" />
+
 </RelativeLayout>
