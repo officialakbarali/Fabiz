@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.customer;
+package com.officialakbarali.fabiz.customer.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,13 +7,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.customer.data.CustomerDetail;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder>{
+public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder> {
     private Context mContext;
     private CustomerAdapterOnClickListener mClickHandler;
+
+    private List<CustomerDetail> customerList;
 
     public interface CustomerAdapterOnClickListener {
         void onClick(String mCustomerCurrentRaw, String mCustomerSelectedName);
@@ -36,12 +41,56 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     @Override
     public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position) {
+        CustomerDetail customer = customerList.get(position);
 
+        String id = "" + customer.getId();
+        if (id.length() > 10) {
+            holder.custId.setText(id.substring(0, 6) + "...");
+        } else {
+            holder.custId.setText(id);
+        }
+
+        String name = customer.getName();
+        if (name.length() > 40) {
+            holder.custName.setText(name.substring(0, 36) + "...");
+        } else {
+            holder.custName.setText(name);
+        }
+
+        String phone = customer.getPhone();
+        if (phone.length() > 13) {
+            holder.custPhone.setText(phone.substring(0, 9) + "...");
+        } else {
+            holder.custPhone.setText(phone);
+        }
+
+
+        String address = customer.getAddress();
+        if (address.length() > 33) {
+            holder.custAddress.setText(address.substring(0, 29) + "...");
+        } else {
+            holder.custAddress.setText(address);
+        }
+
+        String email = customer.getEmail();
+        if (email.length() > 30) {
+            holder.custEmail.setText(email.substring(0, 26) + "...");
+        } else {
+            holder.custEmail.setText(email);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if (customerList == null) return 0;
+        return customerList.size();
+    }
+
+    public List<CustomerDetail> swapAdapter(List<CustomerDetail> c) {
+        List<CustomerDetail> temp = customerList;
+        customerList = c;
+        notifyDataSetChanged();
+        return temp;
     }
 
     class CustomerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -59,9 +108,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-//            Customer customer = customerList.get(adapterPosition);
-//            String idCurrentSelected = "" + customer.getId();
-//            mClickHandler.onClick(idCurrentSelected, customer.getName());
+            CustomerDetail customer = customerList.get(adapterPosition);
+            String idCurrentSelected = "" + customer.getId();
+            mClickHandler.onClick(idCurrentSelected, customer.getName());
         }
     }
 }

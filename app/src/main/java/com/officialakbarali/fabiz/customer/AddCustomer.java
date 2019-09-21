@@ -15,10 +15,10 @@ public class AddCustomer extends AppCompatActivity {
 
     /*
         ContentValues values = new ContentValues();
-        values.put(FabizContract.Customer.COLUMN_NAME, "Sharaf");
-        values.put(FabizContract.Customer.COLUMN_PHONE, "9798612345");
-        values.put(FabizContract.Customer.COLUMN_EMAIL, "sharaf@gm.com");
-        values.put(FabizContract.Customer.COLUMN_ADDRESS, "Pothady House");
+        values.put(FabizContract.CustomerDetail.COLUMN_NAME, "Sharaf");
+        values.put(FabizContract.CustomerDetail.COLUMN_PHONE, "9798612345");
+        values.put(FabizContract.CustomerDetail.COLUMN_EMAIL, "sharaf@gm.com");
+        values.put(FabizContract.CustomerDetail.COLUMN_ADDRESS, "Pothady House");
 
         FabizProvider fabizProvider = new FabizProvider(this);
         long id = fabizProvider.customerInsert(values);
