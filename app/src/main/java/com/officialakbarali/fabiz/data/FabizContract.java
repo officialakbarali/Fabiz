@@ -62,4 +62,30 @@ public class FabizContract {
         public static final String FULL_COLUMN_EMAIL = TABLE_NAME + "." + COLUMN_EMAIL;
         public static final String FULL_COLUMN_ADDRESS = TABLE_NAME + "." + COLUMN_ADDRESS;
     }
+
+
+    //TABLE CUSTOMER
+    public static final class Cart implements BaseColumns {
+        public static final String TABLE_NAME = "tb_customer";
+
+        public static final String COLUMN_BILL_ID = "billid";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_BRAND = "brand";
+        public static final String COLUMN_CATEGORY = "category";
+        public static final String COLUMN_PRICE = "price";
+        public static final String COLUMN_QTY = "qty";
+        public static final String COLUMN_TOTAL = "total";
+        public static final String COLUMN_RETURN_QTY = "returnqty";
+
+        //FULL COLUMN NAME
+        public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
+        public static final String FULL_COLUMN_BILL_ID = TABLE_NAME + "." + COLUMN_BILL_ID;
+        public static final String FULL_COLUMN_NAME = TABLE_NAME + "." + COLUMN_NAME;
+        public static final String FULL_COLUMN_BRAND = TABLE_NAME + "." + COLUMN_BRAND;
+        public static final String FULL_COLUMN_CATAGORY = TABLE_NAME + "." + COLUMN_CATEGORY;
+        public static final String FULL_COLUMN_PRICE = TABLE_NAME + "." + COLUMN_PRICE;
+        public static final String FULL_COLUMN_QTY = TABLE_NAME + "." + COLUMN_QTY;
+        public static final String FULL_COLUMN_TOTAL = TABLE_NAME + "." + COLUMN_TOTAL;
+        public static final String FULL_COLUMN_RETURN_QTY = TABLE_NAME + "." + COLUMN_RETURN_QTY;
+    }
 }

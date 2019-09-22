@@ -19,7 +19,6 @@ import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 import com.officialakbarali.fabiz.item.Item;
 
-import static com.officialakbarali.fabiz.Network.BroadcastForSync.setLatestSyncRowId;
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,15 +61,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initialSetup() {
-        FabizProvider provider = new FabizProvider(this);
-        Cursor SYNC_SETUP_CURSOR = provider.query(FabizContract.SyncLog.TABLE_NAME, new String[]{FabizContract.SyncLog._ID + ""},
-                null, null, FabizContract.SyncLog._ID + " DESC LIMIT 1");
-
-        if (SYNC_SETUP_CURSOR.moveToNext()) {
-            setLatestSyncRowId(SYNC_SETUP_CURSOR.getInt(SYNC_SETUP_CURSOR.getColumnIndexOrThrow(FabizContract.SyncLog._ID)));
-        } else {
-            setLatestSyncRowId(1);
-        }
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         int DECIMAL_PRECISION = sharedPreferences.getInt("decimal_precision", 3);

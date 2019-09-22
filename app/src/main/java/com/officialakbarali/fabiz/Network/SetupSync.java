@@ -12,7 +12,7 @@ import com.officialakbarali.fabiz.data.FabizProvider;
 
 import java.util.List;
 
-import static com.officialakbarali.fabiz.Network.BroadcastForSync.setLatestSyncRowId;
+
 
 public class SetupSync {
     private List<SyncLog> syncLogList;
@@ -31,6 +31,7 @@ public class SetupSync {
                 addCurrentDataToSyncTable();
             } else {
                 addCurrentDataToSyncTable();
+                //TODO TURN SERVICE ON IF OFF
             }
         } else {
             addCurrentDataToSyncTable();
@@ -43,15 +44,13 @@ public class SetupSync {
     }
 
     private void addCurrentDataToSyncTable() {
-        long id = 0;
         for (int i = 0; i < syncLogList.size(); i++) {
             ContentValues values = new ContentValues();
             values.put(FabizContract.SyncLog.COLUMN_ROW_ID, syncLogList.get(i).getRawId());
             values.put(FabizContract.SyncLog.COLUMN_TABLE_NAME, syncLogList.get(i).getTableName());
             values.put(FabizContract.SyncLog.COLUMN_OPERATION, syncLogList.get(i).getOperation());
-            id = provider.insert(FabizContract.SyncLog.TABLE_NAME, values);
+           long id = provider.insert(FabizContract.SyncLog.TABLE_NAME, values);
             Log.i("SetupSync", "Sync Row Created Id:" + id);
         }
-        setLatestSyncRowId(Integer.parseInt(id + ""));
     }
 }
