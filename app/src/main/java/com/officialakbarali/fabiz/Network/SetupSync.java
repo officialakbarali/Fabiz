@@ -12,6 +12,8 @@ import com.officialakbarali.fabiz.data.FabizProvider;
 
 import java.util.List;
 
+import static com.officialakbarali.fabiz.Network.BroadcastForSync.setLatestSyncRowId;
+
 public class SetupSync {
     private List<SyncLog> syncLogList;
     private Context context;
@@ -25,7 +27,7 @@ public class SetupSync {
             Cursor checkSyncStatus = provider.query(FabizContract.SyncLog.TABLE_NAME, new String[]{FabizContract.SyncLog._ID},
                     null, null, null);
             if (checkSyncStatus.getCount() <= 0) {
-                //TODO SYNC change below and replace with server update
+                //TODO SYNC change below and replace with server update ****IMPORTANT = UPDATE LATEST_SYNC_ROW
                 addCurrentDataToSyncTable();
             } else {
                 addCurrentDataToSyncTable();
@@ -41,13 +43,15 @@ public class SetupSync {
     }
 
     private void addCurrentDataToSyncTable() {
+        long id = 0;
         for (int i = 0; i < syncLogList.size(); i++) {
             ContentValues values = new ContentValues();
             values.put(FabizContract.SyncLog.COLUMN_ROW_ID, syncLogList.get(i).getRawId());
             values.put(FabizContract.SyncLog.COLUMN_TABLE_NAME, syncLogList.get(i).getTableName());
             values.put(FabizContract.SyncLog.COLUMN_OPERATION, syncLogList.get(i).getOperation());
-            long id = provider.insert(FabizContract.SyncLog.TABLE_NAME, values);
+            id = provider.insert(FabizContract.SyncLog.TABLE_NAME, values);
             Log.i("SetupSync", "Sync Row Created Id:" + id);
         }
+        setLatestSyncRowId(Integer.parseInt(id + ""));
     }
 }

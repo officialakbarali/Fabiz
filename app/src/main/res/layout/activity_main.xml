@@ -23,4 +23,12 @@
             android:layout_centerHorizontal="true"
             android:text="View Items" />
 
+    <Button
+            android:id="@+id/dummy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item"
+            android:layout_centerHorizontal="true"
+            android:text="Add Dummy Data" />
+
 </RelativeLayout>

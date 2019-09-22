@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.officialakbarali.fabiz.data.CommonInformation.PHONE_NUMBER_LENGTH;
+import static com.officialakbarali.fabiz.data.CommonInformation.GET_PHONE_NUMBER_LENGTH;
 
 
 public class AddCustomer extends AppCompatActivity {
@@ -87,7 +87,7 @@ public class AddCustomer extends AppCompatActivity {
     private boolean validatePhoneNumber(String phoneNumber) {
         Pattern pattern = Pattern.compile("[^0-9+ ]");
         Matcher matcher = pattern.matcher(phoneNumber);
-        return phoneNumber.length() >= PHONE_NUMBER_LENGTH && !matcher.find();
+        return phoneNumber.length() >= GET_PHONE_NUMBER_LENGTH() && !matcher.find();
     }
 
     private boolean validateEmail(String email) {
@@ -126,14 +126,23 @@ public class AddCustomer extends AppCompatActivity {
 
     private void saveCustomer(ContentValues values) {
         FabizProvider fabizProvider = new FabizProvider(this);
-        long id = fabizProvider.insert(FabizContract.Customer.TABLE_NAME, values);
-        if (id > 0) {
-            List<SyncLog> syncLogList = new ArrayList<>();
-            syncLogList.add(new SyncLog(id, FabizContract.Customer.TABLE_NAME, "INSERT"));
-            new SetupSync(this, syncLogList);
+        long idOfCustomer = fabizProvider.insert(FabizContract.Customer.TABLE_NAME, values);
+        if (idOfCustomer > 0) {
 
-            showToast("Successfully Saved. Id:" + id);
-            finish();
+            ContentValues accountInitialsValues = new ContentValues();
+            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_CUSTOMER_ID, idOfCustomer);
+            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_TOTAL, 0);
+            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_PAID, 0);
+            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_DUE, 0);
+            long idOfAccount = fabizProvider.insert(FabizContract.AccountDetail.TABLE_NAME, accountInitialsValues);
+            if (idOfAccount > 0) {
+                List<SyncLog> syncLogList = new ArrayList<>();
+                syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, "INSERT"));
+                syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, "INSERT"));
+                new SetupSync(this, syncLogList);
+                showToast("Successfully Saved. Id:" + idOfCustomer);
+                finish();
+            }
 
         } else {
             showToast("Failed to Save");

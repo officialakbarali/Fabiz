@@ -72,7 +72,9 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
 
     @Override
     public void onClick(String mCustomerCurrentRaw, String mCustomerSelectedName) {
-        Toast.makeText(Customer.this, "Customer Name:" + mCustomerSelectedName, Toast.LENGTH_SHORT).show();
+        Intent showHome = new Intent(Customer.this,Home.class);
+        showHome.putExtra("id",mCustomerCurrentRaw);
+        startActivity(showHome);
     }
 
 

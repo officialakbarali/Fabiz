@@ -14,6 +14,8 @@ import com.officialakbarali.fabiz.item.data.ItemDetail;
 
 import java.util.List;
 
+import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
+
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
     private Context mContext;
     private ItemAdapterOnClickListener mClickHandler;
@@ -66,7 +68,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.itemCategory.setText("Category: " + category);
         }
 
-        String price = itemDetail.getPrice() + "";
+        String price = TruncateDecimal(itemDetail.getPrice() + "");
         if (price.length() > 20) {
             holder.itemPrice.setText("Price: " + price.substring(0, 16) + "...");
         } else {
@@ -103,6 +105,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             itemBrand = itemView.findViewById(R.id.brand);
             itemCategory = itemView.findViewById(R.id.category);
             itemPrice = itemView.findViewById(R.id.price);
+
+            itemView.setOnClickListener(this);
         }
 
         @Override

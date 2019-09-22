@@ -103,6 +103,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             custPhone = itemView.findViewById(R.id.phone);
             custEmail = itemView.findViewById(R.id.email);
             custAddress = itemView.findViewById(R.id.address);
+
+            itemView.setOnClickListener(this);
         }
 
         @Override

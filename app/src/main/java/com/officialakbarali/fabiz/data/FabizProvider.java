@@ -9,35 +9,37 @@ public class FabizProvider {
     private FabizDbHelper fabizDbHelper;
 
     public FabizProvider(Context context) {
-        fabizDbHelper = new FabizDbHelper(context);
+        fabizDbHelper =  FabizDbHelper.getInstance(context);
     }
 
-
     public Cursor query(String tableName, String[] projection, String selection, String[] selectionArgs,
-                                String sortOrder) {
+                        String sortOrder) {
         SQLiteDatabase database = fabizDbHelper.getReadableDatabase();
-        return database.query(tableName,
+        Cursor returnCursor = database.query(tableName,
                 projection,
                 selection,
                 selectionArgs,
                 null,
                 null,
                 sortOrder);
+        return returnCursor;
     }
 
     public long insert(String tableName, ContentValues values) {
         SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        return database.insert(tableName, null, values);
+        long returnResult = database.insert(tableName, null, values);
+        return returnResult;
     }
 
     public int update(String tableName, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        return database.update(tableName, values, selection, selectionArgs);
+        int returnResult = database.update(tableName, values, selection, selectionArgs);
+        return returnResult;
     }
 
     public int delete(String tableName, String selection, String[] selectionArgs) {
         SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        return database.delete(tableName, selection, selectionArgs);
+        int returnResult = database.delete(tableName, selection, selectionArgs);
+        return returnResult;
     }
-
 }

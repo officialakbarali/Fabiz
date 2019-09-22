@@ -13,6 +13,22 @@ public class FabizContract {
         public static final String COLUMN_OPERATION = "operation";
     }
 
+    //TABLE ACCOUNT DETAIL
+    public static final class AccountDetail implements BaseColumns {
+        public static final String TABLE_NAME = "tb_account_detail";
+
+        public static final String COLUMN_CUSTOMER_ID = "customer_id";
+        public static final String COLUMN_TOTAL = "total";
+        public static final String COLUMN_PAID = "paid";
+        public static final String COLUMN_DUE = "due";
+
+        public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
+        public static final String FULL_COLUMN_CUSTOMER_ID = TABLE_NAME + "." + COLUMN_CUSTOMER_ID;
+        public static final String FULL_COLUMN_TOTAL = TABLE_NAME + "." + COLUMN_TOTAL;
+        public static final String FULL_COLUMN_PAID = TABLE_NAME + "." + COLUMN_PAID;
+        public static final String FULL_COLUMN_DUE = TABLE_NAME + "." + COLUMN_DUE;
+    }
+
     //TABLE ITEM
     public static final class Item implements BaseColumns {
         public static final String TABLE_NAME = "tb_item";
