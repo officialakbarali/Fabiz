@@ -68,6 +68,33 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Customer.COLUMN_EMAIL + " TEXT NOT NULL,"
                 + FabizContract.Customer.COLUMN_ADDRESS + " TEXT NOT NULL)";
         db.execSQL(SQL_CREATE_CUSTOMER_TABLE);
+
+        //CREATING BILL DETAIL
+        String SQL_CREATE_BILL_DETAIL_TABLE = "CREATE TABLE "
+                + FabizContract.BillDetail.TABLE_NAME
+                + " ("
+                + FabizContract.BillDetail._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.BillDetail.COLUMN_DATE + " TEXT NOT NULL, "
+                + FabizContract.BillDetail.COLUMN_CUST_ID + " INTEGER NOT NULL, "
+                + FabizContract.BillDetail.COLUMN_PRICE + " REAL NOT NULL,"
+                + FabizContract.BillDetail.COLUMN_QTY + " INTEGER NOT NULL)";
+        db.execSQL(SQL_CREATE_BILL_DETAIL_TABLE);
+
+        //CREATING CART
+        String SQL_CREATE_CART_TABLE = "CREATE TABLE "
+                + FabizContract.Cart.TABLE_NAME
+                + " ("
+                + FabizContract.Cart._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.Cart.COLUMN_BILL_ID + " INTEGER NOT NULL, "
+                + FabizContract.Cart.COLUMN_ITEM_ID + " INTEGER NOT NULL, "
+                + FabizContract.Cart.COLUMN_NAME + " TEXT NOT NULL,"
+                + FabizContract.Cart.COLUMN_BRAND + " TEXT NOT NULL,"
+                + FabizContract.Cart.COLUMN_CATEGORY + " TEXT NOT NULL,"
+                + FabizContract.Cart.COLUMN_PRICE + " REAL NOT NULL,"
+                + FabizContract.Cart.COLUMN_QTY + " INTEGER NOT NULL,"
+                + FabizContract.Cart.COLUMN_TOTAL + " REAL NOT NULL,"
+                + FabizContract.Cart.COLUMN_RETURN_QTY + " INTEGER NOT NULL)";
+        db.execSQL(SQL_CREATE_CART_TABLE);
     }
 
     @Override
@@ -83,6 +110,12 @@ public class FabizDbHelper extends SQLiteOpenHelper {
 
         //DELETING OLD CUSTOMER TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.Customer.TABLE_NAME);
+
+        //DELETING OLD BILL DETAIL TABLE
+        db.execSQL("DROP TABLE IF EXISTS " + FabizContract.BillDetail.TABLE_NAME);
+
+        //DELETING OLD CART TABLE
+        db.execSQL("DROP TABLE IF EXISTS " + FabizContract.Cart.TABLE_NAME);
 
         //RE-CREATING EVERY TABLES
         onCreate(db);

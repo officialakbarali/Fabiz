@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
@@ -79,7 +78,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
 
 
     private void showCustomer(String selection, String[] selectionArg) {
-        FabizProvider provider = new FabizProvider(this);
+        FabizProvider provider = new FabizProvider(this,false);
         String[] projection = {FabizContract.Customer._ID, FabizContract.Customer.COLUMN_NAME, FabizContract.Customer.COLUMN_PHONE,
                 FabizContract.Customer.COLUMN_EMAIL, FabizContract.Customer.COLUMN_ADDRESS};
         Cursor custCursor = provider.query(FabizContract.Customer.TABLE_NAME, projection,

@@ -9,11 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.officialakbarali.fabiz.Network.SetupSync;
+import com.officialakbarali.fabiz.network.SyncInfo.SetupSync;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
-import com.officialakbarali.fabiz.Network.data.SyncLog;
+import com.officialakbarali.fabiz.network.SyncInfo.data.SyncLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,26 +125,37 @@ public class AddCustomer extends AppCompatActivity {
     }
 
     private void saveCustomer(ContentValues values) {
-        FabizProvider fabizProvider = new FabizProvider(this);
-        long idOfCustomer = fabizProvider.insert(FabizContract.Customer.TABLE_NAME, values);
-        if (idOfCustomer > 0) {
 
-            ContentValues accountInitialsValues = new ContentValues();
-            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_CUSTOMER_ID, idOfCustomer);
-            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_TOTAL, 0);
-            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_PAID, 0);
-            accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_DUE, 0);
-            long idOfAccount = fabizProvider.insert(FabizContract.AccountDetail.TABLE_NAME, accountInitialsValues);
-            if (idOfAccount > 0) {
-                List<SyncLog> syncLogList = new ArrayList<>();
-                syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, "INSERT"));
-                syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, "INSERT"));
-                new SetupSync(this, syncLogList);
-                showToast("Successfully Saved. Id:" + idOfCustomer);
-                finish();
+        FabizProvider fabizProvider = new FabizProvider(this, true);
+        try {
+            //********TRANSACTION STARTED
+            fabizProvider.createTransaction();
+            long idOfCustomer = fabizProvider.insert(FabizContract.Customer.TABLE_NAME, values);
+
+            if (idOfCustomer > 0) {
+                ContentValues accountInitialsValues = new ContentValues();
+                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_CUSTOMER_ID, idOfCustomer);
+                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_TOTAL, 0);
+                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_PAID, 0);
+                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_DUE, 0);
+                long idOfAccount = fabizProvider.insert(FabizContract.AccountDetail.TABLE_NAME, accountInitialsValues);
+                if (idOfAccount > 0) {
+                    List<SyncLog> syncLogList = new ArrayList<>();
+                    syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, "INSERT"));
+                    syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, "INSERT"));
+                    new SetupSync(this, syncLogList, fabizProvider);
+                    showToast("Successfully Saved. Id:" + idOfCustomer);
+                    finish();
+                } else {
+                    fabizProvider.finishTransaction();
+                    showToast("Failed to Save");
+                }
+            } else {
+                fabizProvider.finishTransaction();
+                showToast("Failed to Save");
             }
-
-        } else {
+        } catch (Error e) {
+            fabizProvider.finishTransaction();
             showToast("Failed to Save");
         }
     }

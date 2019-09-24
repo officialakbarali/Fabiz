@@ -22,7 +22,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     private List<ItemDetail> itemDetailList;
 
     public interface ItemAdapterOnClickListener {
-        void onClick(String mItemCurrentRaw, String mItemSelectedName);
+        void onClick(ItemDetail itemDetail);
     }
 
     @NonNull
@@ -72,7 +72,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         if (price.length() > 20) {
             holder.itemPrice.setText("Price: " + price.substring(0, 16) + "...");
         } else {
-            holder.itemPrice.setText("Price: " + price);
+            holder.itemPrice.setText("Price: " + TruncateDecimal(price + ""));
         }
     }
 
@@ -113,8 +113,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             ItemDetail itemDetail = itemDetailList.get(adapterPosition);
-            String idCurrentSelected = "" + itemDetail.getId();
-            mClickHandler.onClick(idCurrentSelected, itemDetail.getName());
+            mClickHandler.onClick(itemDetail);
         }
     }
 }

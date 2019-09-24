@@ -7,15 +7,20 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class FabizProvider {
     private FabizDbHelper fabizDbHelper;
+    private SQLiteDatabase database;
 
-    public FabizProvider(Context context) {
-        fabizDbHelper =  FabizDbHelper.getInstance(context);
+    public FabizProvider(Context context, boolean writableOperation) {
+        fabizDbHelper = FabizDbHelper.getInstance(context);
+        if (writableOperation) {
+            database = fabizDbHelper.getWritableDatabase();
+        }
+
     }
 
     public Cursor query(String tableName, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-        SQLiteDatabase database = fabizDbHelper.getReadableDatabase();
-        Cursor returnCursor = database.query(tableName,
+        SQLiteDatabase databaseQ = fabizDbHelper.getReadableDatabase();
+        Cursor returnCursor = databaseQ.query(tableName,
                 projection,
                 selection,
                 selectionArgs,
@@ -26,20 +31,30 @@ public class FabizProvider {
     }
 
     public long insert(String tableName, ContentValues values) {
-        SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        long returnResult = database.insert(tableName, null, values);
-        return returnResult;
+        return database.insert(tableName, null, values);
     }
 
     public int update(String tableName, ContentValues values, String selection, String[] selectionArgs) {
-        SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        int returnResult = database.update(tableName, values, selection, selectionArgs);
-        return returnResult;
+        return database.update(tableName, values, selection, selectionArgs);
     }
 
     public int delete(String tableName, String selection, String[] selectionArgs) {
-        SQLiteDatabase database = fabizDbHelper.getWritableDatabase();
-        int returnResult = database.delete(tableName, selection, selectionArgs);
-        return returnResult;
+        return database.delete(tableName, selection, selectionArgs);
+    }
+
+    public void createTransaction() {
+        database.beginTransaction();
+    }
+
+    public boolean isItInTranscation() {
+        return database.inTransaction();
+    }
+
+    public void finishTransaction() {
+        database.endTransaction();
+    }
+
+    public void successfulTransaction(){
+        database.setTransactionSuccessful();
     }
 }

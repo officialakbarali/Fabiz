@@ -4,7 +4,7 @@ import android.provider.BaseColumns;
 
 public class FabizContract {
 
-    //TABLE SYNC LOG
+    //1 TABLE SYNC LOG
     public static final class SyncLog implements BaseColumns {
         public static final String TABLE_NAME = "tb_sync_log";
 
@@ -13,7 +13,7 @@ public class FabizContract {
         public static final String COLUMN_OPERATION = "operation";
     }
 
-    //TABLE ACCOUNT DETAIL
+    //2 TABLE ACCOUNT DETAIL
     public static final class AccountDetail implements BaseColumns {
         public static final String TABLE_NAME = "tb_account_detail";
 
@@ -29,7 +29,7 @@ public class FabizContract {
         public static final String FULL_COLUMN_DUE = TABLE_NAME + "." + COLUMN_DUE;
     }
 
-    //TABLE ITEM
+    //3 TABLE ITEM
     public static final class Item implements BaseColumns {
         public static final String TABLE_NAME = "tb_item";
 
@@ -46,7 +46,7 @@ public class FabizContract {
         public static final String FULL_COLUMN_PRICE = TABLE_NAME + "." + COLUMN_PRICE;
     }
 
-    //TABLE CUSTOMER
+    //4 TABLE CUSTOMER
     public static final class Customer implements BaseColumns {
         public static final String TABLE_NAME = "tb_customer";
 
@@ -63,12 +63,30 @@ public class FabizContract {
         public static final String FULL_COLUMN_ADDRESS = TABLE_NAME + "." + COLUMN_ADDRESS;
     }
 
+    //5 TABLE BILL DETAIL
+    public static final class BillDetail implements BaseColumns {
+        public static final String TABLE_NAME = "tb_bill_detail";
 
-    //TABLE CUSTOMER
+        public static final String COLUMN_DATE = "dateofbill";
+        public static final String COLUMN_CUST_ID = "custid";
+        public static final String COLUMN_PRICE = "price";
+        public static final String COLUMN_QTY = "qty";
+
+        //FULL COLUMN NAME
+        public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
+        public static final String FULL_COLUMN_DATE = TABLE_NAME + "." + COLUMN_DATE;
+        public static final String FULL_COLUMN_CUST_ID = TABLE_NAME + "." + COLUMN_CUST_ID;
+        public static final String FULL_COLUMN_PRICE = TABLE_NAME + "." + COLUMN_PRICE;
+        public static final String FULL_COLUMN_QTY =TABLE_NAME + "." + COLUMN_QTY;
+    }
+
+
+    //6 TABLE CART
     public static final class Cart implements BaseColumns {
-        public static final String TABLE_NAME = "tb_customer";
+        public static final String TABLE_NAME = "tb_cart";
 
         public static final String COLUMN_BILL_ID = "billid";
+        public static final String COLUMN_ITEM_ID = "itemid";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_BRAND = "brand";
         public static final String COLUMN_CATEGORY = "category";
@@ -80,6 +98,7 @@ public class FabizContract {
         //FULL COLUMN NAME
         public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
         public static final String FULL_COLUMN_BILL_ID = TABLE_NAME + "." + COLUMN_BILL_ID;
+        public static final String FULL_COLUMN_ITEM_ID = TABLE_NAME + "." + COLUMN_ITEM_ID;
         public static final String FULL_COLUMN_NAME = TABLE_NAME + "." + COLUMN_NAME;
         public static final String FULL_COLUMN_BRAND = TABLE_NAME + "." + COLUMN_BRAND;
         public static final String FULL_COLUMN_CATAGORY = TABLE_NAME + "." + COLUMN_CATEGORY;

@@ -23,7 +23,7 @@
                     android:id="@+id/cust_sale_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time :"
+                    tools:text="Time :"
                     android:textSize="16sp" />
 
             <Button
@@ -34,12 +34,14 @@
                     android:text="Show Time" />
 
             <Button
+                    android:id="@+id/cust_sale_add_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/cust_sale_show_time"
                     android:text="Add Item" />
 
             <Button
+                    android:id="@+id/cust_sale_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -122,14 +124,15 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="5dp"
-                android:text="Total Item :8" />
+                tools:text="Total Item :8" />
 
         <TextView
+                android:id="@+id/cust_sale_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
-                android:text="Total :800" />
+                tools:text="Total :800" />
 
     </RelativeLayout>
 

@@ -24,10 +24,18 @@
             android:text="View Items" />
 
     <Button
-            android:id="@+id/dummy"
+            android:id="@+id/view_sync"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item"
+            android:layout_centerHorizontal="true"
+            android:text="View Sync" />
+
+    <Button
+            android:id="@+id/dummy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_sync"
             android:layout_centerHorizontal="true"
             android:text="Add Dummy Data" />
 

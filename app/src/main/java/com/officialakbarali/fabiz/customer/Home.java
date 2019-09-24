@@ -15,6 +15,8 @@ import com.officialakbarali.fabiz.customer.sale.Sales;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 
+import java.util.ArrayList;
+
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 
 public class Home extends AppCompatActivity {
@@ -32,25 +34,30 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        provider = new FabizProvider(this);
+        provider = new FabizProvider(this,false);
 
         setCustomerDetail();
-
-        setPaymentsDetail();
 
         Button goToSaleButton = findViewById(R.id.cust_home_sale);
         goToSaleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent saleIntent = new Intent(Home.this, Sales.class);
-                saleIntent.putExtra("id",custId + "");
+                saleIntent.putExtra("id", custId + "");
+                Sales.cartItems = new ArrayList<>();
                 startActivity(saleIntent);
             }
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setPaymentsDetail();
+    }
+
     private void setCustomerDetail() {
-        custId = Integer.parseInt( getIntent().getStringExtra("id"));
+        custId = Integer.parseInt(getIntent().getStringExtra("id"));
 
         Cursor customerDetailCursor = provider.query(FabizContract.Customer.TABLE_NAME, new String[]{},
                 FabizContract.Customer._ID + "=?", new String[]{custId + ""}, null);

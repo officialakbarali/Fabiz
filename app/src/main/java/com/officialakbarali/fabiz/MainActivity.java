@@ -18,6 +18,7 @@ import com.officialakbarali.fabiz.customer.Customer;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 import com.officialakbarali.fabiz.item.Item;
+import com.officialakbarali.fabiz.network.SyncInfo.SyncFromAppToServer;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 
@@ -49,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button viewSyncLogButton = findViewById(R.id.view_sync);
+        viewSyncLogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent syncLogIntent = new Intent(MainActivity.this, SyncFromAppToServer.class);
+                startActivity(syncLogIntent);
+            }
+        });
+
         Button itemIntent = findViewById(R.id.item);
         itemIntent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertSomeDummyItems() {
-        FabizProvider fabizProvider = new FabizProvider(this);
+        FabizProvider fabizProvider = new FabizProvider(this,true);
         ContentValues values = new ContentValues();
 
         values.put(FabizContract.Item.COLUMN_NAME, "CHICKEN");

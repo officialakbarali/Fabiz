@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.Network.data;
+package com.officialakbarali.fabiz.network.SyncInfo.data;
 
 public class SyncLog {
 
