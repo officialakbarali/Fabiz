@@ -140,6 +140,7 @@
                         android:textAllCaps="false" />
 
                 <Button
+                        android:id="@+id/cust_home_sale_review"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"

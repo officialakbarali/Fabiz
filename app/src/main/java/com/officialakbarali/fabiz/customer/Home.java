@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.Sales;
+import com.officialakbarali.fabiz.customer.sale.SalesReview;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 
@@ -34,7 +35,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        provider = new FabizProvider(this,false);
+        provider = new FabizProvider(this, false);
 
         setCustomerDetail();
 
@@ -46,6 +47,15 @@ public class Home extends AppCompatActivity {
                 saleIntent.putExtra("id", custId + "");
                 Sales.cartItems = new ArrayList<>();
                 startActivity(saleIntent);
+            }
+        });
+
+        Button salesReview = findViewById(R.id.cust_home_sale_review);
+        salesReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent salesReviewIntent = new Intent(Home.this, SalesReview.class);
+                startActivity(salesReviewIntent);
             }
         });
     }
