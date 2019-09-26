@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
@@ -18,11 +19,14 @@ import java.util.List;
 
 public class SalesReview extends AppCompatActivity implements SalesReviewAdapter.SalesReviewAdapterOnClickListener {
     SalesReviewAdapter salesReviewAdapter;
+    private int custId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_review);
+
+        custId = Integer.parseInt(getIntent().getStringExtra("id"));
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
         salesReviewAdapter = new SalesReviewAdapter(this, this);
@@ -40,14 +44,17 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
 
     @Override
     public void onClick(int idOfBill) {
-
+        Intent salesDetaiiilIntent = new Intent(SalesReview.this, com.officialakbarali.fabiz.customer.sale.SalesReviewDetail.class);
+        salesDetaiiilIntent.putExtra("custId", custId + "");
+        salesDetaiiilIntent.putExtra("billId", idOfBill + "");
+        startActivity(salesDetaiiilIntent);
     }
 
     private void showBills() {
         FabizProvider provider = new FabizProvider(this, false);
         Cursor cursorBills = provider.query(FabizContract.BillDetail.TABLE_NAME,
                 new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_DATE, FabizContract.BillDetail.COLUMN_QTY, FabizContract.BillDetail.COLUMN_PRICE},
-                null, null, null);
+                FabizContract.BillDetail.COLUMN_CUST_ID + "=?", new String[]{custId + ""}, null);
 
         List<SalesReviewDetail> salesReviewList = new ArrayList<>();
         while (cursorBills.moveToNext()) {

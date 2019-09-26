@@ -55,6 +55,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent salesReviewIntent = new Intent(Home.this, SalesReview.class);
+                salesReviewIntent.putExtra("id", custId + "");
                 startActivity(salesReviewIntent);
             }
         });

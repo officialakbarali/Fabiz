@@ -92,7 +92,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         });
 
         RecyclerView recyclerView = findViewById(R.id.cust_sale_recycler);
-        salesAdapter = new SalesAdapter(this, this);
+        salesAdapter = new SalesAdapter(this, this, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -240,7 +240,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                             new SetupSync(this, syncLogList, provider);
                             showToast("Successfully Saved. Id:" + billId);
                             finish();
-                        }else {
+                        } else {
                             provider.finishTransaction();
                             showToast("Something went wrong");
                         }

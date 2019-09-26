@@ -12,7 +12,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".customer.sale.SalesReview"></activity>
+        <activity android:name=".customer.sale.SalesReviewDetail"></activity>
+        <activity android:name=".customer.sale.SalesReview" />
         <activity android:name=".network.SyncInfo.SyncFromAppToServer" />
         <activity android:name=".customer.sale.Sales" />
         <activity android:name=".customer.Home" />

@@ -22,14 +22,16 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
     private SalesAdapterOnClickListener mClickHandler;
 
     private List<Cart> cartList;
+    private boolean SET_RETURN_VISIBILITY = false;
 
     public interface SalesAdapterOnClickListener {
         void onClick(int indexToBeRemoved);
     }
 
-    public SalesAdapter(Context context, SalesAdapterOnClickListener salesAdapterOnClickListener) {
+    public SalesAdapter(Context context, SalesAdapterOnClickListener salesAdapterOnClickListener, boolean setVisibilityOfReturn) {
         this.mContext = context;
         this.mClickHandler = salesAdapterOnClickListener;
+        this.SET_RETURN_VISIBILITY = setVisibilityOfReturn;
     }
 
     @NonNull
@@ -73,6 +75,22 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
         } else {
             holder.itemTotal.setText(total);
         }
+
+        if (SET_RETURN_VISIBILITY) {
+            holder.removeBtn.setVisibility(View.GONE);
+            holder.itemReturn.setVisibility(View.VISIBLE);
+
+            String returnI = cart.getReturnQty() + "";
+            if (returnI.length() > 30) {
+                holder.itemReturn.setText(returnI.substring(0, 26) + "...");
+            } else {
+                holder.itemReturn.setText(returnI);
+            }
+
+        } else {
+            holder.removeBtn.setVisibility(View.VISIBLE);
+            holder.itemReturn.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -89,7 +107,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
     }
 
     class SalesViewHolder extends RecyclerView.ViewHolder {
-        TextView itemDetail, itemPrice, itemQty, itemTotal;
+        TextView itemDetail, itemPrice, itemQty, itemTotal, itemReturn;
         Button removeBtn;
 
         public SalesViewHolder(@NonNull View itemView) {
@@ -107,6 +125,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
             itemPrice = itemView.findViewById(R.id.cust_sale_view_price);
             itemQty = itemView.findViewById(R.id.cust_sale_view_qty);
             itemTotal = itemView.findViewById(R.id.cust_sale_view_total);
+            itemReturn = itemView.findViewById(R.id.cust_sale_view_return);
         }
     }
 }
