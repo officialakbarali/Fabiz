@@ -1,19 +1,22 @@
 package com.officialakbarali.fabiz.customer.sale.adapter;
 
-        import android.content.Context;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.Button;
-        import android.widget.TextView;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
-        import androidx.annotation.NonNull;
-        import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import com.officialakbarali.fabiz.R;
-        import com.officialakbarali.fabiz.customer.sale.data.SalesReviewDetail;
+import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.customer.sale.data.SalesReviewDetail;
 
-        import java.util.List;
+import java.text.ParseException;
+import java.util.List;
+
+import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 
 public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.SalesReviewHolder> {
     private Context mContext;
@@ -45,10 +48,38 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
     public void onBindViewHolder(@NonNull SalesReviewHolder holder, int position) {
         SalesReviewDetail salesReview = salesList.get(position);
 
-        holder.billIdV.setText("Bill Id :" + salesReview.getId());
-        holder.dateV.setText("Date :" + salesReview.getDate());
-        holder.totQtyV.setText("Total Items :" + salesReview.getQty());
-        holder.totV.setText("Total Amount :" + salesReview.getTotal());
+
+        String salesIdS = salesReview.getId() + "";
+        if (salesIdS.length() > 10) {
+            holder.billIdV.setText("Bill Id :" + salesIdS.substring(0, 7) + "...");
+        } else {
+            holder.billIdV.setText("Bill Id :" + salesIdS);
+        }
+
+
+        String dateS = salesReview.getDate();
+        if (dateS.length() > 24) {
+            holder.dateV.setText("Date :" + dateS.substring(0, 16) + "...");
+        } else {
+            holder.dateV.setText("Date :" + dateS);
+        }
+
+
+        String qtyS = salesReview.getQty() + "";
+        if (qtyS.length() > 4) {
+            holder.totQtyV.setText("Total Items :" + qtyS.substring(0, 1) + "..");
+        } else {
+            holder.totQtyV.setText("Total Items :" + qtyS);
+        }
+
+
+        String totalS = TruncateDecimal(salesReview.getTotal() + "");
+        if (qtyS.length() > 17) {
+            holder.totV.setText("Total Amount :" + totalS.substring(0, 13) + "...");
+        } else {
+            holder.totV.setText("Total Amount :" + totalS);
+        }
+
     }
 
     @Override

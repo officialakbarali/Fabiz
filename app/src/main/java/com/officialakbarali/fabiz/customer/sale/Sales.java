@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,13 +27,17 @@ import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 import com.officialakbarali.fabiz.item.Item;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_REAL;
+
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
+import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
 
 public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapterOnClickListener {
     public static List<Cart> cartItems;
@@ -58,8 +63,12 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         totalView = findViewById(R.id.cust_sale_total);
 
         dateView = findViewById(R.id.cust_sale_time);
-        dateView.setText(getCurrentDateTime());
-        currentTime = getCurrentDateTime().trim();
+        try {
+            currentTime = convertDateToDisplayFormat(getCurrentDateTime());
+            dateView.setText(currentTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         Button addItemButton = findViewById(R.id.cust_sale_add_item);
         addItemButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +122,8 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     }
 
     private String getCurrentDateTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(GET_DATE_FORMAT_REAL());
+        Log.i("Time:", sdf.format(new Date()));
         return sdf.format(new Date());
     }
 
@@ -137,10 +147,15 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                                     public void onTimeSet(TimePicker view, int hourOfDay,
                                                           int minute) {
                                         //*************************
-                                        fromDateTime = year + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth) + " ";
-                                        fromDateTime += String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":30";
-                                        dateView.setText(fromDateTime);
-                                        currentTime = fromDateTime.trim();
+
+                                        fromDateTime = year + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth) + "T";
+                                        fromDateTime += String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + ":30Z";
+                                        try {
+                                            currentTime = convertDateToDisplayFormat(fromDateTime);
+                                            dateView.setText(currentTime);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
                                         //*************************
                                     }
                                 }, mHour, mMinute, false);

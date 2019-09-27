@@ -2,10 +2,26 @@ package com.officialakbarali.fabiz.data;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class CommonInformation {
     private static int PHONE_NUMBER_LENGTH = 6;
     private static int DECIMAL_LENGTH = 3;
+    private static String REAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
+    public static String convertDateToDisplayFormat(String dateString) throws ParseException {
+        DateFormat sdf = new SimpleDateFormat(REAL_DATE_FORMAT);
+        Date date = sdf.parse(dateString);
+        return new SimpleDateFormat("dd,E MMM YYYY hh:mm a").format(date);
+    }
+
+
+    public static String GET_DATE_FORMAT_REAL() {
+        return REAL_DATE_FORMAT;
+    }
 
     public static String TruncateDecimal(String value) {
         return new BigDecimal(value)

@@ -14,8 +14,11 @@ import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
 
 public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter.SalesAdapterOnClickListener {
     private int custId, billId;
@@ -61,7 +64,9 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         if (billCursor.moveToNext()) {
             billIdView.setText("Billid :" + billId);
-            dateView.setText("Time :"+billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)));
+
+                dateView.setText("Time :" + billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)));
+
             totQtyView.setText("Total Item :" + billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)));
             totalView.setText("Total :" + billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)));
         }
