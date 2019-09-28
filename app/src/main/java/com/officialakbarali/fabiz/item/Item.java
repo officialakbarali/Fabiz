@@ -89,11 +89,11 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         dialog.setContentView(R.layout.pop_up_customer_sale_item_qty);
 
         final EditText priceText = dialog.findViewById(R.id.cust_sale_add_item_price);
-        priceText.setText(itemDetail.getPrice() + "");
+        priceText.setText(TruncateDecimal( itemDetail.getPrice() + ""));
         final EditText quantityText = dialog.findViewById(R.id.cust_sale_add_item_qty);
         quantityText.setText("1");
         final TextView totalText = dialog.findViewById(R.id.cust_sale_add_item_total);
-        totalText.setText(itemDetail.getPrice() + "");
+        totalText.setText(TruncateDecimal(itemDetail.getPrice() + ""));
 
         priceText.addTextChangedListener(new TextWatcher() {
             @Override

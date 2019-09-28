@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent custIntent = new Intent(MainActivity.this, Customer.class);
-               // custIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                // custIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(custIntent);
             }
         });
@@ -78,27 +78,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void insertSomeDummyItems() {
-        FabizProvider fabizProvider = new FabizProvider(this,true);
+        FabizProvider fabizProvider = new FabizProvider(this, true);
         ContentValues values = new ContentValues();
 
-        values.put(FabizContract.Item.COLUMN_NAME, "CHICKEN");
-        values.put(FabizContract.Item.COLUMN_BRAND, "KFC");
-        values.put(FabizContract.Item.COLUMN_CATEGORY, "FOOD");
-        values.put(FabizContract.Item.COLUMN_PRICE, "30");
+        values.put(FabizContract.Item.COLUMN_NAME, "EMINEM");
+        values.put(FabizContract.Item.COLUMN_BRAND, "RAP");
+        values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
+        values.put(FabizContract.Item.COLUMN_PRICE, "50.123");
         Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
 
         values = new ContentValues();
-        values.put(FabizContract.Item.COLUMN_NAME, "BROASTED");
-        values.put(FabizContract.Item.COLUMN_BRAND, "KFC");
-        values.put(FabizContract.Item.COLUMN_CATEGORY, "FOOD");
-        values.put(FabizContract.Item.COLUMN_PRICE, "50");
+        values.put(FabizContract.Item.COLUMN_NAME, "JUSTIN");
+        values.put(FabizContract.Item.COLUMN_BRAND, "POP");
+        values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
+        values.put(FabizContract.Item.COLUMN_PRICE, "10.321");
         Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
 
         values = new ContentValues();
-        values.put(FabizContract.Item.COLUMN_NAME, "BROASTED");
-        values.put(FabizContract.Item.COLUMN_BRAND, "CHICKIN");
-        values.put(FabizContract.Item.COLUMN_CATEGORY, "FOOD");
-        values.put(FabizContract.Item.COLUMN_PRICE, "45");
+        values.put(FabizContract.Item.COLUMN_NAME, "ELON");
+        values.put(FabizContract.Item.COLUMN_BRAND, "TESLA");
+        values.put(FabizContract.Item.COLUMN_CATEGORY, "ENTREPRENEUR");
+        values.put(FabizContract.Item.COLUMN_PRICE, "500.510");
         Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
     }
 }

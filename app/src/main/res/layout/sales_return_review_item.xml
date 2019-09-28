@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="9dp">
+
+    <TextView
+            android:id="@+id/sales_return_review_item_billid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Bill Id :17" />
+
+    <TextView
+            android:id="@+id/sales_return_review_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            tools:text="24" />
+
+
+    <TextView
+            android:id="@+id/sales_return_review_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            tools:text="40" />
+
+
+    <TextView
+            android:id="@+id/sales_return_review_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            tools:text="Price :12" />
+
+    <TextView
+            android:id="@+id/sales_return_review_item_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            tools:text="QTY :6" />
+
+    <TextView
+            android:id="@+id/sales_return_review_item_tot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            tools:text="Total :12" />
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="0.7dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="9dp"
+            android:layout_marginEnd="9dp"
+            android:background="@color/colorPrimaryDark" />
+
+</RelativeLayout>

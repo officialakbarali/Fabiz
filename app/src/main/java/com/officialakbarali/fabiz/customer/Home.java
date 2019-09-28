@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.Sales;
+import com.officialakbarali.fabiz.customer.sale.SalesReturnReview;
 import com.officialakbarali.fabiz.customer.sale.SalesReview;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
@@ -60,7 +61,7 @@ public class Home extends AppCompatActivity {
             }
         });
 
-        Button salesReturnButton = findViewById(R.id.cust_home_sales_return);
+        final Button salesReturnButton = findViewById(R.id.cust_home_sales_return);
         salesReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +70,16 @@ public class Home extends AppCompatActivity {
                 salesReturnIntent.putExtra("id", custId + "");
 
                 startActivity(salesReturnIntent);
+            }
+        });
+
+        Button saleReturnReviewButton = findViewById(R.id.cust_home_sales_return_review);
+        saleReturnReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent saleReturnReviewIntent = new Intent(Home.this, SalesReturnReview.class);
+                saleReturnReviewIntent.putExtra("id", custId + "");
+                startActivity(saleReturnReviewIntent);
             }
         });
 

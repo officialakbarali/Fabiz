@@ -117,7 +117,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
             dateView.setText("Time :" + billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)));
 
             totQtyView.setText("Total Item :" + billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)));
-            totalView.setText("Total :" + billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)));
+            totalView.setText("Total :" + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)) + ""));
         }
     }
 
@@ -181,7 +181,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         final int maxLimitOfReturn = cartITemList.getQty() - cartITemList.getReturnQty();
         maxQtyP.setText("Enter QTY to Return\n(Maximum " + maxLimitOfReturn + ")");
 
-        priceTextP.setText(cartITemList.getPrice() + "");
+        priceTextP.setText(TruncateDecimal(cartITemList.getPrice() + ""));
 
         qtyTextP.setText("1");
 
