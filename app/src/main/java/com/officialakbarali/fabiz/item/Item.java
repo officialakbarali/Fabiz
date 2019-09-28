@@ -86,7 +86,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
     private void enterQtyDialogue(final ItemDetail itemDetail) {
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.customer_sale_item_qty_pop_up);
+        dialog.setContentView(R.layout.pop_up_customer_sale_item_qty);
 
         final EditText priceText = dialog.findViewById(R.id.cust_sale_add_item_price);
         priceText.setText(itemDetail.getPrice() + "");

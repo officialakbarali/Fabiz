@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.GET_PHONE_NUMBER_LENGTH;
+import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_INSERT;
 
 
 public class AddCustomer extends AppCompatActivity {
@@ -141,8 +142,8 @@ public class AddCustomer extends AppCompatActivity {
                 long idOfAccount = fabizProvider.insert(FabizContract.AccountDetail.TABLE_NAME, accountInitialsValues);
                 if (idOfAccount > 0) {
                     List<SyncLog> syncLogList = new ArrayList<>();
-                    syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, "INSERT"));
-                    syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, "INSERT"));
+                    syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
+                    syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, OP_INSERT));
                     new SetupSync(this, syncLogList, fabizProvider);
                     showToast("Successfully Saved. Id:" + idOfCustomer);
                     finish();

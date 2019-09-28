@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReviewAdapter;
@@ -21,11 +23,14 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
     SalesReviewAdapter salesReviewAdapter;
     private int custId;
 
+    private boolean FROM_SALERS_RETURN = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_review);
 
+        FROM_SALERS_RETURN = getIntent().getBooleanExtra("fromSalesReturn", false);
         custId = Integer.parseInt(getIntent().getStringExtra("id"));
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
@@ -34,6 +39,8 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(salesReviewAdapter);
+
+        if (FROM_SALERS_RETURN) setUpThisPageForReturn();
     }
 
     @Override
@@ -47,7 +54,23 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         Intent salesDetaiiilIntent = new Intent(SalesReview.this, com.officialakbarali.fabiz.customer.sale.SalesReviewDetail.class);
         salesDetaiiilIntent.putExtra("custId", custId + "");
         salesDetaiiilIntent.putExtra("billId", idOfBill + "");
+
+        if(FROM_SALERS_RETURN){
+            salesDetaiiilIntent.putExtra("fromSalesReturn", true);
+        }else {
+            salesDetaiiilIntent.putExtra("fromSalesReturn", false);
+        }
+
+
         startActivity(salesDetaiiilIntent);
+    }
+
+    private void setUpThisPageForReturn() {
+        TextView textHead, quoteText;
+        textHead = findViewById(R.id.sales_review_head);
+        textHead.setText("Sales Return");
+        quoteText = findViewById(R.id.sales_review_quote);
+        quoteText.setVisibility(View.VISIBLE);
     }
 
     private void showBills() {

@@ -107,4 +107,26 @@ public class FabizContract {
         public static final String FULL_COLUMN_TOTAL = TABLE_NAME + "." + COLUMN_TOTAL;
         public static final String FULL_COLUMN_RETURN_QTY = TABLE_NAME + "." + COLUMN_RETURN_QTY;
     }
+
+    //7 TABLE SALES RETURN
+    public static final class SalesReturn implements BaseColumns {
+        public static final String TABLE_NAME = "tb_sales_return";
+
+        public static final String COLUMN_DATE = "dateofreturn";
+        public static final String COLUMN_BILL_ID = "billid";
+        public static final String COLUMN_ITEM_ID = "itemid";
+        public static final String COLUMN_PRICE = "price";
+        public static final String COLUMN_QTY = "qty";
+        public static final String COLUMN_TOTAL = "total";
+
+        //FULL COLUMN NAME
+        public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
+        public static final String FULL_COLUMN_DATE = TABLE_NAME + "." + COLUMN_DATE;
+        public static final String FULL_COLUMN_BILL_ID = TABLE_NAME + "." + COLUMN_BILL_ID;
+        public static final String FULL_COLUMN_ITEM_ID = TABLE_NAME + "." + COLUMN_ITEM_ID;
+        public static final String FULL_COLUMN_PRICE = TABLE_NAME + "." + COLUMN_PRICE;
+        public static final String FULL_COLUMN_QTY = TABLE_NAME + "." + COLUMN_QTY;
+        public static final String FULL_COLUMN_TOTAL = TABLE_NAME + "." + COLUMN_TOTAL;
+
+    }
 }

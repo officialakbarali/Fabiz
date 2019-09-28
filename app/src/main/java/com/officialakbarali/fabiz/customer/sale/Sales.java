@@ -38,6 +38,8 @@ import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
+import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_INSERT;
+import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_UPDATE;
 
 public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapterOnClickListener {
     public static List<Cart> cartItems;
@@ -101,7 +103,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         });
 
         RecyclerView recyclerView = findViewById(R.id.cust_sale_recycler);
-        salesAdapter = new SalesAdapter(this, this, false);
+        salesAdapter = new SalesAdapter(this, this, false, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -116,7 +118,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     }
 
     @Override
-    public void onClick(int indexToBeRemoved) {
+    public void onClick(int indexToBeRemoved, Cart cartItemsF) {
         cartItems.remove(indexToBeRemoved);
         salesAdapter.swapAdapter(cartItems);
     }
@@ -185,7 +187,6 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         toast.show();
     }
 
-
     private void saveThisBill() {
         FabizProvider provider = new FabizProvider(this, true);
 
@@ -201,7 +202,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             long billId = provider.insert(FabizContract.BillDetail.TABLE_NAME, billValues);
 
             List<SyncLog> syncLogList = new ArrayList<>();
-            syncLogList.add(new SyncLog(billId, FabizContract.BillDetail.TABLE_NAME, "INSERT"));
+            syncLogList.add(new SyncLog(billId, FabizContract.BillDetail.TABLE_NAME, OP_INSERT));
 
             if (billId > 0) {
 
@@ -224,7 +225,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                     long cartInsertId = provider.insert(FabizContract.Cart.TABLE_NAME, cartItemsValues);
 
                     if (cartInsertId > 0) {
-                        syncLogList.add(new SyncLog(cartInsertId, FabizContract.Cart.TABLE_NAME, "INSERT"));
+                        syncLogList.add(new SyncLog(cartInsertId, FabizContract.Cart.TABLE_NAME, OP_INSERT));
                     } else {
                         break;
                     }
@@ -234,12 +235,14 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                 if (i == cartItems.size()) {
 
                     Cursor amountUpdateCursor = provider.query(FabizContract.AccountDetail.TABLE_NAME,
-                            new String[]{FabizContract.AccountDetail.COLUMN_TOTAL, FabizContract.AccountDetail.COLUMN_DUE}
+                            new String[]{FabizContract.AccountDetail._ID,FabizContract.AccountDetail.COLUMN_TOTAL, FabizContract.AccountDetail.COLUMN_DUE}
                             , FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""}, null);
 
                     if (amountUpdateCursor.moveToNext()) {
                         double totUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_TOTAL));
                         double dueUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE));
+
+                        int thatRowOfAcUp = amountUpdateCursor.getInt(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail._ID));
 
                         totUpdate += totAmountToSave;
                         dueUpdate += totAmountToSave;
@@ -251,7 +254,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                                 FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""});
 
                         if (upAffectedRows == 1) {
-                            syncLogList.add(new SyncLog(custId, FabizContract.AccountDetail.TABLE_NAME, "UPDATE"));
+                            syncLogList.add(new SyncLog(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
                             new SetupSync(this, syncLogList, provider);
                             showToast("Successfully Saved. Id:" + billId);
                             finish();

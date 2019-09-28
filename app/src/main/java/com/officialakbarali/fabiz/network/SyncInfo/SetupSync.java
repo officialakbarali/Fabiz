@@ -2,7 +2,6 @@ package com.officialakbarali.fabiz.network.SyncInfo;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,6 +14,15 @@ import java.util.List;
 
 
 public class SetupSync {
+    //PUBLIC STRING FOR OPERATION
+
+    public static String OP_INSERT = "INSERT";
+    public static String OP_UPDATE = "UPDATE";
+    public static String OP_DELETE = "DELETE";
+
+    //***************************
+
+
     private List<SyncLog> syncLogList;
     private Context context;
     private FabizProvider provider;
@@ -23,19 +31,12 @@ public class SetupSync {
         this.context = context;
         this.syncLogList = syncLogList;
         this.provider = provider;
+
+        addCurrentDataToSyncTable();
+
         if (isNetworkConnected()) {
-            Cursor checkSyncStatus = provider.query(FabizContract.SyncLog.TABLE_NAME, new String[]{FabizContract.SyncLog._ID},
-                    null, null, null);
-            if (checkSyncStatus.getCount() <= 0) {
-                //TODO *****************DON'T FORGET TO STOP TRANSACTION************
-                //TODO SYNC change below and replace with server update ****IMPORTANT = UPDATE LATEST_SYNC_ROW
-                addCurrentDataToSyncTable();
-            } else {
-                addCurrentDataToSyncTable();
-                //TODO TURN SERVICE ON IF OFF
-            }
-        } else {
-            addCurrentDataToSyncTable();
+            //TODO TURN SERVICE ON IF OFF
+            //TODO IF ON THEN SETUP SOME FLAG FOR RE-CHECK THE SYNC_TABLE
         }
     }
 
@@ -45,7 +46,6 @@ public class SetupSync {
     }
 
     private void addCurrentDataToSyncTable() {
-
         try {
             int i = 0;
             while (i < syncLogList.size()) {
@@ -58,6 +58,7 @@ public class SetupSync {
                 if (id > 0) {
                     Log.i("SetupSync", "Sync Row Created Id:" + id);
                 } else {
+                    Log.i("SetupSync", "FAILED IN SAVING");
                     Toast.makeText(context, "Something went wrong,please report this to customer care", Toast.LENGTH_SHORT).show();
                     break;
                 }
@@ -66,10 +67,12 @@ public class SetupSync {
 
             if (i == syncLogList.size()) {
                 //********TRANSACTION SUCCESSFUL
+                Log.i("SetupSync", "SUCCESSFULLY COMPLETED");
                 provider.successfulTransaction();
             }
 
         } catch (Error e) {
+            Log.i("SetupSync", "FAILED IN TRY CATCH");
             Toast.makeText(context, "Something went wrong,please report this to customer care", Toast.LENGTH_SHORT).show();
         } finally {
             //******TRANSACTION FINISH

@@ -95,6 +95,20 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Cart.COLUMN_TOTAL + " REAL NOT NULL,"
                 + FabizContract.Cart.COLUMN_RETURN_QTY + " INTEGER NOT NULL)";
         db.execSQL(SQL_CREATE_CART_TABLE);
+
+        //CREATING SALES RETURN
+        String SQL_CREATE_SALES_RETURN_TABLE = "CREATE TABLE "
+                + FabizContract.SalesReturn.TABLE_NAME
+                + " ("
+                + FabizContract.SalesReturn._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.SalesReturn.COLUMN_DATE + " TEXT NOT NULL,"
+                + FabizContract.SalesReturn.COLUMN_BILL_ID + " INTEGER NOT NULL, "
+                + FabizContract.SalesReturn.COLUMN_ITEM_ID + " INTEGER NOT NULL, "
+                + FabizContract.SalesReturn.COLUMN_PRICE + " REAL NOT NULL,"
+                + FabizContract.SalesReturn.COLUMN_QTY + " INTEGER NOT NULL,"
+                + FabizContract.SalesReturn.COLUMN_TOTAL + " REAL NOT NULL)";
+
+        db.execSQL(SQL_CREATE_SALES_RETURN_TABLE);
     }
 
     @Override
@@ -116,6 +130,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
 
         //DELETING OLD CART TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.Cart.TABLE_NAME);
+
+        //DELETING OLD SALES RETURN TABLE
+        db.execSQL("DROP TABLE IF EXISTS " + FabizContract.SalesReturn.TABLE_NAME);
 
         //RE-CREATING EVERY TABLES
         onCreate(db);

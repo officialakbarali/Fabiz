@@ -59,6 +59,20 @@ public class Home extends AppCompatActivity {
                 startActivity(salesReviewIntent);
             }
         });
+
+        Button salesReturnButton = findViewById(R.id.cust_home_sales_return);
+        salesReturnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent salesReturnIntent = new Intent(Home.this, SalesReview.class);
+                salesReturnIntent.putExtra("fromSalesReturn", true);
+                salesReturnIntent.putExtra("id", custId + "");
+
+                startActivity(salesReturnIntent);
+            }
+        });
+
+
     }
 
     @Override

@@ -22,16 +22,18 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
     private SalesAdapterOnClickListener mClickHandler;
 
     private List<Cart> cartList;
-    private boolean SET_RETURN_VISIBILITY = false;
+    private boolean SET_SALES_REVIEW_VISIBILITY;
+    private boolean SET_SALES_RETURN_VISIBILITY;
 
     public interface SalesAdapterOnClickListener {
-        void onClick(int indexToBeRemoved);
+        void onClick(int indexToBeRemoved, Cart cartITemList);
     }
 
-    public SalesAdapter(Context context, SalesAdapterOnClickListener salesAdapterOnClickListener, boolean setVisibilityOfReturn) {
+    public SalesAdapter(Context context, SalesAdapterOnClickListener salesAdapterOnClickListener, boolean setVisibilityOfReview,boolean setVisibilityOfReturn) {
         this.mContext = context;
         this.mClickHandler = salesAdapterOnClickListener;
-        this.SET_RETURN_VISIBILITY = setVisibilityOfReturn;
+        this.SET_SALES_REVIEW_VISIBILITY = setVisibilityOfReview;
+        this.SET_SALES_RETURN_VISIBILITY = setVisibilityOfReturn;
     }
 
     @NonNull
@@ -76,8 +78,14 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
             holder.itemTotal.setText(total);
         }
 
-        if (SET_RETURN_VISIBILITY) {
-            holder.removeBtn.setVisibility(View.GONE);
+        if (SET_SALES_REVIEW_VISIBILITY) {
+            if (SET_SALES_RETURN_VISIBILITY) {
+                holder.removeBtn.setVisibility(View.VISIBLE);
+                holder.removeBtn.setText("Return this Item");
+            }else {
+                holder.removeBtn.setVisibility(View.GONE);
+            }
+
             holder.itemReturn.setVisibility(View.VISIBLE);
 
             String returnI = cart.getReturnQty() + "";
@@ -117,7 +125,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
             removeBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mClickHandler.onClick(getAdapterPosition());
+                    mClickHandler.onClick(getAdapterPosition(), cartList.get(getAdapterPosition()));
                 }
             });
 
