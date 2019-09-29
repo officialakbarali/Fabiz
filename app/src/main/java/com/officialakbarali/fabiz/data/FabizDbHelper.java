@@ -109,6 +109,20 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.SalesReturn.COLUMN_TOTAL + " REAL NOT NULL)";
 
         db.execSQL(SQL_CREATE_SALES_RETURN_TABLE);
+
+        //CREATING PAYMENT
+        String SQL_CREATE_PAYMENT = "CREATE TABLE "
+                + FabizContract.Payment.TABLE_NAME
+                + " ("
+                + FabizContract.Payment._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.Payment.COLUMN_CUST_ID + " INTEGER NOT NULL, "
+                + FabizContract.Payment.COLUMN_DATE + " TEXT NOT NULL,"
+                + FabizContract.Payment.COLUMN_AMOUNT + " REAL NOT NULL, "
+                + FabizContract.Payment.COLUMN_TOTAL + " REAL NOT NULL, "
+                + FabizContract.Payment.COLUMN_PAID + " REAL NOT NULL, "
+                + FabizContract.Payment.COLUMN_DUE + " REAL NOT NULL)";
+
+        db.execSQL(SQL_CREATE_PAYMENT);
     }
 
     @Override
@@ -133,6 +147,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
 
         //DELETING OLD SALES RETURN TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.SalesReturn.TABLE_NAME);
+
+        //DELETING OLD PAYMENT TABLE
+        db.execSQL("DROP TABLE IF EXISTS " + FabizContract.Payment.TABLE_NAME);
 
         //RE-CREATING EVERY TABLES
         onCreate(db);

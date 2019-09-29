@@ -84,6 +84,16 @@ public class Home extends AppCompatActivity {
         });
 
 
+        Button payDueButton = findViewById(R.id.cust_home_sales_paydue);
+        payDueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent payIntent = new Intent(Home.this, AddPayment.class);
+                payIntent.putExtra("id", custId + "");
+                startActivity(payIntent);
+            }
+        });
+
     }
 
     @Override

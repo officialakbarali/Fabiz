@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
@@ -60,6 +61,8 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
     //***************************FOR DIALOGUE***************************
     private String DcurrentTime, DfromDateTime;
     private TextView DdateTextP;
+
+    private Dialog paymentDialog;
 
     //******************************************************************
     @Override
@@ -160,21 +163,21 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         final EditText priceTextP, qtyTextP;
         final Button returnB, cancelB, changeDateP;
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.pop_up_sales_return_item);
+        paymentDialog = new Dialog(this);
+        paymentDialog.setContentView(R.layout.pop_up_sales_return_item);
 
-        nameTextP = dialog.findViewById(R.id.sales_return_pop_item_name);
-        maxQtyP = dialog.findViewById(R.id.sales_return_pop_max);
+        nameTextP = paymentDialog.findViewById(R.id.sales_return_pop_item_name);
+        maxQtyP = paymentDialog.findViewById(R.id.sales_return_pop_max);
 
-        priceTextP = dialog.findViewById(R.id.sales_return_pop_price);
-        qtyTextP = dialog.findViewById(R.id.sales_return_pop_qty);
-        totAmountP = dialog.findViewById(R.id.sales_return_pop_total);
+        priceTextP = paymentDialog.findViewById(R.id.sales_return_pop_price);
+        qtyTextP = paymentDialog.findViewById(R.id.sales_return_pop_qty);
+        totAmountP = paymentDialog.findViewById(R.id.sales_return_pop_total);
 
-        returnB = dialog.findViewById(R.id.sales_return_pop_remove);
-        cancelB = dialog.findViewById(R.id.sales_return_pop_cancel);
+        returnB = paymentDialog.findViewById(R.id.sales_return_pop_remove);
+        cancelB = paymentDialog.findViewById(R.id.sales_return_pop_cancel);
 
-        DdateTextP = dialog.findViewById(R.id.sales_return_pop_date);
-        changeDateP = dialog.findViewById(R.id.sales_return_pop_date_change);
+        DdateTextP = paymentDialog.findViewById(R.id.sales_return_pop_date);
+        changeDateP = paymentDialog.findViewById(R.id.sales_return_pop_date_change);
 
         nameTextP.setText(cartITemList.getName());
 
@@ -255,7 +258,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         cancelB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                paymentDialog.dismiss();
             }
         });
 
@@ -273,7 +276,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         if (maxLimitOfReturn < 1) {
             showToast("This is completely Returned");
         } else {
-            dialog.show();
+            paymentDialog.show();
         }
     }
 
@@ -388,13 +391,16 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                 syncLogList.add(new SyncLog(idOfSalesReturn, FabizContract.SalesReturn.TABLE_NAME, OP_INSERT));
 
                 Cursor amountUpdateCursor = saveProvider.query(FabizContract.AccountDetail.TABLE_NAME,
-                        new String[]{FabizContract.AccountDetail._ID, FabizContract.AccountDetail.COLUMN_TOTAL, FabizContract.AccountDetail.COLUMN_DUE}
+                        new String[]{FabizContract.AccountDetail._ID, FabizContract.AccountDetail.COLUMN_TOTAL,
+                                FabizContract.AccountDetail.COLUMN_PAID
+                                , FabizContract.AccountDetail.COLUMN_DUE}
                         , FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""}, null);
 
                 if (amountUpdateCursor.moveToNext()) {
 
                     int thatRowOfAcUp = amountUpdateCursor.getInt(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail._ID));
                     double totUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_TOTAL));
+                    double paidUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_PAID));
                     double dueUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE));
 
                     totUpdate -= values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL);
@@ -440,8 +446,10 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                             if (upReturnAffectedRaw > 0) {
                                 syncLogList.add(new SyncLog(idOfRowReturn, FabizContract.Cart.TABLE_NAME, OP_UPDATE));
                                 new SetupSync(this, syncLogList, saveProvider);
-                                showToast("Successfully Returned");
-                                finish();
+
+                                //END HERE *****************************************************
+                                showFinalInfoDialogue(NEGATIVE_DUE, values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL),
+                                        totUpdate, paidUpdate, dueUpdate);
                             } else {
                                 saveProvider.finishTransaction();
                                 showToast("Something went wrong");
@@ -478,4 +486,43 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
     }
 
+    private void showFinalInfoDialogue(boolean NEGATIVE_DUE, double returnedAmt, double totAmnt, double paidAmt, double dueAmnt) {
+        paymentDialog.dismiss();
+        final Dialog lastDialog = new Dialog(this);
+        lastDialog.setContentView(R.layout.pop_up_for_sale_and_payment_success);
+        lastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                showToast("Successfully Returned");
+                finish();
+            }
+        });
+
+        Button okayButton = lastDialog.findViewById(R.id.pop_up_for_payment_okay);
+        okayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lastDialog.dismiss();
+            }
+        });
+
+
+        final TextView dateV = lastDialog.findViewById(R.id.pop_up_for_payment_date);
+
+        final TextView returnedAmntLabel = lastDialog.findViewById(R.id.pop_up_for_payment_ent_amt);
+        returnedAmntLabel.setText("Returned Amount");
+
+        final TextView returnedAmntV = lastDialog.findViewById(R.id.pop_up_for_payment_ent_amt);
+        final TextView totAmntV = lastDialog.findViewById(R.id.pop_up_for_payment_tot);
+        final TextView paidAmtV = lastDialog.findViewById(R.id.pop_up_for_payment_paid);
+        final TextView dueAmtV = lastDialog.findViewById(R.id.pop_up_for_payment_due);
+
+        dateV.setText(": " + DcurrentTime);
+        returnedAmntV.setText(": " + TruncateDecimal(returnedAmt + ""));
+        totAmntV.setText(": " + TruncateDecimal(totAmnt + ""));
+        paidAmtV.setText(": " + TruncateDecimal(paidAmt + ""));
+        dueAmtV.setText(": " + TruncateDecimal(dueAmnt + ""));
+
+        lastDialog.show();
+    }
 }

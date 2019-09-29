@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -190,6 +194,12 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     private void saveThisBill() {
         FabizProvider provider = new FabizProvider(this, true);
 
+        final double enteredAmntForUpdate = getEnteredAmnt();
+        if (enteredAmntForUpdate < 0) {
+            showToast("Enter a valid amount");
+            return;
+        }
+
         ContentValues billValues = new ContentValues();
         billValues.put(FabizContract.BillDetail.COLUMN_CUST_ID, custId);
         billValues.put(FabizContract.BillDetail.COLUMN_DATE, currentTime);
@@ -235,11 +245,14 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                 if (i == cartItems.size()) {
 
                     Cursor amountUpdateCursor = provider.query(FabizContract.AccountDetail.TABLE_NAME,
-                            new String[]{FabizContract.AccountDetail._ID,FabizContract.AccountDetail.COLUMN_TOTAL, FabizContract.AccountDetail.COLUMN_DUE}
+                            new String[]{FabizContract.AccountDetail._ID, FabizContract.AccountDetail.COLUMN_TOTAL
+                                    , FabizContract.AccountDetail.COLUMN_PAID
+                                    , FabizContract.AccountDetail.COLUMN_DUE}
                             , FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""}, null);
 
                     if (amountUpdateCursor.moveToNext()) {
                         double totUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_TOTAL));
+                        double paidUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_PAID));
                         double dueUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE));
 
                         int thatRowOfAcUp = amountUpdateCursor.getInt(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail._ID));
@@ -247,17 +260,54 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                         totUpdate += totAmountToSave;
                         dueUpdate += totAmountToSave;
 
+                        if (enteredAmntForUpdate > 0) {
+                            if (enteredAmntForUpdate > dueUpdate) {
+                                provider.finishTransaction();
+                                showToast("Enter Amount is greater than due amount");
+                                return;
+                            } else {
+                                paidUpdate += enteredAmntForUpdate;
+                                dueUpdate -= enteredAmntForUpdate;
+                            }
+                        }
+
                         ContentValues accUpValues = new ContentValues();
                         accUpValues.put(FabizContract.AccountDetail.COLUMN_TOTAL, totUpdate);
+                        accUpValues.put(FabizContract.AccountDetail.COLUMN_PAID, paidUpdate);
                         accUpValues.put(FabizContract.AccountDetail.COLUMN_DUE, dueUpdate);
                         int upAffectedRows = provider.update(FabizContract.AccountDetail.TABLE_NAME, accUpValues,
                                 FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""});
 
                         if (upAffectedRows == 1) {
                             syncLogList.add(new SyncLog(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
-                            new SetupSync(this, syncLogList, provider);
-                            showToast("Successfully Saved. Id:" + billId);
-                            finish();
+
+                            long insertIdPayment = 0;
+                            if (enteredAmntForUpdate > 0) {
+                                ContentValues logTranscValues = new ContentValues();
+                                logTranscValues.put(FabizContract.Payment.COLUMN_CUST_ID, custId);
+                                logTranscValues.put(FabizContract.Payment.COLUMN_DATE, currentTime);
+                                logTranscValues.put(FabizContract.Payment.COLUMN_AMOUNT, enteredAmntForUpdate);
+                                logTranscValues.put(FabizContract.Payment.COLUMN_TOTAL, totUpdate);
+                                logTranscValues.put(FabizContract.Payment.COLUMN_PAID, paidUpdate);
+                                logTranscValues.put(FabizContract.Payment.COLUMN_DUE, dueUpdate);
+
+                                insertIdPayment = provider.insert(FabizContract.Payment.TABLE_NAME, logTranscValues);
+                                if (insertIdPayment > 0) {
+                                    syncLogList.add(new SyncLog(insertIdPayment, FabizContract.Payment.TABLE_NAME, OP_INSERT));
+                                }
+                            } else {
+                                insertIdPayment = 1;
+                            }
+                            if (insertIdPayment > 0) {
+
+                                //DONE**********************************************
+                                new SetupSync(this, syncLogList, provider);
+                                showDialogueInfo(totAmountToSave, enteredAmntForUpdate, totUpdate, paidUpdate, dueUpdate);
+
+                            } else {
+                                provider.finishTransaction();
+                                showToast("Something went wrong");
+                            }
                         } else {
                             provider.finishTransaction();
                             showToast("Something went wrong");
@@ -284,4 +334,56 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         }
     }
 
+    private void showDialogueInfo(double billAmt, double entAmt, double totAmt, double paidAmt, double dueAmt) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.pop_up_for_sale_and_payment_success);
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                showToast("Successfully Saved.");
+                finish();
+            }
+        });
+
+
+        Button okayButton = dialog.findViewById(R.id.pop_up_for_payment_okay);
+        okayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        final LinearLayout billAmntContainer = dialog.findViewById(R.id.pop_up_for_payment_bill_amt_cont);
+        billAmntContainer.setVisibility(View.VISIBLE);
+
+        final TextView billAmntV = dialog.findViewById(R.id.pop_up_for_payment_bill_amt);
+        final TextView dateV = dialog.findViewById(R.id.pop_up_for_payment_date);
+        final TextView enteredAmntV = dialog.findViewById(R.id.pop_up_for_payment_ent_amt);
+        final TextView totAmntV = dialog.findViewById(R.id.pop_up_for_payment_tot);
+        final TextView paidAmtV = dialog.findViewById(R.id.pop_up_for_payment_paid);
+        final TextView dueAmtV = dialog.findViewById(R.id.pop_up_for_payment_due);
+
+        billAmntV.setText(": " + TruncateDecimal(billAmt + ""));
+        dateV.setText(": " + currentTime);
+        enteredAmntV.setText(": " + TruncateDecimal(entAmt + ""));
+        totAmntV.setText(": " + TruncateDecimal(totAmt + ""));
+        paidAmtV.setText(": " + TruncateDecimal(paidAmt + ""));
+        dueAmtV.setText(": " + TruncateDecimal(dueAmt + ""));
+
+        dialog.show();
+    }
+
+    private double getEnteredAmnt() {
+        EditText amtEditText = findViewById(R.id.cust_sale_amnt);
+        if (amtEditText.getText().toString().matches("")) {
+            return 0;
+        } else {
+            try {
+                return Double.parseDouble(amtEditText.getText().toString());
+            } catch (Error e) {
+                return -1;
+            }
+        }
+    }
 }
