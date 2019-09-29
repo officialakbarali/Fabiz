@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.officialakbarali.fabiz.network.SyncInfo.SetupSync;
-import com.officialakbarali.fabiz.network.SyncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
@@ -42,8 +42,8 @@ import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
-import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_INSERT;
-import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_UPDATE;
+import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
+import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_UPDATE;
 
 public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapterOnClickListener {
     public static List<Cart> cartItems;

@@ -9,11 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.officialakbarali.fabiz.network.SyncInfo.SetupSync;
+import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
-import com.officialakbarali.fabiz.network.SyncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.GET_PHONE_NUMBER_LENGTH;
-import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_INSERT;
+import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
 
 
 public class AddCustomer extends AppCompatActivity {

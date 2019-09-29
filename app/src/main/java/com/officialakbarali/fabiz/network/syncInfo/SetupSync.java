@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.network.SyncInfo;
+package com.officialakbarali.fabiz.network.syncInfo;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.net.ConnectivityManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.officialakbarali.fabiz.network.SyncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 

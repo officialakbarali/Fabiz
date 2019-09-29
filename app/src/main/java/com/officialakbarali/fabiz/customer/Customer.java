@@ -55,6 +55,15 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         });
 
+        Button manageRouteButton = findViewById(R.id.cust_manage_route);
+        manageRouteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent manageRouteIntent = new Intent(Customer.this, ManageRoute.class);
+                startActivity(manageRouteIntent);
+            }
+        });
+
         recyclerView = findViewById(R.id.cust_recycler);
         customerAdapter = new CustomerAdapter(this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -71,14 +80,14 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
 
     @Override
     public void onClick(String mCustomerCurrentRaw, String mCustomerSelectedName) {
-        Intent showHome = new Intent(Customer.this,Home.class);
-        showHome.putExtra("id",mCustomerCurrentRaw);
+        Intent showHome = new Intent(Customer.this, Home.class);
+        showHome.putExtra("id", mCustomerCurrentRaw);
         startActivity(showHome);
     }
 
 
     private void showCustomer(String selection, String[] selectionArg) {
-        FabizProvider provider = new FabizProvider(this,false);
+        FabizProvider provider = new FabizProvider(this, false);
         String[] projection = {FabizContract.Customer._ID, FabizContract.Customer.COLUMN_NAME, FabizContract.Customer.COLUMN_PHONE,
                 FabizContract.Customer.COLUMN_EMAIL, FabizContract.Customer.COLUMN_ADDRESS};
         Cursor custCursor = provider.query(FabizContract.Customer.TABLE_NAME, projection,

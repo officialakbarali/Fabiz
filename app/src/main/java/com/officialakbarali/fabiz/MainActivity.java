@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 
 import android.preference.PreferenceManager;
@@ -18,7 +17,8 @@ import com.officialakbarali.fabiz.customer.Customer;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 import com.officialakbarali.fabiz.item.Item;
-import com.officialakbarali.fabiz.network.SyncInfo.SyncFromAppToServer;
+import com.officialakbarali.fabiz.network.syncInfo.SyncFromAppToServer;
+import com.officialakbarali.fabiz.network.syncInfo.SyncInformation;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 
@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button viewSyncLogButton = findViewById(R.id.view_sync);
-        viewSyncLogButton.setOnClickListener(new View.OnClickListener() {
+        Button viewSyncButton = findViewById(R.id.view_sync);
+        viewSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent syncLogIntent = new Intent(MainActivity.this, SyncFromAppToServer.class);
-                startActivity(syncLogIntent);
+                Intent viewSyncIntent = new Intent(MainActivity.this, SyncInformation.class);
+                startActivity(viewSyncIntent);
             }
         });
 

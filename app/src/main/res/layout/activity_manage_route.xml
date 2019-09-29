@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".customer.ManageRoute">
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Monday"
+            android:textAllCaps="false" />
+
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Tuesday"
+            android:textAllCaps="false" />
+
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Wednesday"
+            android:textAllCaps="false" />
+
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Thursday"
+            android:textAllCaps="false" />
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Friday"
+            android:textAllCaps="false" />
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Saturday"
+            android:textAllCaps="false" />
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Sunday"
+            android:textAllCaps="false" />
+
+</LinearLayout>

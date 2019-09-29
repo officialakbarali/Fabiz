@@ -27,8 +27,8 @@ import com.officialakbarali.fabiz.customer.sale.adapter.SalesAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
-import com.officialakbarali.fabiz.network.SyncInfo.SetupSync;
-import com.officialakbarali.fabiz.network.SyncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,8 +40,8 @@ import java.util.List;
 import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_REAL;
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
-import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_INSERT;
-import static com.officialakbarali.fabiz.network.SyncInfo.SetupSync.OP_UPDATE;
+import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
+import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_UPDATE;
 
 public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter.SalesAdapterOnClickListener {
     private Toast toast;

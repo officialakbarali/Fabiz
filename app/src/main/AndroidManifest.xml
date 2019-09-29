@@ -12,12 +12,14 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".customer.PaymentReview"></activity>
+        <activity android:name=".customer.ManageRoute"></activity>
+        <activity android:name=".network.syncInfo.SyncInformation" />
+        <activity android:name=".customer.PaymentReview" />
         <activity android:name=".customer.AddPayment" />
         <activity android:name=".customer.sale.SalesReturnReview" />
         <activity android:name=".customer.sale.SalesReviewDetail" />
         <activity android:name=".customer.sale.SalesReview" />
-        <activity android:name=".network.SyncInfo.SyncFromAppToServer" />
+        <activity android:name=".network.syncInfo.SyncFromAppToServer" />
         <activity android:name=".customer.sale.Sales" />
         <activity android:name=".customer.Home" />
         <activity android:name=".item.Item" />

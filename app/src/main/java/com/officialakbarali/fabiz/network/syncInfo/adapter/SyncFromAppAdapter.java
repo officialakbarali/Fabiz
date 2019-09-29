@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.network.SyncInfo.adapter;
+package com.officialakbarali.fabiz.network.syncInfo.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
-import com.officialakbarali.fabiz.network.SyncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 
 import java.util.List;
 

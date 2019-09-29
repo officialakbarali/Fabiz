@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.network.SyncInfo;
+package com.officialakbarali.fabiz.network.syncInfo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,8 +10,8 @@ import android.os.Bundle;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
-import com.officialakbarali.fabiz.network.SyncInfo.adapter.SyncFromAppAdapter;
-import com.officialakbarali.fabiz.network.SyncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.adapter.SyncFromAppAdapter;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 
 import java.util.ArrayList;
 import java.util.List;
