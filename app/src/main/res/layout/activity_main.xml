@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/cust"
             android:layout_centerHorizontal="true"
-            android:text="View Items" />
+            android:text="Item Detail" />
 
     <Button
             android:id="@+id/view_sync"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/item"
             android:layout_centerHorizontal="true"
-            android:text="View Sync" />
+            android:text="Sync Detail" />
 
     <Button
             android:id="@+id/dummy"

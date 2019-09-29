@@ -34,7 +34,12 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         custId = Integer.parseInt(getIntent().getStringExtra("id"));
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
-        salesReviewAdapter = new SalesReviewAdapter(this, this);
+        if(FROM_SALERS_RETURN){
+            salesReviewAdapter = new SalesReviewAdapter(this, this,true);
+        }else {
+            salesReviewAdapter = new SalesReviewAdapter(this, this,false);
+        }
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);

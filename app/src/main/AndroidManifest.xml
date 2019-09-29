@@ -12,7 +12,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".customer.AddPayment"></activity>
+        <activity android:name=".customer.PaymentReview"></activity>
+        <activity android:name=".customer.AddPayment" />
         <activity android:name=".customer.sale.SalesReturnReview" />
         <activity android:name=".customer.sale.SalesReviewDetail" />
         <activity android:name=".customer.sale.SalesReview" />

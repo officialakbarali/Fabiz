@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="150dp"
         android:layout_margin="7dp">
 
     <TextView
@@ -33,6 +33,26 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:text="View" />
+
+    <Button
+            android:id="@+id/sales_review_view_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Edit"
+            android:textAllCaps="false"
+            android:visibility="gone" />
+
+    <Button
+            android:id="@+id/sales_review_view_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:visibility="gone" />
+
 
     <TextView
             android:id="@+id/sales_review_view_tot_items"

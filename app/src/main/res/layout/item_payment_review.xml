@@ -3,23 +3,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="9dp">
+        android:layout_margin="5dp">
 
     <TextView
-            android:id="@+id/sales_return_review_item_billid"
+            android:id="@+id/payment_review_item_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Bill Id :17" />
-
-    <TextView
-            android:id="@+id/sales_return_review_item_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            tools:text="24" />
-
+            tools:text="Payment Id :10" />
 
     <Button
             android:layout_width="wrap_content"
@@ -28,46 +18,51 @@
             android:text="Delete"
             android:textAllCaps="false" />
 
+
     <TextView
-            android:id="@+id/sales_return_review_item_name"
+            android:id="@+id/payment_review_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            tools:text="Date :24" />
+
+    <TextView
+            android:id="@+id/payment_review_item_amt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            tools:text="40" />
-
+            android:textSize="22sp"
+            tools:text="Paid Amount :17" />
 
     <TextView
-            android:id="@+id/sales_return_review_item_price"
+            android:id="@+id/payment_review_item_tot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            tools:text="Price :12" />
+            tools:text="Total :11" />
 
     <TextView
-            android:id="@+id/sales_return_review_item_qty"
+            android:id="@+id/payment_review_item_paid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
-            tools:text="QTY :6" />
+            tools:text="Paid :11" />
 
     <TextView
-            android:id="@+id/sales_return_review_item_tot"
+            android:id="@+id/payment_review_item_due"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            tools:text="Total :12" />
+            tools:text="Due :11" />
 
     <View
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="9dp"
-            android:layout_marginEnd="9dp"
             android:background="@color/colorPrimaryDark" />
-
 </RelativeLayout>

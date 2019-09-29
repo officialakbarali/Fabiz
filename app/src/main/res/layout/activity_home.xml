@@ -135,6 +135,7 @@
                         android:textAllCaps="false" />
 
                 <Button
+                        android:id="@+id/cust_home_sales_payment_review"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"

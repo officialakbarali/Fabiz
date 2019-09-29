@@ -94,6 +94,16 @@ public class Home extends AppCompatActivity {
             }
         });
 
+        Button paymentReviewButton = findViewById(R.id.cust_home_sales_payment_review);
+        paymentReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent paymentReviewIntent = new Intent(Home.this, PaymentReview.class);
+                paymentReviewIntent.putExtra("id", custId + "");
+                startActivity(paymentReviewIntent);
+            }
+        });
+
     }
 
     @Override
