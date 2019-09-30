@@ -58,12 +58,21 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     int totQtyForSave;
     double totAmountToSave;
 
+    double dueAmtPassed, totalDueAmnt;
+
+    TextView currentDueAmntV, totalDueAmntV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
 
         custId = Integer.parseInt(getIntent().getStringExtra("id"));
+        dueAmtPassed = Double.parseDouble(getIntent().getStringExtra("custDueAmt"));
+
+        currentDueAmntV = findViewById(R.id.cust_sale_curr_due);
+        currentDueAmntV.setText("Current Due Amount :" + TruncateDecimal(dueAmtPassed + ""));
+        totalDueAmntV = findViewById(R.id.cust_sale_tot_due);
 
         totQtyView = findViewById(R.id.cust_sale_tot_qty);
         totalView = findViewById(R.id.cust_sale_total);
@@ -86,11 +95,11 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             }
         });
 
-        Button showTimePicker = findViewById(R.id.cust_sale_show_time);
-        showTimePicker.setOnClickListener(new View.OnClickListener() {
+        Button showBarCoder = findViewById(R.id.cust_sale_barcode);
+        showBarCoder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDateTimePicker();
+                //TODO BARCODE
             }
         });
 
@@ -101,7 +110,14 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                 if (cartItems.isEmpty()) {
                     showToast("Please Add Item");
                 } else {
-                    saveThisBill();
+                    if (getEnteredAmnt() <= totalDueAmnt) {
+                        saveThisBill();
+                    } else {
+                        if (totalDueAmnt < 0) {
+                            saveThisBill();
+                        }
+                        showToast("Entered Amount is greater than due amount");
+                    }
                 }
             }
         });
@@ -125,6 +141,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     public void onClick(int indexToBeRemoved, Cart cartItemsF) {
         cartItems.remove(indexToBeRemoved);
         salesAdapter.swapAdapter(cartItems);
+        setTotalAndTotalQuantity();
     }
 
     private String getCurrentDateTime() {
@@ -181,6 +198,9 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         }
         totQtyView.setText("Total Item :" + TruncateDecimal(totQtyForSave + ""));
         totalView.setText("Total :" + TruncateDecimal(totAmountToSave + ""));
+
+        totalDueAmnt = totAmountToSave + dueAmtPassed;
+        totalDueAmntV.setText("Total Due Amount :" + TruncateDecimal(totalDueAmnt + ""));
     }
 
     private void showToast(String msgForToast) {
@@ -193,12 +213,6 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
 
     private void saveThisBill() {
         FabizProvider provider = new FabizProvider(this, true);
-
-        final double enteredAmntForUpdate = getEnteredAmnt();
-        if (enteredAmntForUpdate < 0) {
-            showToast("Enter a valid amount");
-            return;
-        }
 
         ContentValues billValues = new ContentValues();
         billValues.put(FabizContract.BillDetail.COLUMN_CUST_ID, custId);
@@ -257,19 +271,11 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
 
                         int thatRowOfAcUp = amountUpdateCursor.getInt(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail._ID));
 
-                        totUpdate += totAmountToSave;
-                        dueUpdate += totAmountToSave;
+                        double enteredAmntForUpdate = getEnteredAmnt();
 
-                        if (enteredAmntForUpdate > 0) {
-                            if (enteredAmntForUpdate > dueUpdate) {
-                                provider.finishTransaction();
-                                showToast("Enter Amount is greater than due amount");
-                                return;
-                            } else {
-                                paidUpdate += enteredAmntForUpdate;
-                                dueUpdate -= enteredAmntForUpdate;
-                            }
-                        }
+                        totUpdate += totAmountToSave;
+                        dueUpdate = (dueUpdate + totAmountToSave) - enteredAmntForUpdate;
+                        paidUpdate += enteredAmntForUpdate;
 
                         ContentValues accUpValues = new ContentValues();
                         accUpValues.put(FabizContract.AccountDetail.COLUMN_TOTAL, totUpdate);
@@ -282,7 +288,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                             syncLogList.add(new SyncLog(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
 
                             long insertIdPayment = 0;
-                            if (enteredAmntForUpdate > 0) {
+                            if (enteredAmntForUpdate != 0) {
                                 ContentValues logTranscValues = new ContentValues();
                                 logTranscValues.put(FabizContract.Payment.COLUMN_CUST_ID, custId);
                                 logTranscValues.put(FabizContract.Payment.COLUMN_DATE, currentTime);
@@ -382,7 +388,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             try {
                 return Double.parseDouble(amtEditText.getText().toString());
             } catch (Error e) {
-                return -1;
+                return 0;
             }
         }
     }

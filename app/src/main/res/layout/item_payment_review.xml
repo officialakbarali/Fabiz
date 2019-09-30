@@ -11,13 +11,6 @@
             android:layout_height="wrap_content"
             tools:text="Payment Id :10" />
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Delete"
-            android:textAllCaps="false" />
-
 
     <TextView
             android:id="@+id/payment_review_item_date"
@@ -40,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
+            android:visibility="gone"
             tools:text="Total :11" />
 
     <TextView
@@ -49,16 +43,18 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
+            android:visibility="gone"
             tools:text="Paid :11" />
 
     <TextView
+
             android:id="@+id/payment_review_item_due"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
-            tools:text="Due :11" />
+            tools:text="Due Amount At That Time:11" />
 
     <View
             android:layout_width="match_parent"

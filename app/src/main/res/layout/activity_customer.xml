@@ -10,7 +10,6 @@
             android:id="@+id/add_cust"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:text="Add Customer" />
 
     <Button
@@ -23,6 +22,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Manage Route" />
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Read from Barcode" />
 
     <LinearLayout
             android:layout_width="match_parent"

@@ -12,7 +12,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".customer.ManageRoute"></activity>
+        <activity android:name=".data.barcode.FabizBarcode"></activity>
+        <activity android:name=".customer.ManageRoute" />
         <activity android:name=".network.syncInfo.SyncInformation" />
         <activity android:name=".customer.PaymentReview" />
         <activity android:name=".customer.AddPayment" />

@@ -89,15 +89,19 @@ public class AddPayment extends AppCompatActivity {
         } else {
             try {
                 double enteredAmount = Double.parseDouble(amountToUpdate);
-
                 if (enteredAmount <= dueA) {
-                    if (enteredAmount > 0) {
+                    if (enteredAmount != 0) {
                         //SUCCESS
                         setPaymentToSql(enteredAmount);
                     } else {
                         showToast("Enter a valid amount");
                     }
                 } else {
+                    if (dueA < 0) {
+                        if (enteredAmount != 0) {
+                            setPaymentToSql(enteredAmount);
+                        }
+                    }
                     showToast("Entered amount is greater than Due amount");
                 }
 

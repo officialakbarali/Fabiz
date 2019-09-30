@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="Change"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:visibility="gone" />
     </LinearLayout>
 
 

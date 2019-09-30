@@ -23,11 +23,20 @@
             android:layout_centerHorizontal="true"
             android:text="Item Detail" />
 
+
+    <Button
+            android:id="@+id/item_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item"
+            android:layout_centerHorizontal="true"
+            android:text="Request Item" />
+
     <Button
             android:id="@+id/view_sync"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item"
+            android:layout_below="@+id/item_request"
             android:layout_centerHorizontal="true"
             android:text="Sync Detail" />
 

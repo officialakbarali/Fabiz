@@ -24,16 +24,14 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
 
     private List<SalesReviewDetail> salesList;
 
-    boolean FOR_SALES_RETURN;
 
     public interface SalesReviewAdapterOnClickListener {
         void onClick(int idOfBill);
     }
 
-    public SalesReviewAdapter(Context context, SalesReviewAdapterOnClickListener salesReviewAdapterOnClickListener, boolean forSalesReturn) {
+    public SalesReviewAdapter(Context context, SalesReviewAdapterOnClickListener salesReviewAdapterOnClickListener) {
         this.mContext = context;
         this.mClickHandler = salesReviewAdapterOnClickListener;
-        this.FOR_SALES_RETURN = forSalesReturn;
     }
 
 
@@ -82,13 +80,6 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
         } else {
             holder.totV.setText("Total Amount :" + totalS);
         }
-
-        if (!FOR_SALES_RETURN) {
-            holder.editB.setVisibility(View.VISIBLE);
-            holder.deleteB.setVisibility(View.VISIBLE);
-            //TODO
-        }
-
     }
 
     @Override
@@ -108,11 +99,9 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
     class SalesReviewHolder extends RecyclerView.ViewHolder {
         TextView billIdV, dateV, totQtyV, totV;
         Button viewB;
-        Button editB, deleteB;
 
         public SalesReviewHolder(@NonNull View itemView) {
             super(itemView);
-
             billIdV = itemView.findViewById(R.id.sales_review_view_bill_id);
             dateV = itemView.findViewById(R.id.sales_review_view_date);
             totQtyV = itemView.findViewById(R.id.sales_review_view_tot_items);
@@ -126,9 +115,6 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
                     mClickHandler.onClick(salesReview.getId());
                 }
             });
-
-            editB = itemView.findViewById(R.id.sales_review_view_edit);
-            deleteB = itemView.findViewById(R.id.sales_review_view_delete);
         }
     }
 }

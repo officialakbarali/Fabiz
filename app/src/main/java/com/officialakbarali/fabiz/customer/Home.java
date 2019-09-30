@@ -31,10 +31,14 @@ public class Home extends AppCompatActivity {
     private FabizProvider provider;
     private Toast toast;
 
+    private double custDueAmt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        custId = Integer.parseInt(getIntent().getStringExtra("id"));
 
         provider = new FabizProvider(this, false);
 
@@ -46,6 +50,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent saleIntent = new Intent(Home.this, Sales.class);
                 saleIntent.putExtra("id", custId + "");
+                saleIntent.putExtra("custDueAmt", custDueAmt + "");
                 Sales.cartItems = new ArrayList<>();
                 startActivity(saleIntent);
             }
@@ -113,7 +118,6 @@ public class Home extends AppCompatActivity {
     }
 
     private void setCustomerDetail() {
-        custId = Integer.parseInt(getIntent().getStringExtra("id"));
 
         Cursor customerDetailCursor = provider.query(FabizContract.Customer.TABLE_NAME, new String[]{},
                 FabizContract.Customer._ID + "=?", new String[]{custId + ""}, null);
@@ -174,6 +178,7 @@ public class Home extends AppCompatActivity {
             custTotal.setText("Total Amount :" + TruncateDecimal(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_TOTAL))));
             custPaid.setText("Paid :" + TruncateDecimal(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_PAID))));
             custDue.setText("Due Amount :" + TruncateDecimal(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE))));
+            custDueAmt = Double.parseDouble(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE)));
         }
     }
 

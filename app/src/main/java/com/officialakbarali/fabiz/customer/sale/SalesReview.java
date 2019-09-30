@@ -34,11 +34,9 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         custId = Integer.parseInt(getIntent().getStringExtra("id"));
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
-        if(FROM_SALERS_RETURN){
-            salesReviewAdapter = new SalesReviewAdapter(this, this,true);
-        }else {
-            salesReviewAdapter = new SalesReviewAdapter(this, this,false);
-        }
+
+        salesReviewAdapter = new SalesReviewAdapter(this, this);
+
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -60,9 +58,9 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         salesDetaiiilIntent.putExtra("custId", custId + "");
         salesDetaiiilIntent.putExtra("billId", idOfBill + "");
 
-        if(FROM_SALERS_RETURN){
+        if (FROM_SALERS_RETURN) {
             salesDetaiiilIntent.putExtra("fromSalesReturn", true);
-        }else {
+        } else {
             salesDetaiiilIntent.putExtra("fromSalesReturn", false);
         }
 

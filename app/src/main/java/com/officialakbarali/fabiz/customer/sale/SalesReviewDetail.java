@@ -487,6 +487,8 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
     }
 
     private void showFinalInfoDialogue(boolean NEGATIVE_DUE, double returnedAmt, double totAmnt, double paidAmt, double dueAmnt) {
+        //TODO NEGATIVE DUE WARNING
+
         paymentDialog.dismiss();
         final Dialog lastDialog = new Dialog(this);
         lastDialog.setContentView(R.layout.pop_up_for_sale_and_payment_success);
@@ -509,7 +511,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         final TextView dateV = lastDialog.findViewById(R.id.pop_up_for_payment_date);
 
-        final TextView returnedAmntLabel = lastDialog.findViewById(R.id.pop_up_for_payment_ent_amt);
+        final TextView returnedAmntLabel = lastDialog.findViewById(R.id.pop_up_for_payment_label_ent_amt);
         returnedAmntLabel.setText("Returned Amount");
 
         final TextView returnedAmntV = lastDialog.findViewById(R.id.pop_up_for_payment_ent_amt);

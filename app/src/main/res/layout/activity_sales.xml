@@ -3,7 +3,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context=".customer.sale.Sales">
 
     <LinearLayout
@@ -27,17 +26,17 @@
                     tools:text="Time :" />
 
             <Button
-                    android:id="@+id/cust_sale_show_time"
+                    android:id="@+id/cust_sale_barcode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Show Time" />
+                    android:text="Barcode" />
 
             <Button
                     android:id="@+id/cust_sale_add_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/cust_sale_show_time"
+                    android:layout_toRightOf="@+id/cust_sale_barcode"
                     android:text="Add Item" />
 
             <Button
@@ -150,6 +149,23 @@
             </LinearLayout>
 
 
+            <TextView
+                    android:id="@+id/cust_sale_curr_due"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    tools:text="Current Due Amount :300" />
+
+            <TextView
+                    android:id="@+id/cust_sale_tot_due"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    tools:text="Total Due Amount :1100" />
+
+
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -166,7 +182,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:inputType="numberDecimal"
+                        android:inputType="numberSigned|numberDecimal"
                         android:textStyle="bold" />
             </LinearLayout>
 

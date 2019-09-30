@@ -27,7 +27,8 @@
                 android:layout_width="72dp"
                 android:layout_height="wrap_content"
                 android:text="Change"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:visibility="gone" />
 
     </LinearLayout>
 
@@ -115,7 +116,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned|numberDecimal"
                 tools:text="18" />
 
 
