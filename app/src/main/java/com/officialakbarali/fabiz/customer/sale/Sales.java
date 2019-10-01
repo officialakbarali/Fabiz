@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 import com.officialakbarali.fabiz.R;
@@ -42,6 +43,8 @@ import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
+import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;
+import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_ITEM;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_UPDATE;
 
@@ -99,7 +102,9 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         showBarCoder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO BARCODE
+                Intent scanFromBarcodeIntent = new Intent(Sales.this, FabizBarcode.class);
+                scanFromBarcodeIntent.putExtra("FOR_WHO", FOR_ITEM + "");
+                startActivity(scanFromBarcodeIntent);
             }
         });
 

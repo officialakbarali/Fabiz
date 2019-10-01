@@ -48,6 +48,7 @@ public class AddCustomer extends AppCompatActivity {
                 String address = addresssE.getText().toString().toUpperCase().trim();
 
                 ContentValues values = new ContentValues();
+                values.put(FabizContract.Customer.COLUMN_BARCODE, "DR2039");
                 values.put(FabizContract.Customer.COLUMN_NAME, name);
                 values.put(FabizContract.Customer.COLUMN_PHONE, phone);
 

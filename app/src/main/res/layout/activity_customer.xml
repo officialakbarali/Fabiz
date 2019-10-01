@@ -24,6 +24,7 @@
             android:text="Manage Route" />
 
     <Button
+            android:id="@+id/cust_barcode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Read from Barcode" />

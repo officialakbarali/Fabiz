@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
         values.put(FabizContract.Item.COLUMN_NAME, "EMINEM");
         values.put(FabizContract.Item.COLUMN_BRAND, "RAP");
         values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
-        values.put(FabizContract.Item.COLUMN_PRICE, "50.123");
+        values.put(FabizContract.Item.COLUMN_BARCODE, "DR2039");
+        values.put(FabizContract.Item.COLUMN_PRICE, "250.123");
         Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
 
         values = new ContentValues();

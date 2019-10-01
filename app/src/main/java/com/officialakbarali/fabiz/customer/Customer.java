@@ -17,9 +17,12 @@ import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;
 
 public class Customer extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener {
     RecyclerView recyclerView;
@@ -29,6 +32,16 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
+
+        Button scanFromBarcodeButton = findViewById(R.id.cust_barcode);
+        scanFromBarcodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent scanFromBarcodeIntent = new Intent(Customer.this, FabizBarcode.class);
+                scanFromBarcodeIntent.putExtra("FOR_WHO", FOR_CUSTOMER + "");
+                startActivity(scanFromBarcodeIntent);
+            }
+        });
 
         Button addCustomerButton = findViewById(R.id.add_cust);
         addCustomerButton.setOnClickListener(new View.OnClickListener() {

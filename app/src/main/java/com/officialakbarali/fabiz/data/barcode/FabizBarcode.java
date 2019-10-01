@@ -144,11 +144,11 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
         Cursor cursor;
         if (FOR_WHO == FOR_CUSTOMER) {
             cursor = provider.query(FabizContract.Customer.TABLE_NAME, new String[]{FabizContract.Customer._ID},
-                    FabizContract.Customer.COLUMN_BARCODE + "=?", new String[]{myResult + ""}, null);
+                    FabizContract.Customer.COLUMN_BARCODE + "=?", new String[]{myResult}, null);
         } else {
             cursor = provider.query(FabizContract.Item.TABLE_NAME, new String[]{FabizContract.Item._ID, FabizContract.Item.COLUMN_NAME, FabizContract.Item.COLUMN_BRAND,
                             FabizContract.Item.COLUMN_CATEGORY, FabizContract.Item.COLUMN_PRICE},
-                    FabizContract.Item.COLUMN_BARCODE + "=?", new String[]{myResult + ""}, null);
+                    FabizContract.Item.COLUMN_BARCODE + "=?", new String[]{myResult}, null);
         }
 
         if (cursor.moveToNext()) {

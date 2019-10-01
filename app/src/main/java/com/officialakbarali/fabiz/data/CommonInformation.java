@@ -11,11 +11,18 @@ public final class CommonInformation {
     private static int PHONE_NUMBER_LENGTH = 6;
     private static int DECIMAL_LENGTH = 3;
     private static String REAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static String REAL_DATE_FORMAT_OF_SEARCH = "yyyy-MM-dd";
 
     public static String convertDateToDisplayFormat(String dateString) throws ParseException {
         DateFormat sdf = new SimpleDateFormat(REAL_DATE_FORMAT);
         Date date = sdf.parse(dateString);
         return new SimpleDateFormat("dd,E MMM YYYY hh:mm a").format(date);
+    }
+
+    public static String convertDateToSearchFormat(String dateString) throws ParseException {
+        DateFormat sdf = new SimpleDateFormat(REAL_DATE_FORMAT_OF_SEARCH);
+        Date date = sdf.parse(dateString);
+        return new SimpleDateFormat("dd,E MMM YYYY").format(date);
     }
 
 

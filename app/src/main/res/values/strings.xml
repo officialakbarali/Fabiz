@@ -16,12 +16,6 @@
         <item>Category</item>
     </string-array>
 
-    <string-array name="payment_search_list">
-        <item>Id</item>
-        <item>Date</item>
-    </string-array>
-
-
     <string-array name="sales_return_search_list">
         <item>BillId</item>
         <item>Date</item>
