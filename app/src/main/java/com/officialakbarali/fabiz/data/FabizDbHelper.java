@@ -64,7 +64,7 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Customer.TABLE_NAME
                 + " ("
                 + FabizContract.Customer._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FabizContract.Item.COLUMN_BARCODE + " TEXT, "
+                + FabizContract.Customer.COLUMN_BARCODE + " TEXT, "
                 + FabizContract.Customer.COLUMN_NAME + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_PHONE + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_EMAIL + " TEXT NOT NULL,"

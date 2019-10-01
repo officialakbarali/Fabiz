@@ -312,7 +312,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                             if (insertIdPayment > 0) {
 
                                 //DONE**********************************************
-                                new SetupSync(this, syncLogList, provider);
+                                new SetupSync(this, syncLogList, provider,"Successfully Saved.");
                                 showDialogueInfo(totAmountToSave, enteredAmntForUpdate, totUpdate, paidUpdate, dueUpdate);
 
                             } else {
@@ -351,7 +351,6 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                showToast("Successfully Saved.");
                 finish();
             }
         });

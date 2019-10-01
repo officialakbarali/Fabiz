@@ -18,7 +18,6 @@
 
     <string-array name="sales_return_search_list">
         <item>BillId</item>
-        <item>Date</item>
         <item>Name</item>
         <item>ItemId</item>
         <item>Brand</item>

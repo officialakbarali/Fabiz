@@ -445,7 +445,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
                             if (upReturnAffectedRaw > 0) {
                                 syncLogList.add(new SyncLog(idOfRowReturn, FabizContract.Cart.TABLE_NAME, OP_UPDATE));
-                                new SetupSync(this, syncLogList, saveProvider);
+                                new SetupSync(this, syncLogList, saveProvider, "Successfully Returned");
 
                                 //END HERE *****************************************************
                                 showFinalInfoDialogue(NEGATIVE_DUE, values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL),
@@ -495,7 +495,6 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         lastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                showToast("Successfully Returned");
                 finish();
             }
         });

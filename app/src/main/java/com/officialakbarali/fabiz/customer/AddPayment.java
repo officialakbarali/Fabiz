@@ -156,7 +156,7 @@ public class AddPayment extends AppCompatActivity {
                 long insertIdPayment = provider.insert(FabizContract.Payment.TABLE_NAME, logTranscValues);
 
                 if (insertIdPayment > 0) {
-                    new SetupSync(this, syncLogList, provider);
+                    new SetupSync(this, syncLogList, provider,"Amount saved successful");
                     showDialogueInfo(enteredAmount, totUpdate, paidUpdate, dueUpdate);
                 } else {
                     provider.finishTransaction();
@@ -177,7 +177,6 @@ public class AddPayment extends AppCompatActivity {
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                showToast("Transaction Successful");
                 finish();
             }
         });
@@ -202,7 +201,6 @@ public class AddPayment extends AppCompatActivity {
         totAmntV.setText(": " + TruncateDecimal(totAmt + ""));
         paidAmtV.setText(": " + TruncateDecimal(paidAmt + ""));
         dueAmtV.setText(": " + TruncateDecimal(dueAmt + ""));
-
         dialog.show();
     }
 

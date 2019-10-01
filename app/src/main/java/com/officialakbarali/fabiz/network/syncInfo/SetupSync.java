@@ -15,11 +15,9 @@ import java.util.List;
 
 public class SetupSync {
     //PUBLIC STRING FOR OPERATION
-
     public static String OP_INSERT = "INSERT";
     public static String OP_UPDATE = "UPDATE";
     public static String OP_DELETE = "DELETE";
-
     //***************************
 
 
@@ -27,12 +25,12 @@ public class SetupSync {
     private Context context;
     private FabizProvider provider;
 
-    public SetupSync(Context context, List<SyncLog> syncLogList, FabizProvider provider) {
+    public SetupSync(Context context, List<SyncLog> syncLogList, FabizProvider provider, String successMsg) {
         this.context = context;
         this.syncLogList = syncLogList;
         this.provider = provider;
 
-        addCurrentDataToSyncTable();
+        addCurrentDataToSyncTable(successMsg);
 
         if (isNetworkConnected()) {
             //TODO TURN SERVICE ON IF OFF
@@ -45,7 +43,7 @@ public class SetupSync {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    private void addCurrentDataToSyncTable() {
+    private void addCurrentDataToSyncTable(String succesMsg) {
         try {
             int i = 0;
             while (i < syncLogList.size()) {
@@ -67,6 +65,7 @@ public class SetupSync {
 
             if (i == syncLogList.size()) {
                 //********TRANSACTION SUCCESSFUL
+                Toast.makeText(context, succesMsg, Toast.LENGTH_SHORT).show();
                 Log.i("SetupSync", "SUCCESSFULLY COMPLETED");
                 provider.successfulTransaction();
             }

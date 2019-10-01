@@ -145,8 +145,7 @@ public class AddCustomer extends AppCompatActivity {
                     List<SyncLog> syncLogList = new ArrayList<>();
                     syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
                     syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, OP_INSERT));
-                    new SetupSync(this, syncLogList, fabizProvider);
-                    showToast("Successfully Saved. Id:" + idOfCustomer);
+                    new SetupSync(this, syncLogList, fabizProvider,"Successfully Saved. Id:" + idOfCustomer);
                     finish();
                 } else {
                     fabizProvider.finishTransaction();

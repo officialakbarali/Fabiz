@@ -4,8 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReturnReviewAdapter;
@@ -13,8 +19,12 @@ import com.officialakbarali.fabiz.customer.sale.data.SalesReturnReviewItem;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToSearchFormat;
 
 public class SalesReturnReview extends AppCompatActivity {
     private int custId;
@@ -35,49 +45,126 @@ public class SalesReturnReview extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(reviewAdapter);
 
-        showAllReturnedItems();
+        showReturnedItems(null, null);
+
+        Button showCalenderForFilter = findViewById(R.id.sales_return_review_date);
+        showCalenderForFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
+
+        Button searchButton = findViewById(R.id.sales_return_review_search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = findViewById(R.id.sales_return_review_search);
+                if (!editText.getText().toString().trim().matches("")) {
+                    Spinner filterSpinner = findViewById(R.id.sales_return_review_filter);
+                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
+                    showReturnedItems(selection, new String[]{editText.getText().toString().trim() + "%"});
+                } else {
+                    showReturnedItems(null, null);
+                }
+
+            }
+        });
     }
 
-    private void showAllReturnedItems() {
+    private void showReturnedItems(String Fselection, String[] FselectionArg) {
         FabizProvider provider = new FabizProvider(this, false);
 
         String tableName = FabizContract.BillDetail.TABLE_NAME + " INNER JOIN " + FabizContract.SalesReturn.TABLE_NAME + " ON " + FabizContract.BillDetail.FULL_COLUMN_ID
-                + " = " + FabizContract.SalesReturn.FULL_COLUMN_BILL_ID + " INNER JOIN " + FabizContract.Item.TABLE_NAME + " ON "
-                + FabizContract.Item.FULL_COLUMN_ID + " = " + FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID;
+                + " = " + FabizContract.SalesReturn.FULL_COLUMN_BILL_ID + " INNER JOIN " + FabizContract.Cart.TABLE_NAME + " ON "
+                + FabizContract.Cart.FULL_COLUMN_BILL_ID + " = " + FabizContract.BillDetail.FULL_COLUMN_ID;
 
-        String[] projection = {FabizContract.SalesReturn.FULL_COLUMN_ID + " AS " + "a",
-                FabizContract.SalesReturn.FULL_COLUMN_BILL_ID + " AS " + "b",
-                FabizContract.SalesReturn.FULL_COLUMN_DATE + " AS " + "c"
-                , FabizContract.Item.FULL_COLUMN_ID + " AS " + "d",
-                FabizContract.Item.FULL_COLUMN_NAME + " AS " + "e",
-                FabizContract.Item.FULL_COLUMN_BRAND + " AS " + "f",
-                FabizContract.Item.FULL_COLUMN_CATAGORY + " AS " + "g"
-                , FabizContract.SalesReturn.FULL_COLUMN_PRICE + " AS " + "h",
-                FabizContract.SalesReturn.FULL_COLUMN_QTY + " AS " + "i",
-                FabizContract.SalesReturn.FULL_COLUMN_TOTAL + " AS " + "j"
+        String[] projection = {FabizContract.SalesReturn.FULL_COLUMN_ID,
+                FabizContract.SalesReturn.FULL_COLUMN_BILL_ID,
+                FabizContract.SalesReturn.FULL_COLUMN_DATE
+                , FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID,
+                FabizContract.Cart.FULL_COLUMN_NAME,
+                FabizContract.Cart.FULL_COLUMN_BRAND,
+                FabizContract.Cart.FULL_COLUMN_CATAGORY
+                , FabizContract.SalesReturn.FULL_COLUMN_PRICE,
+                FabizContract.SalesReturn.FULL_COLUMN_QTY,
+                FabizContract.SalesReturn.FULL_COLUMN_TOTAL
         };
 
         String selection = FabizContract.BillDetail.FULL_COLUMN_CUST_ID + "=?";
-        String[] selectionArg = {custId + ""};
+
+        String[] selectionArg;
+
+        if (Fselection != null) {
+            selection += " AND " + Fselection;
+            selectionArg = new String[]{custId + "", FselectionArg[0]};
+        } else {
+            selectionArg = new String[]{custId + ""};
+        }
 
         Cursor returnCursor = provider.query(tableName, projection, selection, selectionArg, null);
 
         List<SalesReturnReviewItem> salesReturnReviewItems = new ArrayList<>();
         while (returnCursor.moveToNext()) {
             salesReturnReviewItems.add(new SalesReturnReviewItem(
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow("a")),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow("b")),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow("c")),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow("d")),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow("e")),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow("f")),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow("g")),
-                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow("h")),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow("i")),
-                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow("j"))
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_ID)),
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_BILL_ID)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_DATE)),
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.FULL_COLUMN_NAME)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.FULL_COLUMN_BRAND)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.FULL_COLUMN_CATAGORY)),
+                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_PRICE)),
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_QTY)),
+                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_TOTAL))
             ));
         }
         reviewAdapter.swapAdapter(salesReturnReviewItems);
 
+    }
+
+    private String getSelection(String filterFromForm) {
+        String caseSelection;
+
+        switch (filterFromForm) {
+            case "Name":
+                caseSelection = FabizContract.Cart.FULL_COLUMN_NAME;
+                break;
+            case "ItemId":
+                caseSelection = FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID;
+                break;
+            case "Brand":
+                caseSelection = FabizContract.Cart.FULL_COLUMN_BRAND;
+                break;
+            case "Category":
+                caseSelection = FabizContract.Cart.FULL_COLUMN_CATAGORY;
+                break;
+            default:
+                caseSelection = FabizContract.SalesReturn.COLUMN_BILL_ID;
+        }
+
+        return caseSelection + " LIKE ?";
+    }
+
+    private void showDatePicker() {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, final int year,
+                                          final int monthOfYear, final int dayOfMonth) {
+                        String fromDateTime = year + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth) + "T";
+
+                        try {
+                            showReturnedItems(FabizContract.SalesReturn.COLUMN_DATE + " LIKE ?", new String[]{convertDateToSearchFormat(fromDateTime) + "%"});
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
     }
 }

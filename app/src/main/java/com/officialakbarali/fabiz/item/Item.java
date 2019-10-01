@@ -197,9 +197,6 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         String caseSelection;
 
         switch (filterFromForm) {
-            case "Name":
-                caseSelection = FabizContract.Item.COLUMN_NAME;
-                break;
             case "Id":
                 caseSelection = FabizContract.Item._ID;
                 break;

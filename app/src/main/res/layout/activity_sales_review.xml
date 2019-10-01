@@ -25,6 +25,7 @@
                 android:text="Filter" />
 
         <Spinner
+                android:id="@+id/sales_review_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/sales_return_search_list" />
@@ -47,14 +48,24 @@
             android:orientation="horizontal">
 
         <EditText
+                android:id="@+id/sales_review_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
         <Button
+                android:id="@+id/sales_review_search_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
                 android:text="Search"
+                android:textAllCaps="false" />
+
+        <Button
+                android:id="@+id/sales_review_date_filter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
                 android:textAllCaps="false" />
 
     </LinearLayout>

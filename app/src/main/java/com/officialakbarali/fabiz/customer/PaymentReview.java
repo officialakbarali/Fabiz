@@ -53,8 +53,8 @@ public class PaymentReview extends AppCompatActivity {
             }
         });
 
-        Button serachButton = findViewById(R.id.payment_review_search_button);
-        serachButton.setOnClickListener(new View.OnClickListener() {
+        Button searchButton = findViewById(R.id.payment_review_search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText fromEditText = findViewById(R.id.payment_review_search);
@@ -80,8 +80,6 @@ public class PaymentReview extends AppCompatActivity {
         if (Fselection != null) {
             selection += " AND " + Fselection;
             selectionArg = new String[]{custId + "", FselectionArg[0]};
-            Toast.makeText(PaymentReview.this, selectionArg[1], Toast.LENGTH_LONG).show();
-
         } else {
             selectionArg = new String[]{custId + ""};
         }
