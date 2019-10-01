@@ -164,6 +164,22 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_CATEGORY)),
                         Double.parseDouble(cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_PRICE)))));
             }
+        } else {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Barcode doesn't match, do you like to scan again ?")
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    })
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            scannerView.resumeCameraPreview(FabizBarcode.this);
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
 
     }
