@@ -4,37 +4,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".customer.Customer">
+        tools:context=".customer.route.RouteModify">
 
-    <Button
-            android:id="@+id/add_cust"
-            android:layout_width="match_parent"
+    <TextView
+            android:id="@+id/cust_route_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Customer" />
+            android:layout_margin="10dp"
+            tools:text="Monday"
+            android:textSize="22sp" />
 
-    <Button
-            android:id="@+id/cust_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View all Customer" />
-
-    <Button
-            android:id="@+id/cust_manage_route"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Manage Route" />
-
-    <Button
-            android:id="@+id/cust_barcode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Read from Barcode" />
-
-    <Button
-            android:id="@+id/cust_today"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Today's Customer" />
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -75,9 +54,10 @@
 
     </LinearLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cust_recycler"
+            android:id="@+id/cust_route_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
 </LinearLayout>

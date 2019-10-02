@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public final class CommonInformation {
@@ -39,6 +40,36 @@ public final class CommonInformation {
 
     public static int GET_PHONE_NUMBER_LENGTH() {
         return PHONE_NUMBER_LENGTH;
+    }
+
+    public static String getDayNameFromNumber(String dayInNumber) {
+        String returnString = "";
+
+        switch (Integer.parseInt(dayInNumber)) {
+            case Calendar.MONDAY:
+                returnString = "MONDAY";
+                break;
+            case Calendar.TUESDAY:
+                returnString = "TUESDAY";
+                break;
+            case Calendar.WEDNESDAY:
+                returnString = "WEDNESDAY";
+                break;
+            case Calendar.THURSDAY:
+                returnString = "THURSDAY";
+                break;
+            case Calendar.FRIDAY:
+                returnString = "FRIDAY";
+                break;
+            case Calendar.SATURDAY:
+                returnString = "SATURDAY";
+                break;
+            case Calendar.SUNDAY:
+                returnString = "SUNDAY";
+                break;
+        }
+
+        return returnString;
     }
 
     public static int GET_DECIMAL_LENGTH() {

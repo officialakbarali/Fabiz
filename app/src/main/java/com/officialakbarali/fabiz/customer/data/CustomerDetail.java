@@ -6,13 +6,15 @@ public class CustomerDetail {
     private String phone;
     private String email;
     private String address;
+    private String day;
 
-    public CustomerDetail(int id, String name, String phone, String email, String address) {
+    public CustomerDetail(int id, String name, String phone, String email, String address, String day) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.day = day;
     }
 
     public int getId() {
@@ -33,5 +35,9 @@ public class CustomerDetail {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getDay() {
+        return day;
     }
 }

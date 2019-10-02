@@ -57,6 +57,8 @@ public class FabizContract {
 
         public static final String COLUMN_BARCODE = TABLE_NAME + "_" + "co_barcode";
 
+        public static final String COLUMN_DAY = TABLE_NAME + "_" + "day";
+
         public static final String COLUMN_NAME = TABLE_NAME + "_" + "name";
         public static final String COLUMN_PHONE = TABLE_NAME + "_" + "phone";
         public static final String COLUMN_EMAIL = TABLE_NAME + "_" + "email";
@@ -66,6 +68,8 @@ public class FabizContract {
         public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
 
         public static final String FULL_COLUMN_BARCODE = TABLE_NAME + "." + COLUMN_BARCODE;
+
+        public static final String FULL_COLUMN_DAY = TABLE_NAME + "." + COLUMN_DAY;
 
         public static final String FULL_COLUMN_NAME = TABLE_NAME + "." + COLUMN_NAME;
         public static final String FULL_COLUMN_PHONE = TABLE_NAME + "." + COLUMN_PHONE;

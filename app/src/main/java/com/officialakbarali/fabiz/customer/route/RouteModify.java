@@ -1,60 +1,44 @@
-package com.officialakbarali.fabiz.customer;
+package com.officialakbarali.fabiz.customer.route;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
-import com.officialakbarali.fabiz.customer.route.ManageRoute;
 import com.officialakbarali.fabiz.data.FabizContract;
 import com.officialakbarali.fabiz.data.FabizProvider;
-import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;
+import static com.officialakbarali.fabiz.data.CommonInformation.getDayNameFromNumber;
 
-public class Customer extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener {
-    RecyclerView recyclerView;
-    CustomerAdapter customerAdapter;
+public class RouteModify extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener {
+    private String TODAY;
+
+    CustomerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer);
+        setContentView(R.layout.activity_route_modify);
 
-        Button scanFromBarcodeButton = findViewById(R.id.cust_barcode);
-        scanFromBarcodeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent scanFromBarcodeIntent = new Intent(Customer.this, FabizBarcode.class);
-                scanFromBarcodeIntent.putExtra("FOR_WHO", FOR_CUSTOMER + "");
-                startActivity(scanFromBarcodeIntent);
-            }
-        });
+        TODAY = getIntent().getStringExtra("today");
 
-        Button addCustomerButton = findViewById(R.id.add_cust);
-        addCustomerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent CustomerIntent = new Intent(Customer.this, AddCustomer.class);
-                startActivity(CustomerIntent);
-            }
-        });
+        TextView labelText = findViewById(R.id.cust_route_label);
+        labelText.setText(getDayNameFromNumber(TODAY));
 
         Button searchButton = findViewById(R.id.search_cust_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -72,51 +56,48 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         });
 
-        Button manageRouteButton = findViewById(R.id.cust_manage_route);
-        manageRouteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent manageRouteIntent = new Intent(Customer.this, ManageRoute.class);
-                startActivity(manageRouteIntent);
-            }
-        });
-
-        Button viewTodayButton = findViewById(R.id.cust_today);
-        viewTodayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCustomer(FabizContract.Customer.COLUMN_DAY + "=?", new String[]{getCurrentDay()});
-            }
-        });
-
-        Button viewAllButton = findViewById(R.id.cust_all);
-        viewAllButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCustomer(null, null);
-            }
-        });
-
-        recyclerView = findViewById(R.id.cust_recycler);
-        customerAdapter = new CustomerAdapter(this, this, null);
+        RecyclerView recyclerView = findViewById(R.id.cust_route_recycler);
+        adapter = new CustomerAdapter(this, this, TODAY);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(customerAdapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        showCustomer(FabizContract.Customer.COLUMN_DAY + "=?", new String[]{getCurrentDay()});
+        recyclerView.setAdapter(adapter);
+        showCustomer(null, null);
     }
 
     @Override
     public void onClick(CustomerDetail customer) {
-        Intent showHome = new Intent(Customer.this, Home.class);
-        showHome.putExtra("id", customer.getId() + "");
-        startActivity(showHome);
+        if (customer.getDay() == null) {
+            toggleCurrentDay(customer.getId(), true);
+        } else {
+            if (customer.getDay().matches(TODAY)) {
+                toggleCurrentDay(customer.getId(), false);
+            } else {
+                toggleCurrentDay(customer.getId(), true);
+            }
+        }
     }
+
+    private void toggleCurrentDay(int idToOperate, boolean add) {
+        ContentValues updateValues = new ContentValues();
+        if (add) {
+            updateValues.put(FabizContract.Customer.COLUMN_DAY, TODAY);
+        } else {
+            updateValues.put(FabizContract.Customer.COLUMN_DAY, "");
+        }
+
+        FabizProvider provider = new FabizProvider(this, true);
+        provider.createTransaction();
+        int updatedRows = provider.update(FabizContract.Customer.TABLE_NAME, updateValues,
+                FabizContract.Customer._ID + "=?", new String[]{idToOperate + ""});
+
+        if (updatedRows > 0) {
+            provider.successfulTransaction();
+            showCustomer(null, null);
+        }
+        provider.finishTransaction();
+    }
+
 
     private void showCustomer(String selection, String[] selectionArg) {
         FabizProvider provider = new FabizProvider(this, false);
@@ -137,7 +118,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_DAY))
             ));
         }
-        customerAdapter.swapAdapter(customerList);
+        adapter.swapAdapter(customerList);
     }
 
     private String getSelection(String filterFromForm) {
@@ -163,7 +144,4 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         return caseSelection + " LIKE ?";
     }
 
-    private String getCurrentDay() {
-        return String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
-    }
 }

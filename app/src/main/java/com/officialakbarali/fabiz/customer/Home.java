@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.customer.payment.AddPayment;
+import com.officialakbarali.fabiz.customer.payment.PaymentReview;
 import com.officialakbarali.fabiz.customer.sale.Sales;
 import com.officialakbarali.fabiz.customer.sale.SalesReturnReview;
 import com.officialakbarali.fabiz.customer.sale.SalesReview;

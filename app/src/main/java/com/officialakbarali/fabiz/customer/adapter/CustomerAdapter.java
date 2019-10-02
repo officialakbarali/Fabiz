@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.officialakbarali.fabiz.R;
@@ -17,16 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder> {
     private Context mContext;
     private CustomerAdapterOnClickListener mClickHandler;
-
     private List<CustomerDetail> customerList;
+    private String currentDay;
 
     public interface CustomerAdapterOnClickListener {
-        void onClick(String mCustomerCurrentRaw, String mCustomerSelectedName);
+        void onClick(CustomerDetail customer);
     }
 
-    public CustomerAdapter(Context context, CustomerAdapterOnClickListener customerAdapterOnClickListener) {
+    public CustomerAdapter(Context context, CustomerAdapterOnClickListener customerAdapterOnClickListener, String currentDay) {
         mContext = context;
         mClickHandler = customerAdapterOnClickListener;
+        this.currentDay = currentDay;
     }
 
     @NonNull
@@ -78,6 +80,18 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         } else {
             holder.custEmail.setText(email);
         }
+
+        if (currentDay != null) {
+            if (customer.getDay() == null) {
+                holder.rmvOrAddOrSelect.setText("Add");
+            } else {
+                if (currentDay.matches(customer.getDay())) {
+                    holder.rmvOrAddOrSelect.setText("Remove");
+                } else {
+                    holder.rmvOrAddOrSelect.setText("Add");
+                }
+            }
+        }
     }
 
     @Override
@@ -93,8 +107,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         return temp;
     }
 
-    class CustomerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class CustomerViewHolder extends RecyclerView.ViewHolder {
         TextView custId, custName, custPhone, custEmail, custAddress;
+        Button rmvOrAddOrSelect;
 
         public CustomerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,15 +119,13 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             custEmail = itemView.findViewById(R.id.email);
             custAddress = itemView.findViewById(R.id.address);
 
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            CustomerDetail customer = customerList.get(adapterPosition);
-            String idCurrentSelected = "" + customer.getId();
-            mClickHandler.onClick(idCurrentSelected, customer.getName());
+            rmvOrAddOrSelect = itemView.findViewById(R.id.remove_or_add);
+            rmvOrAddOrSelect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mClickHandler.onClick(customerList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 }

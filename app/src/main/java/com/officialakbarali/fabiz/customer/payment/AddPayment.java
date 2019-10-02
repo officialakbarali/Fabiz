@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.customer;
+package com.officialakbarali.fabiz.customer.payment;
 
 import androidx.appcompat.app.AppCompatActivity;
 

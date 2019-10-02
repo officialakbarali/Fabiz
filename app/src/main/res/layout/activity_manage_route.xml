@@ -4,9 +4,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".customer.ManageRoute">
+        tools:context=".customer.route.ManageRoute">
 
     <Button
+            android:onClick="monday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -15,6 +16,7 @@
 
 
     <Button
+            android:onClick="tuesday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -23,6 +25,7 @@
 
 
     <Button
+            android:onClick="wednesday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -31,6 +34,7 @@
 
 
     <Button
+            android:onClick="thursday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -38,6 +42,7 @@
             android:textAllCaps="false" />
 
     <Button
+            android:onClick="friday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -45,6 +50,7 @@
             android:textAllCaps="false" />
 
     <Button
+            android:onClick="saturday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -52,6 +58,7 @@
             android:textAllCaps="false" />
 
     <Button
+            android:onClick="sunday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

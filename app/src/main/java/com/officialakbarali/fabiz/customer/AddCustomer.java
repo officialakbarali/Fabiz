@@ -16,6 +16,7 @@ import com.officialakbarali.fabiz.data.FabizProvider;
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +50,7 @@ public class AddCustomer extends AppCompatActivity {
 
                 ContentValues values = new ContentValues();
                 values.put(FabizContract.Customer.COLUMN_BARCODE, "DR2039");
+                values.put(FabizContract.Customer.COLUMN_DAY, String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)));
                 values.put(FabizContract.Customer.COLUMN_NAME, name);
                 values.put(FabizContract.Customer.COLUMN_PHONE, phone);
 
@@ -145,7 +147,7 @@ public class AddCustomer extends AppCompatActivity {
                     List<SyncLog> syncLogList = new ArrayList<>();
                     syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
                     syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, OP_INSERT));
-                    new SetupSync(this, syncLogList, fabizProvider,"Successfully Saved. Id:" + idOfCustomer);
+                    new SetupSync(this, syncLogList, fabizProvider, "Successfully Saved. Id:" + idOfCustomer);
                     finish();
                 } else {
                     fabizProvider.finishTransaction();

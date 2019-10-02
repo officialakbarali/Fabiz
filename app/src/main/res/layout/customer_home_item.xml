@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_marginStart="5dp"
-        android:background="?attr/selectableItemBackground"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp">
+        android:layout_marginEnd="5dp"
+        android:background="?attr/selectableItemBackground">
 
     <TextView
             android:id="@+id/id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            tools:text="ID" />
 
     <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            tools:text="EMAIL" />
 
     <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            tools:text="NAME" />
 
 
     <TextView
@@ -34,7 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            tools:text="PHONE" />
 
     <TextView
             android:id="@+id/address"
@@ -42,7 +47,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            tools:text="ADDRESS" />
+
+    <Button
+            android:id="@+id/remove_or_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="Select"
+            android:textAllCaps="false" />
 
     <View
             android:layout_width="match_parent"
