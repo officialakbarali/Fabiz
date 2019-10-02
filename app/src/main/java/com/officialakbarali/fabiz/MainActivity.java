@@ -19,8 +19,12 @@ import com.officialakbarali.fabiz.data.FabizProvider;
 import com.officialakbarali.fabiz.item.Item;
 import com.officialakbarali.fabiz.network.syncInfo.SyncFromAppToServer;
 import com.officialakbarali.fabiz.network.syncInfo.SyncInformation;
+import com.officialakbarali.fabiz.requestStock.RequestStock;
+
+import java.util.ArrayList;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
+import static com.officialakbarali.fabiz.requestStock.RequestStock.itemsForRequest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,14 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         initialSetup();
 
-        Button addDummy = findViewById(R.id.dummy);
-        addDummy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insertSomeDummyItems();
-            }
-        });
-
         Button customerIntent = findViewById(R.id.cust);
         customerIntent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,15 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent custIntent = new Intent(MainActivity.this, Customer.class);
                 // custIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(custIntent);
-            }
-        });
-
-        Button viewSyncButton = findViewById(R.id.view_sync);
-        viewSyncButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewSyncIntent = new Intent(MainActivity.this, SyncInformation.class);
-                startActivity(viewSyncIntent);
             }
         });
 
@@ -68,6 +55,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(itemShow);
             }
         });
+
+        Button requestStockButton = findViewById(R.id.item_request);
+        requestStockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent requestStockShow = new Intent(MainActivity.this, RequestStock.class);
+                itemsForRequest = new ArrayList<>();
+                startActivity(requestStockShow);
+            }
+        });
+
+
+        Button viewSyncButton = findViewById(R.id.view_sync);
+        viewSyncButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewSyncIntent = new Intent(MainActivity.this, SyncInformation.class);
+                startActivity(viewSyncIntent);
+            }
+        });
+
+        Button addDummy = findViewById(R.id.dummy);
+        addDummy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertSomeDummyItems();
+            }
+        });
+
+
     }
 
     private void initialSetup() {
