@@ -16,8 +16,8 @@ import com.officialakbarali.fabiz.customer.payment.PaymentReview;
 import com.officialakbarali.fabiz.customer.sale.Sales;
 import com.officialakbarali.fabiz.customer.sale.SalesReturnReview;
 import com.officialakbarali.fabiz.customer.sale.SalesReview;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import java.util.ArrayList;
 

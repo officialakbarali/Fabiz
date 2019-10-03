@@ -2,121 +2,134 @@ package com.officialakbarali.fabiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
-import com.officialakbarali.fabiz.customer.Customer;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
-import com.officialakbarali.fabiz.item.Item;
-import com.officialakbarali.fabiz.network.syncInfo.SyncFromAppToServer;
-import com.officialakbarali.fabiz.network.syncInfo.SyncInformation;
-import com.officialakbarali.fabiz.requestStock.RequestStock;
+import com.android.volley.NetworkError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.officialakbarali.fabiz.network.VolleyRequest;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
-import static com.officialakbarali.fabiz.requestStock.RequestStock.itemsForRequest;
+import java.util.HashMap;
+
+import static com.officialakbarali.fabiz.data.AppVersion.GET_MY_APP_VERSION;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Toast toast;
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initialSetup();
+        requestQueue = Volley.newRequestQueue(this);
 
-        Button customerIntent = findViewById(R.id.cust);
-        customerIntent.setOnClickListener(new View.OnClickListener() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View v) {
-                Intent custIntent = new Intent(MainActivity.this, Customer.class);
-                // custIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(custIntent);
+            public void run() {
+                initialSetup();
             }
-        });
-
-        Button itemIntent = findViewById(R.id.item);
-        itemIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent itemShow = new Intent(MainActivity.this, Item.class);
-                //itemShow.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(itemShow);
-            }
-        });
-
-        Button requestStockButton = findViewById(R.id.item_request);
-        requestStockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent requestStockShow = new Intent(MainActivity.this, RequestStock.class);
-                itemsForRequest = new ArrayList<>();
-                startActivity(requestStockShow);
-            }
-        });
-
-
-        Button viewSyncButton = findViewById(R.id.view_sync);
-        viewSyncButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewSyncIntent = new Intent(MainActivity.this, SyncInformation.class);
-                startActivity(viewSyncIntent);
-            }
-        });
-
-        Button addDummy = findViewById(R.id.dummy);
-        addDummy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insertSomeDummyItems();
-            }
-        });
-
-
+        }, 3000);
     }
 
     private void initialSetup() {
-
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int DECIMAL_PRECISION = sharedPreferences.getInt("decimal_precision", 3);
-        SET_DECIMAL_LENGTH(DECIMAL_PRECISION);
+
+        boolean appVersionProblem = sharedPreferences.getBoolean("version", false);
+        if (appVersionProblem) {
+            //TODO APP VERSION PAGE
+        } else {
+            String userName = sharedPreferences.getString("my_username", null);
+            String password = sharedPreferences.getString("my_password", null);
+
+            if (userName == null || password == null) {
+                checkLatestVersion();
+            } else {
+                boolean forcePullActivate =
+                        false;//TODO REMOVE THIS FALSE AND UNCOMMENT //sharedPreferences.getBoolean("force_pull", false);
+                if (forcePullActivate) {
+                    //TODO FORCE PULL PAGE
+                } else {
+                    boolean updateData = sharedPreferences.getBoolean("update_data", false);
+                    if (updateData) {
+                        //TODO UPDATE DATA PAGE
+                    } else {
+                        //TODO START SERVICE
+                        Intent mainHomeIntent = new Intent(this, MainHome.class);
+                        mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(mainHomeIntent);
+                    }
+                }
+            }
+        }
+
     }
 
-    private void insertSomeDummyItems() {
-        FabizProvider fabizProvider = new FabizProvider(this, true);
-        ContentValues values = new ContentValues();
+    private void checkLatestVersion() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("app_version", "" + GET_MY_APP_VERSION());
 
-        values.put(FabizContract.Item.COLUMN_NAME, "EMINEM");
-        values.put(FabizContract.Item.COLUMN_BRAND, "RAP");
-        values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
-        values.put(FabizContract.Item.COLUMN_BARCODE, "DR2039");
-        values.put(FabizContract.Item.COLUMN_PRICE, "250.123");
-        Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
+        final VolleyRequest volleyRequest = new VolleyRequest("index.php", hashMap, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("Response :", response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getBoolean("success")) {
+                        Intent loginIntent = new Intent(MainActivity.this, LogIn.class);
+                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(loginIntent);
+                    } else {
+                        if (jsonObject.getString("status").equals("VERSION")) {
+                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("version", true);
+                            editor.apply();
+                            //TODO APP_VERSION_PAGE
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    showToast("Bad Response From Server");
+                }
 
-        values = new ContentValues();
-        values.put(FabizContract.Item.COLUMN_NAME, "JUSTIN");
-        values.put(FabizContract.Item.COLUMN_BRAND, "POP");
-        values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
-        values.put(FabizContract.Item.COLUMN_PRICE, "10.321");
-        Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof ServerError) {
+                    showToast("Server Error");
+                } else if (error instanceof TimeoutError) {
+                    showToast("Connection Timed Out");
+                } else if (error instanceof NetworkError) {
+                    showToast("Bad Network Connection");
+                }
+            }
+        });
+        requestQueue.add(volleyRequest);
+    }
 
-        values = new ContentValues();
-        values.put(FabizContract.Item.COLUMN_NAME, "ELON");
-        values.put(FabizContract.Item.COLUMN_BRAND, "TESLA");
-        values.put(FabizContract.Item.COLUMN_CATEGORY, "ENTREPRENEUR");
-        values.put(FabizContract.Item.COLUMN_PRICE, "500.510");
-        Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
+    private void showToast(String msgForToast) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, msgForToast, Toast.LENGTH_LONG);
+        toast.show();
     }
 }

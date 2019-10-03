@@ -13,6 +13,8 @@ public final class CommonInformation {
     private static int DECIMAL_LENGTH = 3;
     private static String REAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static String REAL_DATE_FORMAT_OF_SEARCH = "yyyy-MM-dd";
+//    private static String USERNAME = null;
+//    private static String PASSWORD = null;
 
     public static String convertDateToDisplayFormat(String dateString) throws ParseException {
         DateFormat sdf = new SimpleDateFormat(REAL_DATE_FORMAT);
@@ -25,7 +27,6 @@ public final class CommonInformation {
         Date date = sdf.parse(dateString);
         return new SimpleDateFormat("dd,E MMM YYYY").format(date);
     }
-
 
     public static String GET_DATE_FORMAT_REAL() {
         return REAL_DATE_FORMAT;
@@ -40,6 +41,18 @@ public final class CommonInformation {
 
     public static int GET_PHONE_NUMBER_LENGTH() {
         return PHONE_NUMBER_LENGTH;
+    }
+
+    public static int GET_DECIMAL_LENGTH() {
+        return DECIMAL_LENGTH;
+    }
+
+    public static void SET_PHONE_NUMBER_LENGTH(int UP_PHONE_NUMBER_LENGTH) {
+        PHONE_NUMBER_LENGTH = UP_PHONE_NUMBER_LENGTH;
+    }
+
+    public static void SET_DECIMAL_LENGTH(int UP_DECIMAL_LENGTH) {
+        DECIMAL_LENGTH = UP_DECIMAL_LENGTH;
     }
 
     public static String getDayNameFromNumber(String dayInNumber) {
@@ -72,19 +85,21 @@ public final class CommonInformation {
         return returnString;
     }
 
-    public static int GET_DECIMAL_LENGTH() {
-        return DECIMAL_LENGTH;
-    }
-
-    public static void SET_PHONE_NUMBER_LENGTH(int UP_PHONE_NUMBER_LENGTH) {
-        PHONE_NUMBER_LENGTH = UP_PHONE_NUMBER_LENGTH;
-    }
-
-    public static void SET_DECIMAL_LENGTH(int UP_DECIMAL_LENGTH) {
-        DECIMAL_LENGTH = UP_DECIMAL_LENGTH;
-    }
-
-
+//    public static void setUsername(String username) {
+//        USERNAME = username;
+//    }
+//
+//    public static void setPassword(String password) {
+//        PASSWORD = password;
+//    }
+//
+//    public static String getUsername() {
+//        return USERNAME;
+//    }
+//
+//    public static String getPassword() {
+//        return PASSWORD;
+//    }
 }
 
 

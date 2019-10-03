@@ -11,13 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.adapter.PaymentReviewAdapter;
 import com.officialakbarali.fabiz.customer.data.PaymentReviewDetail;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import java.text.ParseException;
 import java.util.ArrayList;

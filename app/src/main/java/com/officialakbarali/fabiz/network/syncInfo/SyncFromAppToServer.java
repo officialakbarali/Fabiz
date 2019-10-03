@@ -8,8 +8,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.network.syncInfo.adapter.SyncFromAppAdapter;
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
 

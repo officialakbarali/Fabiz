@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.item.adapter.ItemAdapter;
 import com.officialakbarali.fabiz.item.data.ItemDetail;
 import com.officialakbarali.fabiz.requestStock.data.RequestItem;

@@ -16,14 +16,12 @@ import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
 import com.officialakbarali.fabiz.customer.route.ManageRoute;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;

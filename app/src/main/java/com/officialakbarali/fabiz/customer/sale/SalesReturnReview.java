@@ -16,8 +16,8 @@ import android.widget.Spinner;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReturnReviewAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.SalesReturnReviewItem;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import java.text.ParseException;
 import java.util.ArrayList;

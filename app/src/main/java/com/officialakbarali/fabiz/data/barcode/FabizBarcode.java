@@ -20,8 +20,8 @@ import com.google.zxing.Result;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.Customer;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.item.data.ItemDetail;
 
 import androidx.appcompat.app.AlertDialog;

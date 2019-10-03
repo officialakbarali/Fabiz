@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.data;
+package com.officialakbarali.fabiz.data.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

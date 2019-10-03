@@ -7,8 +7,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import java.util.List;
 

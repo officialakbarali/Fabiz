@@ -18,8 +18,8 @@ import android.widget.TextView;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReviewAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.SalesReviewDetail;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import java.text.ParseException;
 import java.util.ArrayList;

@@ -16,11 +16,10 @@ import android.widget.TextView;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
-import com.officialakbarali.fabiz.data.FabizContract;
-import com.officialakbarali.fabiz.data.FabizProvider;
+import com.officialakbarali.fabiz.data.db.FabizContract;
+import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.getDayNameFromNumber;
