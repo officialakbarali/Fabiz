@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -76,6 +77,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
     @Override
     protected void onResume() {
         super.onResume();
+        new CommonResumeCheck(this);
         showItem(null, null);
     }
 

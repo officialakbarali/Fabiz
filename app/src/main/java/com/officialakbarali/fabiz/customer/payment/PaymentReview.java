@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.adapter.PaymentReviewAdapter;
 import com.officialakbarali.fabiz.customer.data.PaymentReviewDetail;
@@ -67,6 +68,12 @@ public class PaymentReview extends AppCompatActivity {
         });
 
         showPayments(null, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CommonResumeCheck(this);
     }
 
     private void showPayments(String Fselection, String[] FselectionArg) {

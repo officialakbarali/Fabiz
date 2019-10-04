@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
@@ -101,6 +102,11 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         if (FROM_SALES_RETURN) setUpThisPageForReturn();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CommonResumeCheck(this);
+    }
 
     private void setUpThisPageForReturn() {
         //TODO IF ANYTHING NEED TO BE CHANGE IN FUTURE FOR SALES RETURN

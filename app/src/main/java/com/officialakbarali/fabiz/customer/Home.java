@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.payment.AddPayment;
 import com.officialakbarali.fabiz.customer.payment.PaymentReview;
@@ -116,6 +117,7 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        new CommonResumeCheck(this);
         setPaymentsDetail();
     }
 

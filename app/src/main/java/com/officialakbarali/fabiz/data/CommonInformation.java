@@ -13,8 +13,8 @@ public final class CommonInformation {
     private static int DECIMAL_LENGTH = 3;
     private static String REAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static String REAL_DATE_FORMAT_OF_SEARCH = "yyyy-MM-dd";
-//    private static String USERNAME = null;
-//    private static String PASSWORD = null;
+    private static String USERNAME = null;
+    private static String PASSWORD = null;
 
     public static String convertDateToDisplayFormat(String dateString) throws ParseException {
         DateFormat sdf = new SimpleDateFormat(REAL_DATE_FORMAT);
@@ -85,21 +85,21 @@ public final class CommonInformation {
         return returnString;
     }
 
-//    public static void setUsername(String username) {
-//        USERNAME = username;
-//    }
-//
-//    public static void setPassword(String password) {
-//        PASSWORD = password;
-//    }
-//
-//    public static String getUsername() {
-//        return USERNAME;
-//    }
-//
-//    public static String getPassword() {
-//        return PASSWORD;
-//    }
+    public static void setUsername(String username) {
+        USERNAME = username;
+    }
+
+    public static void setPassword(String password) {
+        PASSWORD = password;
+    }
+
+    public static String getUsername() {
+        return USERNAME;
+    }
+
+    public static String getPassword() {
+        return PASSWORD;
+    }
 }
 
 

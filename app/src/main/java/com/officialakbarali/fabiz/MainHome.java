@@ -74,6 +74,12 @@ public class MainHome extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CommonResumeCheck(this);
+    }
+
     private void insertSomeDummyItems() {
         FabizProvider fabizProvider = new FabizProvider(this, true);
         ContentValues values = new ContentValues();

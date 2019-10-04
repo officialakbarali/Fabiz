@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.Result;
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.Customer;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
@@ -75,6 +76,8 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void onResume() {
         super.onResume();
+
+        new CommonResumeCheck(this);
 
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.M) {
@@ -155,8 +158,8 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
             if (FOR_WHO == FOR_CUSTOMER) {
                 Intent showCustIntent = new Intent(this, Customer.class);
                 showCustIntent.putExtra("id", cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.Customer._ID)) + "");
-                finish();
                 startActivity(showCustIntent);
+                finish();
             } else {
                 enterQtyDialogue(new ItemDetail(cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_NAME)),

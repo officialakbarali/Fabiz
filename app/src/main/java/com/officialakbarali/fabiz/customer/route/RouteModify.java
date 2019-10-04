@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
@@ -62,6 +63,12 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         showCustomer(null, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CommonResumeCheck(this);
     }
 
     @Override

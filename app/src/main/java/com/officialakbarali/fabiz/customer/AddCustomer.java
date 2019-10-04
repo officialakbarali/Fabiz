@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -161,5 +162,11 @@ public class AddCustomer extends AppCompatActivity {
             fabizProvider.finishTransaction();
             showToast("Failed to Save");
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CommonResumeCheck(this);
     }
 }

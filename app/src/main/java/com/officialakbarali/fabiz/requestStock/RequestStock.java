@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.item.Item;
 import com.officialakbarali.fabiz.requestStock.adapter.RequestStockAdapter;
@@ -60,6 +61,7 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
     @Override
     protected void onResume() {
         super.onResume();
+        new CommonResumeCheck(this);
         adapter.swapAdapter(itemsForRequest);
     }
 

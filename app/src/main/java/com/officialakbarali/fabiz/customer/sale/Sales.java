@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
@@ -137,6 +138,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     @Override
     protected void onResume() {
         super.onResume();
+        new CommonResumeCheck(this);
         salesAdapter.swapAdapter(cartItems);
         setTotalAndTotalQuantity();
     }

@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReturnReviewAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.SalesReturnReviewItem;
@@ -70,6 +71,12 @@ public class SalesReturnReview extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CommonResumeCheck(this);
     }
 
     private void showReturnedItems(String Fselection, String[] FselectionArg) {

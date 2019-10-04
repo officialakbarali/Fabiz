@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 
 import java.util.Calendar;
@@ -17,6 +18,12 @@ public class ManageRoute extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_route);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CommonResumeCheck(this);
     }
 
     public void monday(View view) {

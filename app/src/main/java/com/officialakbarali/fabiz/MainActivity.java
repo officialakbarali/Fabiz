@@ -19,6 +19,10 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.officialakbarali.fabiz.blockPages.AppVersion;
+import com.officialakbarali.fabiz.blockPages.ForcePull;
+import com.officialakbarali.fabiz.blockPages.UpdateData;
+import com.officialakbarali.fabiz.network.SyncService;
 import com.officialakbarali.fabiz.network.VolleyRequest;
 
 import org.json.JSONException;
@@ -26,7 +30,10 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import static com.officialakbarali.fabiz.data.AppVersion.GET_MY_APP_VERSION;
+import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
+import static com.officialakbarali.fabiz.data.CommonInformation.setPassword;
+import static com.officialakbarali.fabiz.data.CommonInformation.setUsername;
+import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,9 +58,14 @@ public class MainActivity extends AppCompatActivity {
     private void initialSetup() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        int DECIMAL_PRECISION = sharedPreferences.getInt("decimal_precision", 3);
+        SET_DECIMAL_LENGTH(DECIMAL_PRECISION);
+
         boolean appVersionProblem = sharedPreferences.getBoolean("version", false);
         if (appVersionProblem) {
-            //TODO APP VERSION PAGE
+            Intent versionIntent = new Intent(this, AppVersion.class);
+            versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(versionIntent);
         } else {
             String userName = sharedPreferences.getString("my_username", null);
             String password = sharedPreferences.getString("my_password", null);
@@ -61,16 +73,26 @@ public class MainActivity extends AppCompatActivity {
             if (userName == null || password == null) {
                 checkLatestVersion();
             } else {
+                setUsername(userName);
+                setPassword(password);
+
                 boolean forcePullActivate =
-                        false;//TODO REMOVE THIS FALSE AND UNCOMMENT //sharedPreferences.getBoolean("force_pull", false);
+                        sharedPreferences.getBoolean("force_pull", false);
                 if (forcePullActivate) {
-                    //TODO FORCE PULL PAGE
+                    Intent forcePullIntent = new Intent(this, ForcePull.class);
+                    forcePullIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(forcePullIntent);
                 } else {
                     boolean updateData = sharedPreferences.getBoolean("update_data", false);
                     if (updateData) {
-                        //TODO UPDATE DATA PAGE
+                        Intent updateDataIntent = new Intent(this, UpdateData.class);
+                        updateDataIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(updateDataIntent);
                     } else {
-                        //TODO START SERVICE
+                        boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
+                        if (!isServiceRunning) {
+                            new SyncService();
+                        }
                         Intent mainHomeIntent = new Intent(this, MainHome.class);
                         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(mainHomeIntent);
@@ -85,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
 
-        final VolleyRequest volleyRequest = new VolleyRequest("index.php", hashMap, new Response.Listener<String>() {
+        final VolleyRequest volleyRequest = new VolleyRequest("version.php", hashMap, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i("Response :", response);
@@ -101,7 +123,9 @@ public class MainActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putBoolean("version", true);
                             editor.apply();
-                            //TODO APP_VERSION_PAGE
+                            Intent versionIntent = new Intent(MainActivity.this, AppVersion.class);
+                            versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(versionIntent);
                         }
                     }
                 } catch (JSONException e) {
