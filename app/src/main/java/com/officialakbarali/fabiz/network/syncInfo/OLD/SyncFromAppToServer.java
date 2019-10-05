@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.network.syncInfo;
+package com.officialakbarali.fabiz.network.syncInfo.OLD;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,7 +11,7 @@ import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.network.syncInfo.adapter.SyncFromAppAdapter;
-import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +41,9 @@ public class SyncFromAppToServer extends AppCompatActivity {
                 new String[]{FabizContract.SyncLog.COLUMN_TABLE_NAME, FabizContract.SyncLog.COLUMN_ROW_ID, FabizContract.SyncLog.COLUMN_OPERATION},
                 null, null, null);
 
-        List<SyncLog> syncLogsList = new ArrayList<>();
+        List<SyncLogDetail> syncLogsList = new ArrayList<>();
         while (syncCursor.moveToNext()) {
-            syncLogsList.add(new SyncLog(syncCursor.getInt(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_ROW_ID)),
+            syncLogsList.add(new SyncLogDetail(syncCursor.getInt(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_ROW_ID)),
                     syncCursor.getString(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_TABLE_NAME)),
                     syncCursor.getString(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_OPERATION))));
         }

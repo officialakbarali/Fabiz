@@ -3,27 +3,25 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="bottom"
         android:orientation="vertical"
         tools:context=".network.syncInfo.SyncInformation">
 
-    <Button
-            android:id="@+id/view_sync_log"
+
+    <TextView
+            android:id="@+id/checking"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Push to Server" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Checking"
+            android:visibility="gone" />
 
     <Button
+            android:id="@+id/check_for_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Update my phone" />
+            android:text="Check for update" />
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Flush my phone and pull from server" />
 
 </LinearLayout>

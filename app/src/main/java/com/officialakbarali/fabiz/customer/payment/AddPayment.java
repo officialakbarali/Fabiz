@@ -23,7 +23,7 @@ import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
-import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -148,8 +148,8 @@ public class AddPayment extends AppCompatActivity {
                     FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""});
 
             if (upAffectedRows == 1) {
-                List<SyncLog> syncLogList = new ArrayList<>();
-                syncLogList.add(new SyncLog(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
+                List<SyncLogDetail> syncLogList = new ArrayList<>();
+                syncLogList.add(new SyncLogDetail(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
 
 
                 ContentValues logTranscValues = new ContentValues();

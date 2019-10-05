@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
-import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
@@ -231,8 +231,8 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             provider.createTransaction();
             long billId = provider.insert(FabizContract.BillDetail.TABLE_NAME, billValues);
 
-            List<SyncLog> syncLogList = new ArrayList<>();
-            syncLogList.add(new SyncLog(billId, FabizContract.BillDetail.TABLE_NAME, OP_INSERT));
+            List<SyncLogDetail> syncLogList = new ArrayList<>();
+            syncLogList.add(new SyncLogDetail(billId, FabizContract.BillDetail.TABLE_NAME, OP_INSERT));
 
             if (billId > 0) {
 
@@ -255,7 +255,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                     long cartInsertId = provider.insert(FabizContract.Cart.TABLE_NAME, cartItemsValues);
 
                     if (cartInsertId > 0) {
-                        syncLogList.add(new SyncLog(cartInsertId, FabizContract.Cart.TABLE_NAME, OP_INSERT));
+                        syncLogList.add(new SyncLogDetail(cartInsertId, FabizContract.Cart.TABLE_NAME, OP_INSERT));
                     } else {
                         break;
                     }
@@ -291,7 +291,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                                 FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""});
 
                         if (upAffectedRows == 1) {
-                            syncLogList.add(new SyncLog(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
+                            syncLogList.add(new SyncLogDetail(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
 
                             long insertIdPayment = 0;
                             if (enteredAmntForUpdate != 0) {
@@ -305,7 +305,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
 
                                 insertIdPayment = provider.insert(FabizContract.Payment.TABLE_NAME, logTranscValues);
                                 if (insertIdPayment > 0) {
-                                    syncLogList.add(new SyncLog(insertIdPayment, FabizContract.Payment.TABLE_NAME, OP_INSERT));
+                                    syncLogList.add(new SyncLogDetail(insertIdPayment, FabizContract.Payment.TABLE_NAME, OP_INSERT));
                                 }
                             } else {
                                 insertIdPayment = 1;

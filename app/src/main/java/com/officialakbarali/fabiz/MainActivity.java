@@ -19,10 +19,10 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.officialakbarali.fabiz.blockPages.AppVersion;
-import com.officialakbarali.fabiz.blockPages.ForcePull;
-import com.officialakbarali.fabiz.blockPages.UpdateData;
-import com.officialakbarali.fabiz.network.SyncService;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.ForcePull;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.UpdateData;
+import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
 import com.officialakbarali.fabiz.network.VolleyRequest;
 
 import org.json.JSONException;

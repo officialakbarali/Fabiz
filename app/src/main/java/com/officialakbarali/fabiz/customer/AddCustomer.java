@@ -14,7 +14,7 @@ import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
-import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -145,9 +145,9 @@ public class AddCustomer extends AppCompatActivity {
                 accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_DUE, 0);
                 long idOfAccount = fabizProvider.insert(FabizContract.AccountDetail.TABLE_NAME, accountInitialsValues);
                 if (idOfAccount > 0) {
-                    List<SyncLog> syncLogList = new ArrayList<>();
-                    syncLogList.add(new SyncLog(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
-                    syncLogList.add(new SyncLog(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, OP_INSERT));
+                    List<SyncLogDetail> syncLogList = new ArrayList<>();
+                    syncLogList.add(new SyncLogDetail(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
+                    syncLogList.add(new SyncLogDetail(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, OP_INSERT));
                     new SetupSync(this, syncLogList, fabizProvider, "Successfully Saved. Id:" + idOfCustomer);
                     finish();
                 } else {

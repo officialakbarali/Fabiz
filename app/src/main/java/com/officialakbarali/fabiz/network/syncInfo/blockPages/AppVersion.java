@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.blockPages;
+package com.officialakbarali.fabiz.network.syncInfo.blockPages;
 
 import androidx.appcompat.app.AppCompatActivity;
 

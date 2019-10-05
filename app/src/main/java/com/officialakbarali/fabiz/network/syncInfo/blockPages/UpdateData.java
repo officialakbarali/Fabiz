@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.blockPages;
+package com.officialakbarali.fabiz.network.syncInfo.blockPages;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,12 +9,12 @@ import android.preference.PreferenceManager;
 
 import com.officialakbarali.fabiz.R;
 
-public class ForcePull extends AppCompatActivity {
+public class UpdateData extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_force_pull);
+        setContentView(R.layout.activity_update_data);
     }
 
     @Override

@@ -10,20 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 
 import java.util.List;
 
 public class SyncFromAppAdapter extends RecyclerView.Adapter<SyncFromAppAdapter.SyncFromAppViewHolder> {
     private Context mContext;
-    private List<SyncLog> syncList;
+    private List<SyncLogDetail> syncList;
 
     public SyncFromAppAdapter(Context context) {
         this.mContext = context;
     }
 
-    public List<SyncLog> swapAdapter(List<SyncLog> c) {
-        List<SyncLog> temp = syncList;
+    public List<SyncLogDetail> swapAdapter(List<SyncLogDetail> c) {
+        List<SyncLogDetail> temp = syncList;
         syncList = c;
         notifyDataSetChanged();
         return temp;
@@ -41,7 +41,7 @@ public class SyncFromAppAdapter extends RecyclerView.Adapter<SyncFromAppAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SyncFromAppViewHolder holder, int position) {
-        SyncLog syncLog = syncList.get(position);
+        SyncLogDetail syncLog = syncList.get(position);
         holder.tbNameV.setText("Table Name :" + syncLog.getTableName());
         holder.rowIdV.setText("Row Id :" + syncLog.getRawId());
         holder.operationV.setText(syncLog.getOperation());

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         package="com.officialakbarali.fabiz">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -10,6 +11,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
+            android:name="com.officialakbarali.fabiz.network.syncInfo.NotificationFrame"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -18,9 +20,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".Settings"></activity>
-        <activity android:name=".blockPages.UpdateData" />
-        <activity android:name=".blockPages.ForcePull" />
-        <activity android:name=".blockPages.AppVersion" />
+        <activity android:name=".network.syncInfo.blockPages.UpdateData" />
+        <activity android:name=".network.syncInfo.blockPages.ForcePull" />
+        <activity android:name=".network.syncInfo.blockPages.AppVersion" />
         <activity android:name=".MainHome" />
         <activity android:name=".LogIn" />
         <activity android:name=".customer.route.RouteModify" />
@@ -33,7 +35,7 @@
         <activity android:name=".customer.sale.SalesReturnReview" />
         <activity android:name=".customer.sale.SalesReviewDetail" />
         <activity android:name=".customer.sale.SalesReview" />
-        <activity android:name=".network.syncInfo.SyncFromAppToServer" />
+        <activity android:name=".network.syncInfo.OLD.SyncFromAppToServer" />
         <activity android:name=".customer.sale.Sales" />
         <activity android:name=".customer.Home" />
         <activity android:name=".item.Item" />
@@ -46,6 +48,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".network.syncInfo.services.NetworkMonitor">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <service
+                android:name="com.officialakbarali.fabiz.network.syncInfo.services.SyncService"
+                android:enabled="true"></service>
     </application>
 
 </manifest>

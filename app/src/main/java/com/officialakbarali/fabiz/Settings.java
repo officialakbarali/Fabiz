@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
-import com.officialakbarali.fabiz.blockPages.AppVersion;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 
@@ -24,6 +24,11 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean appVersionProblem = sharedPreferences.getBoolean("version", false);
@@ -32,7 +37,6 @@ public class Settings extends AppCompatActivity {
             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(versionIntent);
         }
-
     }
 
     public void logout(View view) {
@@ -52,6 +56,10 @@ public class Settings extends AppCompatActivity {
 
             setUsername(null);
             setPassword(null);
+
+            Intent logIntent = new Intent(this, LogIn.class);
+            logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(logIntent);
         }
     }
 

@@ -2,11 +2,14 @@ package com.officialakbarali.fabiz.network.syncInfo;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 
@@ -21,11 +24,11 @@ public class SetupSync {
     //***************************
 
 
-    private List<SyncLog> syncLogList;
+    private List<SyncLogDetail> syncLogList;
     private Context context;
     private FabizProvider provider;
 
-    public SetupSync(Context context, List<SyncLog> syncLogList, FabizProvider provider, String successMsg) {
+    public SetupSync(Context context, List<SyncLogDetail> syncLogList, FabizProvider provider, String successMsg) {
         this.context = context;
         this.syncLogList = syncLogList;
         this.provider = provider;
@@ -33,8 +36,13 @@ public class SetupSync {
         addCurrentDataToSyncTable(successMsg);
 
         if (isNetworkConnected()) {
-            //TODO TURN SERVICE ON IF OFF
-            //TODO IF ON THEN SETUP SOME FLAG FOR RE-CHECK THE SYNC_TABLE
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
+            if (!isServiceRunning) {
+                new SyncService();
+            }else {
+                //TODO IF ON THEN SETUP SOME FLAG FOR RE-CHECK THE SYNC_TABLE
+            }
         }
     }
 

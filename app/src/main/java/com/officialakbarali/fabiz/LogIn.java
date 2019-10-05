@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 
-import com.officialakbarali.fabiz.blockPages.AppVersion;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.setPassword;

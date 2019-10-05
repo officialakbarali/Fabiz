@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.officialakbarali.fabiz.blockPages.AppVersion;
-import com.officialakbarali.fabiz.blockPages.ForcePull;
-import com.officialakbarali.fabiz.blockPages.UpdateData;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.ForcePull;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.UpdateData;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.getPassword;
 import static com.officialakbarali.fabiz.data.CommonInformation.getUsername;

@@ -29,7 +29,7 @@ import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
-import com.officialakbarali.fabiz.network.syncInfo.data.SyncLog;
+import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -385,7 +385,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
     private void saveThisReturnedItem(ContentValues values) {
         NEGATIVE_DUE = false;
-        List<SyncLog> syncLogList = new ArrayList<>();
+        List<SyncLogDetail> syncLogList = new ArrayList<>();
         FabizProvider saveProvider = new FabizProvider(this, true);
         try {
             //********TRANSACTION STARTED
@@ -394,7 +394,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
             if (idOfSalesReturn > 0) {
 
-                syncLogList.add(new SyncLog(idOfSalesReturn, FabizContract.SalesReturn.TABLE_NAME, OP_INSERT));
+                syncLogList.add(new SyncLogDetail(idOfSalesReturn, FabizContract.SalesReturn.TABLE_NAME, OP_INSERT));
 
                 Cursor amountUpdateCursor = saveProvider.query(FabizContract.AccountDetail.TABLE_NAME,
                         new String[]{FabizContract.AccountDetail._ID, FabizContract.AccountDetail.COLUMN_TOTAL,
@@ -425,7 +425,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
                     if (upAffectedRows == 1) {
 
-                        syncLogList.add(new SyncLog(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
+                        syncLogList.add(new SyncLogDetail(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
 
                         Cursor returnUpdateToBillCursor = saveProvider.query(FabizContract.Cart.TABLE_NAME,
                                 new String[]{FabizContract.Cart._ID, FabizContract.Cart.COLUMN_RETURN_QTY}
@@ -450,7 +450,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                                     new String[]{idOfRowReturn + ""});
 
                             if (upReturnAffectedRaw > 0) {
-                                syncLogList.add(new SyncLog(idOfRowReturn, FabizContract.Cart.TABLE_NAME, OP_UPDATE));
+                                syncLogList.add(new SyncLogDetail(idOfRowReturn, FabizContract.Cart.TABLE_NAME, OP_UPDATE));
                                 new SetupSync(this, syncLogList, saveProvider, "Successfully Returned");
 
                                 //END HERE *****************************************************

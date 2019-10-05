@@ -15,19 +15,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.LogIn;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.blockPages.AppVersion;
-import com.officialakbarali.fabiz.blockPages.ForcePull;
-import com.officialakbarali.fabiz.blockPages.UpdateData;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.ForcePull;
+import com.officialakbarali.fabiz.network.syncInfo.blockPages.UpdateData;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
 import com.officialakbarali.fabiz.customer.route.ManageRoute;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
-import com.officialakbarali.fabiz.network.SyncService;
+import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +34,6 @@ import java.util.List;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.getPassword;
 import static com.officialakbarali.fabiz.data.CommonInformation.getUsername;
-import static com.officialakbarali.fabiz.data.CommonInformation.setPassword;
-import static com.officialakbarali.fabiz.data.CommonInformation.setUsername;
 import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;
 
 public class Customer extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener {
