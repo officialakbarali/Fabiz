@@ -89,7 +89,7 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         if (add) {
             updateValues.put(FabizContract.Customer.COLUMN_DAY, TODAY);
         } else {
-            updateValues.put(FabizContract.Customer.COLUMN_DAY, "");
+            updateValues.put(FabizContract.Customer.COLUMN_DAY, "NA");
         }
 
         FabizProvider provider = new FabizProvider(this, true);

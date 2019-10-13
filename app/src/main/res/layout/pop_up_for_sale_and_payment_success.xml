@@ -90,59 +90,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Total Amount"
-                android:textSize="19sp"
-                android:textStyle="bold" />
-
-        <TextView
-                android:id="@+id/pop_up_for_payment_tot"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                tools:text=": 10000.000" />
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Paid Amount"
-                android:textSize="19sp"
-                android:textStyle="bold" />
-
-        <TextView
-                android:id="@+id/pop_up_for_payment_paid"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                tools:text=": 4500.000" />
-
-    </LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -152,6 +99,7 @@
             android:orientation="horizontal">
 
         <TextView
+                android:id="@+id/pop_up_for_payment_due_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -170,12 +118,58 @@
 
     </LinearLayout>
 
-    <Button
-            android:id="@+id/pop_up_for_payment_okay"
+
+    <LinearLayout
+             android:visibility="gone"
+            android:id="@+id/pop_up_for_payment_due_cont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Okay"
-            android:textAllCaps="false" />
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Total Due Amount"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+        <TextView
+                android:id="@+id/pop_up_for_payment_due_tot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                tools:text=": 5500.000" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/pop_up_for_payment_okay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save"
+                android:textAllCaps="false" />
+
+        <Button
+                android:id="@+id/pop_up_for_payment_add_pay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Pay Due "
+                android:textAllCaps="false"
+                android:visibility="gone" />
+    </LinearLayout>
 
 
 </LinearLayout>

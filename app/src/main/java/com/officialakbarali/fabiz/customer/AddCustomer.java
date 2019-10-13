@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.officialakbarali.fabiz.CommonResumeCheck;
@@ -17,18 +18,20 @@ import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.GET_PHONE_NUMBER_LENGTH;
+import static com.officialakbarali.fabiz.data.CommonInformation.getNumberFromDayName;
+import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_CODE_ADD_CUSTOMER;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
 
 
 public class AddCustomer extends AppCompatActivity {
-    EditText nameE, phoneE, emailE, addresssE;
+    EditText nameE, phoneE, emailE, addresssE, crE, shopNameE;
     private Toast toast;
+    FabizProvider fabizProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,10 @@ public class AddCustomer extends AppCompatActivity {
         phoneE = findViewById(R.id.cust_add_phone);
         emailE = findViewById(R.id.cust_add_email);
         addresssE = findViewById(R.id.cust_add_address);
+        crE = findViewById(R.id.cust_add_cr);
+        shopNameE = findViewById(R.id.cust_add_shop_name);
+
+        fabizProvider = new FabizProvider(this, true);
 
         final Button saveCustomer = findViewById(R.id.cust_add_save);
         saveCustomer.setOnClickListener(new View.OnClickListener() {
@@ -48,12 +55,34 @@ public class AddCustomer extends AppCompatActivity {
                 String phone = phoneE.getText().toString().trim();
                 String email = emailE.getText().toString().trim();
                 String address = addresssE.getText().toString().toUpperCase().trim();
+                String crNumber = crE.getText().toString().toUpperCase().trim();
+                String shopName = shopNameE.getText().toString().toUpperCase().trim();
+
+                Spinner filterSpinner = findViewById(R.id.cust_add_day_list);
+                String selectedDay = "" + getNumberFromDayName(String.valueOf(filterSpinner.getSelectedItem()));
 
                 ContentValues values = new ContentValues();
-                values.put(FabizContract.Customer.COLUMN_BARCODE, "DR2039");
-                values.put(FabizContract.Customer.COLUMN_DAY, String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)));
+
+                int idOfCuustomerToInsert = fabizProvider.getIdForInsert(FabizContract.Customer.TABLE_NAME);
+
+
+                values.put(FabizContract.Customer._ID, idOfCuustomerToInsert + "");
+                values.put(FabizContract.Customer.COLUMN_BARCODE, idOfCuustomerToInsert + "");
+                values.put(FabizContract.Customer.COLUMN_DAY, selectedDay);//String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)));
                 values.put(FabizContract.Customer.COLUMN_NAME, name);
                 values.put(FabizContract.Customer.COLUMN_PHONE, phone);
+
+                if (crNumber.matches("")) {
+                    values.put(FabizContract.Customer.COLUMN_CR_NO, "NA");
+                } else {
+                    values.put(FabizContract.Customer.COLUMN_CR_NO, crNumber);
+                }
+
+                if (shopName.matches("")) {
+                    values.put(FabizContract.Customer.COLUMN_SHOP_NAME, "NA");
+                } else {
+                    values.put(FabizContract.Customer.COLUMN_SHOP_NAME, shopName);
+                }
 
                 if (email.matches("")) {
                     values.put(FabizContract.Customer.COLUMN_EMAIL, "NA");
@@ -130,30 +159,16 @@ public class AddCustomer extends AppCompatActivity {
     }
 
     private void saveCustomer(ContentValues values) {
-
-        FabizProvider fabizProvider = new FabizProvider(this, true);
         try {
             //********TRANSACTION STARTED
             fabizProvider.createTransaction();
             long idOfCustomer = fabizProvider.insert(FabizContract.Customer.TABLE_NAME, values);
 
             if (idOfCustomer > 0) {
-                ContentValues accountInitialsValues = new ContentValues();
-                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_CUSTOMER_ID, idOfCustomer);
-                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_TOTAL, 0);
-                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_PAID, 0);
-                accountInitialsValues.put(FabizContract.AccountDetail.COLUMN_DUE, 0);
-                long idOfAccount = fabizProvider.insert(FabizContract.AccountDetail.TABLE_NAME, accountInitialsValues);
-                if (idOfAccount > 0) {
-                    List<SyncLogDetail> syncLogList = new ArrayList<>();
-                    syncLogList.add(new SyncLogDetail(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
-                    syncLogList.add(new SyncLogDetail(idOfAccount, FabizContract.AccountDetail.TABLE_NAME, OP_INSERT));
-                    new SetupSync(this, syncLogList, fabizProvider, "Successfully Saved. Id:" + idOfCustomer);
-                    finish();
-                } else {
-                    fabizProvider.finishTransaction();
-                    showToast("Failed to Save");
-                }
+                List<SyncLogDetail> syncLogList = new ArrayList<>();
+                syncLogList.add(new SyncLogDetail(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
+                new SetupSync(this, syncLogList, fabizProvider, "Successfully Saved. Id:" + idOfCustomer, OP_CODE_ADD_CUSTOMER);
+                finish();
             } else {
                 fabizProvider.finishTransaction();
                 showToast("Failed to Save");

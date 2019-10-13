@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
@@ -45,7 +46,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
 
-        salesReviewAdapter = new SalesReviewAdapter(this, this);
+        salesReviewAdapter = new SalesReviewAdapter(this, this, false);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -88,7 +89,8 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
     }
 
     @Override
-    public void onClick(int idOfBill) {
+    public void onClick(SalesReviewDetail salesReviewDetail) {
+        int idOfBill = salesReviewDetail.getId();
         Intent salesDetaiiilIntent = new Intent(SalesReview.this, com.officialakbarali.fabiz.customer.sale.SalesReviewDetail.class);
         salesDetaiiilIntent.putExtra("custId", custId + "");
         salesDetaiiilIntent.putExtra("billId", idOfBill + "");
@@ -128,21 +130,27 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
             selectionArg = new String[]{custId + ""};
         }
 
-        Cursor cursorBills = provider.query(
-                tableName,
+        Cursor cursorBills = provider.queryExplicit(
+                true, tableName,
                 new String[]{FabizContract.BillDetail.FULL_COLUMN_ID, FabizContract.BillDetail.FULL_COLUMN_DATE,
-                        FabizContract.BillDetail.FULL_COLUMN_QTY, FabizContract.BillDetail.FULL_COLUMN_PRICE},
-                selection, selectionArg, FabizContract.BillDetail.FULL_COLUMN_ID + " DESC");
+                        FabizContract.BillDetail.FULL_COLUMN_QTY, FabizContract.BillDetail.FULL_COLUMN_PRICE,
+                        FabizContract.BillDetail.FULL_COLUMN_PAID, FabizContract.BillDetail.FULL_COLUMN_DUE,
+                        FabizContract.BillDetail.FULL_COLUMN_RETURNED_TOTAL, FabizContract.BillDetail.FULL_COLUMN_CURRENT_TOTAL},
+                selection, selectionArg, null, null, FabizContract.BillDetail.FULL_COLUMN_ID + " DESC", null);
 
         List<SalesReviewDetail> salesReviewList = new ArrayList<>();
+
         while (cursorBills.moveToNext()) {
             salesReviewList.add(new SalesReviewDetail(cursorBills.getInt(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail._ID)),
                     cursorBills.getString(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)),
                     cursorBills.getInt(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)),
-                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE))
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)),
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PAID)),
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE)),
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL)),
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL))
             ));
         }
-
         salesReviewAdapter.swapAdapter(salesReviewList);
     }
 

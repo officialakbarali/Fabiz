@@ -4,17 +4,14 @@ public class PaymentReviewDetail {
     private int id;
     private String date;
     private double amount;
-    private double total;
-    private double paid;
-    private double due;
+    private double billId;
 
-    public PaymentReviewDetail(int id, String date, double amount, double total, double paid, double due) {
+
+    public PaymentReviewDetail(int id, String date, double amount, int billId) {
         this.id = id;
         this.date = date;
         this.amount = amount;
-        this.total = total;
-        this.paid = paid;
-        this.due = due;
+        this.billId = billId;
     }
 
     public int getId() {
@@ -29,15 +26,7 @@ public class PaymentReviewDetail {
         return amount;
     }
 
-    public double getTotal() {
-        return total;
-    }
-
-    public double getPaid() {
-        return paid;
-    }
-
-    public double getDue() {
-        return due;
+    public double getBillId() {
+        return billId;
     }
 }

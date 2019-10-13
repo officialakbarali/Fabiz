@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.network.syncInfo.blockPages;
+package com.officialakbarali.fabiz.blockPages;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.ServiceResumeCheck;
 
 public class UpdateData extends AppCompatActivity {
 
@@ -20,12 +21,6 @@ public class UpdateData extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean appVersionProblem = sharedPreferences.getBoolean("version", false);
-        if (appVersionProblem) {
-            Intent versionIntent = new Intent(this, AppVersion.class);
-            versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(versionIntent);
-        }
+        new ServiceResumeCheck(this);
     }
 }

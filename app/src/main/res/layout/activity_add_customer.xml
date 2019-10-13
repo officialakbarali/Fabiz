@@ -30,26 +30,58 @@
                     android:layout_height="wrap_content"
                     android:hint="Enter Name" />
 
-
             <EditText
-                    android:inputType="phone"
                     android:id="@+id/cust_add_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Phone" />
+                    android:hint="Enter Phone"
+                    android:inputType="phone" />
+
 
             <EditText
-                    android:inputType="textEmailAddress"
+                    android:id="@+id/cust_add_cr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter CR Number (optional)" />
+
+            <EditText
+                    android:id="@+id/cust_add_shop_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Shop Name (optional)" />
+
+            <EditText
                     android:id="@+id/cust_add_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Email" />
+                    android:hint="Enter Email (optional)"
+                    android:inputType="textEmailAddress" />
+
 
             <EditText
                     android:id="@+id/cust_add_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Address" />
+                    android:hint="Enter Address (optional)" />
+
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pick the day" />
+
+                <Spinner
+                        android:id="@+id/cust_add_day_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/day_list" />
+
+            </LinearLayout>
 
             <Button
                     android:id="@+id/cust_add_save"

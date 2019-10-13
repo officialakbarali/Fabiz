@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/cust_payment_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"
+                tools:text="29,Mon  Sep 1997 12:28 AM" />
+
+        <Button
+                android:id="@+id/cust_payment_change"
+                android:layout_width="72dp"
+                android:layout_height="wrap_content"
+                android:text="Change"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bill Due Amount :" />
+
+        <TextView
+                android:id="@+id/cust_payment_due"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="18" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Enter the amount :" />
+
+        <EditText
+                android:id="@+id/cust_payment_to_pay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="numberSigned|numberDecimal"
+                tools:text="18" />
+
+
+    </LinearLayout>
+
+
+    <Button
+            android:id="@+id/cust_payment_pay_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pay Now"
+            android:textAllCaps="false" />
+
+
+</LinearLayout>

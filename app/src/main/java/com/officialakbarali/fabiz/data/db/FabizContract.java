@@ -11,23 +11,11 @@ public class FabizContract {
         public static final String COLUMN_ROW_ID = TABLE_NAME + "_" + "row_id";
         public static final String COLUMN_TABLE_NAME = TABLE_NAME + "_" + "table_name";
         public static final String COLUMN_OPERATION = TABLE_NAME + "_" + "operation";
+        public static final String COLUMN_OP_CODE = TABLE_NAME + "_" + "op_code";
+        public static final String COLUMN_TIMESTAMP = TABLE_NAME + "_" + "time_stamp";
     }
 
-    //2 TABLE ACCOUNT DETAIL
-    public static final class AccountDetail implements BaseColumns {
-        public static final String TABLE_NAME = "tb_account_detail";
 
-        public static final String COLUMN_CUSTOMER_ID = TABLE_NAME + "_" + "customer_id";
-        public static final String COLUMN_TOTAL = TABLE_NAME + "_" + "total";
-        public static final String COLUMN_PAID = TABLE_NAME + "_" + "paid";
-        public static final String COLUMN_DUE = TABLE_NAME + "_" + "due";
-
-        public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
-        public static final String FULL_COLUMN_CUSTOMER_ID = TABLE_NAME + "." + COLUMN_CUSTOMER_ID;
-        public static final String FULL_COLUMN_TOTAL = TABLE_NAME + "." + COLUMN_TOTAL;
-        public static final String FULL_COLUMN_PAID = TABLE_NAME + "." + COLUMN_PAID;
-        public static final String FULL_COLUMN_DUE = TABLE_NAME + "." + COLUMN_DUE;
-    }
 
     //3 TABLE ITEM
     public static final class Item implements BaseColumns {
@@ -59,6 +47,9 @@ public class FabizContract {
 
         public static final String COLUMN_DAY = TABLE_NAME + "_" + "day";
 
+        public static final String COLUMN_CR_NO = TABLE_NAME + "_" + "cr_no";
+        public static final String COLUMN_SHOP_NAME = TABLE_NAME + "_" + "shop_name";
+
         public static final String COLUMN_NAME = TABLE_NAME + "_" + "name";
         public static final String COLUMN_PHONE = TABLE_NAME + "_" + "phone";
         public static final String COLUMN_EMAIL = TABLE_NAME + "_" + "email";
@@ -83,8 +74,14 @@ public class FabizContract {
 
         public static final String COLUMN_DATE = TABLE_NAME + "_" + "dateofbill";
         public static final String COLUMN_CUST_ID = TABLE_NAME + "_" + "custid";
-        public static final String COLUMN_PRICE = TABLE_NAME + "_" + "price";
         public static final String COLUMN_QTY = TABLE_NAME + "_" + "qty";
+        public static final String COLUMN_PRICE = TABLE_NAME + "_" + "price";
+
+        public static final String COLUMN_RETURNED_TOTAL = TABLE_NAME + "_" + "returned_total";
+        public static final String COLUMN_CURRENT_TOTAL = TABLE_NAME + "_" + "current_total";
+
+        public static final String COLUMN_PAID = TABLE_NAME + "_" + "paid";
+        public static final String COLUMN_DUE = TABLE_NAME + "_" + "due";
 
         //FULL COLUMN NAME
         public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
@@ -92,6 +89,11 @@ public class FabizContract {
         public static final String FULL_COLUMN_CUST_ID = TABLE_NAME + "." + COLUMN_CUST_ID;
         public static final String FULL_COLUMN_PRICE = TABLE_NAME + "." + COLUMN_PRICE;
         public static final String FULL_COLUMN_QTY = TABLE_NAME + "." + COLUMN_QTY;
+        public static final String FULL_COLUMN_PAID = TABLE_NAME + "." + COLUMN_PAID;
+        public static final String FULL_COLUMN_DUE = TABLE_NAME + "." + COLUMN_DUE;
+
+        public static final String FULL_COLUMN_RETURNED_TOTAL = TABLE_NAME + "." + COLUMN_RETURNED_TOTAL;
+        public static final String FULL_COLUMN_CURRENT_TOTAL = TABLE_NAME + "." + COLUMN_CURRENT_TOTAL;
     }
 
 
@@ -148,22 +150,13 @@ public class FabizContract {
     public static final class Payment implements BaseColumns {
         public static final String TABLE_NAME = "tb_payment";
 
-        public static final String COLUMN_CUST_ID = TABLE_NAME + "_" + "custid";
+        public static final String COLUMN_BILL_ID = TABLE_NAME + "_" + "billid";
         public static final String COLUMN_DATE = TABLE_NAME + "_" + "dateofreturn";
         public static final String COLUMN_AMOUNT = TABLE_NAME + "_" + "amount";
-        public static final String COLUMN_TOTAL = TABLE_NAME + "_" + "total";
-        public static final String COLUMN_PAID = TABLE_NAME + "_" + "paid";
-        public static final String COLUMN_DUE = TABLE_NAME + "_" + "due";
-
         //FULL COLUMN NAME
         public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
-        public static final String FULL_COLUMN_CUST_ID = TABLE_NAME + "." + COLUMN_CUST_ID;
+        public static final String FULL_COLUMN_BILL_ID = TABLE_NAME + "." + COLUMN_BILL_ID;
         public static final String FULL_COLUMN_DATE = TABLE_NAME + "." + COLUMN_DATE;
         public static final String FULL_COLUMN_AMOUNT = TABLE_NAME + "." + COLUMN_AMOUNT;
-        public static final String FULL_COLUMN_TOTAL = TABLE_NAME + "." + COLUMN_TOTAL;
-        public static final String FULL_COLUMN_PAID = TABLE_NAME + "." + COLUMN_PAID;
-        public static final String FULL_COLUMN_DUE = TABLE_NAME + "." + COLUMN_DUE;
-
-
     }
 }

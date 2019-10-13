@@ -13,6 +13,7 @@ import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,24 +24,31 @@ public class SetupSync {
     public static String OP_DELETE = "DELETE";
     //***************************
 
+    //PUBLIC STRING FOR OPERATION
+    public static String OP_CODE_ADD_CUSTOMER = "ADD_CUST";
+    public static String OP_CODE_SALE = "SALE";
+    public static String OP_CODE_PAY = "PAY";
+    public static String OP_CODE_SALE_RETURN = "SALE_RETURN";
+    //***************************
+
 
     private List<SyncLogDetail> syncLogList;
     private Context context;
     private FabizProvider provider;
 
-    public SetupSync(Context context, List<SyncLogDetail> syncLogList, FabizProvider provider, String successMsg) {
+    public SetupSync(Context context, List<SyncLogDetail> syncLogList, FabizProvider provider, String successMsg, String opCode) {
         this.context = context;
         this.syncLogList = syncLogList;
         this.provider = provider;
 
-        addCurrentDataToSyncTable(successMsg);
+        addCurrentDataToSyncTable(successMsg, opCode);
 
         if (isNetworkConnected()) {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
             if (!isServiceRunning) {
                 new SyncService();
-            }else {
+            } else {
                 //TODO IF ON THEN SETUP SOME FLAG FOR RE-CHECK THE SYNC_TABLE
             }
         }
@@ -51,7 +59,9 @@ public class SetupSync {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    private void addCurrentDataToSyncTable(String succesMsg) {
+    private void addCurrentDataToSyncTable(String successMsg, String opCode) {
+        Date date = new Date();
+        String timeStampToInsert = date.getTime() + "";
         try {
             int i = 0;
             while (i < syncLogList.size()) {
@@ -59,6 +69,8 @@ public class SetupSync {
                 values.put(FabizContract.SyncLog.COLUMN_ROW_ID, syncLogList.get(i).getRawId());
                 values.put(FabizContract.SyncLog.COLUMN_TABLE_NAME, syncLogList.get(i).getTableName());
                 values.put(FabizContract.SyncLog.COLUMN_OPERATION, syncLogList.get(i).getOperation());
+                values.put(FabizContract.SyncLog.COLUMN_OP_CODE, opCode);
+                values.put(FabizContract.SyncLog.COLUMN_TIMESTAMP, timeStampToInsert);
                 long id = provider.insert(FabizContract.SyncLog.TABLE_NAME, values);
 
                 if (id > 0) {
@@ -73,7 +85,7 @@ public class SetupSync {
 
             if (i == syncLogList.size()) {
                 //********TRANSACTION SUCCESSFUL
-                Toast.makeText(context, succesMsg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, successMsg, Toast.LENGTH_SHORT).show();
                 Log.i("SetupSync", "SUCCESSFULLY COMPLETED");
                 provider.successfulTransaction();
             }

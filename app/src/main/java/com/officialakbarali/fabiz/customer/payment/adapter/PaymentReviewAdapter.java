@@ -1,4 +1,4 @@
-package com.officialakbarali.fabiz.customer.adapter;
+package com.officialakbarali.fabiz.customer.payment.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -60,25 +60,12 @@ public class PaymentReviewAdapter extends RecyclerView.Adapter<PaymentReviewAdap
             holder.amountV.setText("Paid Amount :" + amountS);
         }
 
-        String totalS = TruncateDecimal("" + detail.getTotal());
-        if (totalS.length() > 11) {
-            holder.totalV.setText("Total :" + totalS.substring(0, 7));
-        } else {
-            holder.totalV.setText("Total :" + totalS);
-        }
 
-        String paidS = TruncateDecimal("" + detail.getPaid());
-        if (paidS.length() > 11) {
-            holder.paidV.setText("Paid :" + paidS.substring(0, 7));
+        String billId = TruncateDecimal("" + detail.getBillId());
+        if (billId.length() > 25) {
+            holder.billId.setText("Paid Bill Id :" + billId.substring(0, 21) + "...");
         } else {
-            holder.paidV.setText("Paid :" + paidS);
-        }
-
-        String dueS = TruncateDecimal("" + detail.getDue());
-        if (dueS.length() > 11) {
-            holder.dueV.setText("Due :" + dueS.substring(0, 7));
-        } else {
-            holder.dueV.setText("Due :" + dueS);
+            holder.billId.setText("Paid Bill Id :" + billId);
         }
 
     }
@@ -97,16 +84,14 @@ public class PaymentReviewAdapter extends RecyclerView.Adapter<PaymentReviewAdap
     }
 
     class PaymentReviewHolder extends RecyclerView.ViewHolder {
-        TextView idV, dateV, amountV, totalV, paidV, dueV;
+        TextView idV, dateV, amountV, billId;
 
         PaymentReviewHolder(@NonNull View itemView) {
             super(itemView);
             idV = itemView.findViewById(R.id.payment_review_item_id);
             dateV = itemView.findViewById(R.id.payment_review_item_date);
             amountV = itemView.findViewById(R.id.payment_review_item_amt);
-            totalV = itemView.findViewById(R.id.payment_review_item_tot);
-            paidV = itemView.findViewById(R.id.payment_review_item_paid);
-            dueV = itemView.findViewById(R.id.payment_review_item_due);
+            billId = itemView.findViewById(R.id.payment_review_item_billid);
         }
     }
 }

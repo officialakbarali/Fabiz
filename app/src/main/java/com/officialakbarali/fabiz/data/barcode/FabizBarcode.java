@@ -20,6 +20,7 @@ import com.google.zxing.Result;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.Customer;
+import com.officialakbarali.fabiz.customer.Home;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
@@ -45,6 +46,7 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
     private Toast toast;
+    Intent showCustIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,9 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
     public void onDestroy() {
         super.onDestroy();
         scannerView.stopCamera();
+        if (showCustIntent != null) {
+            startActivity(showCustIntent);
+        }
     }
 
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -156,9 +161,8 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
 
         if (cursor.moveToNext()) {
             if (FOR_WHO == FOR_CUSTOMER) {
-                Intent showCustIntent = new Intent(this, Customer.class);
+                showCustIntent = new Intent(this, Home.class);
                 showCustIntent.putExtra("id", cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.Customer._ID)) + "");
-                startActivity(showCustIntent);
                 finish();
             } else {
                 enterQtyDialogue(new ItemDetail(cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.Item._ID)),

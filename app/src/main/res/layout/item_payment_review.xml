@@ -27,34 +27,16 @@
             android:textSize="22sp"
             tools:text="Paid Amount :17" />
 
-    <TextView
-            android:id="@+id/payment_review_item_tot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:visibility="gone"
-            tools:text="Total :11" />
 
     <TextView
-            android:id="@+id/payment_review_item_paid"
+
+            android:id="@+id/payment_review_item_billid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
-            android:visibility="gone"
-            tools:text="Paid :11" />
-
-    <TextView
-
-            android:id="@+id/payment_review_item_due"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            tools:text="Due Amount At That Time:11" />
+            tools:text="Paid Bill Id:25" />
 
     <View
             android:layout_width="match_parent"

@@ -80,16 +80,18 @@ public class SalesReturnReview extends AppCompatActivity {
     }
 
     private void showReturnedItems(String Fselection, String[] FselectionArg) {
+
+
         FabizProvider provider = new FabizProvider(this, false);
 
-        String tableName = FabizContract.BillDetail.TABLE_NAME + " INNER JOIN " + FabizContract.SalesReturn.TABLE_NAME + " ON " + FabizContract.BillDetail.FULL_COLUMN_ID
-                + " = " + FabizContract.SalesReturn.FULL_COLUMN_BILL_ID + " INNER JOIN " + FabizContract.Cart.TABLE_NAME + " ON "
+        String tableName = FabizContract.SalesReturn.TABLE_NAME + " INNER JOIN " + FabizContract.BillDetail.TABLE_NAME + " ON " + FabizContract.SalesReturn.FULL_COLUMN_BILL_ID
+                + " = " + FabizContract.BillDetail.FULL_COLUMN_ID + " INNER JOIN " + FabizContract.Cart.TABLE_NAME + " ON "
                 + FabizContract.Cart.FULL_COLUMN_BILL_ID + " = " + FabizContract.BillDetail.FULL_COLUMN_ID;
 
         String[] projection = {FabizContract.SalesReturn.FULL_COLUMN_ID,
                 FabizContract.SalesReturn.FULL_COLUMN_BILL_ID,
                 FabizContract.SalesReturn.FULL_COLUMN_DATE
-                , FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID,
+                , FabizContract.Cart.FULL_COLUMN_ITEM_ID,
                 FabizContract.Cart.FULL_COLUMN_NAME,
                 FabizContract.Cart.FULL_COLUMN_BRAND,
                 FabizContract.Cart.FULL_COLUMN_CATAGORY
@@ -98,7 +100,7 @@ public class SalesReturnReview extends AppCompatActivity {
                 FabizContract.SalesReturn.FULL_COLUMN_TOTAL
         };
 
-        String selection = FabizContract.BillDetail.FULL_COLUMN_CUST_ID + "=?";
+        String selection = FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID + " = " + FabizContract.Cart.FULL_COLUMN_ITEM_ID  + " AND " + FabizContract.BillDetail.FULL_COLUMN_CUST_ID + "=?";
 
         String[] selectionArg;
 
@@ -109,21 +111,21 @@ public class SalesReturnReview extends AppCompatActivity {
             selectionArg = new String[]{custId + ""};
         }
 
-        Cursor returnCursor = provider.query(tableName, projection, selection, selectionArg, null);
+        Cursor returnCursor = provider.queryExplicit(true, tableName, projection, selection, selectionArg, null, null, null, null);
 
         List<SalesReturnReviewItem> salesReturnReviewItems = new ArrayList<>();
         while (returnCursor.moveToNext()) {
             salesReturnReviewItems.add(new SalesReturnReviewItem(
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_ID)),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_BILL_ID)),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_DATE)),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID)),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.FULL_COLUMN_NAME)),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.FULL_COLUMN_BRAND)),
-                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.FULL_COLUMN_CATAGORY)),
-                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_PRICE)),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_QTY)),
-                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.FULL_COLUMN_TOTAL))
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn._ID)),
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_BILL_ID)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_DATE)),
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_NAME)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BRAND)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_CATEGORY)),
+                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_PRICE)),
+                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_QTY)),
+                    returnCursor.getDouble(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_TOTAL))
             ));
         }
         reviewAdapter.swapAdapter(salesReturnReviewItems);

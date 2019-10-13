@@ -16,9 +16,10 @@ import android.widget.TextView;
 
 import com.officialakbarali.fabiz.LogIn;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.ForcePull;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.UpdateData;
+import com.officialakbarali.fabiz.ServiceResumeCheck;
+import com.officialakbarali.fabiz.blockPages.AppVersion;
+import com.officialakbarali.fabiz.blockPages.ForcePull;
+import com.officialakbarali.fabiz.blockPages.UpdateData;
 import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
 
 import static com.officialakbarali.fabiz.network.syncInfo.services.SyncService.SYNC_BROADCAST_URL;
@@ -68,15 +69,26 @@ public class SyncInformation extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncInformation.this);
-                boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
-                if (!isServiceRunning) {
-                    Intent serviceIntent = new Intent(SyncInformation.this, SyncService.class);
-                    ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
-                    checkUpdationButton.setVisibility(View.GONE);
-                    checkingText.setVisibility(View.VISIBLE);
+
+
+                String userName = sharedPreferences.getString("my_username", null);
+                String password = sharedPreferences.getString("my_password", null);
+
+                if (userName != null && password != null) {
+                    boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
+                    if (!isServiceRunning) {
+                        Intent serviceIntent = new Intent(SyncInformation.this, SyncService.class);
+                        ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
+                        checkUpdationButton.setVisibility(View.GONE);
+                        checkingText.setVisibility(View.VISIBLE);
+                    } else {
+                        checkUpdationButton.setVisibility(View.GONE);
+                        checkingText.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    checkUpdationButton.setVisibility(View.GONE);
-                    checkingText.setVisibility(View.VISIBLE);
+                    Intent loginIntent = new Intent(SyncInformation.this, LogIn.class);
+                    loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(loginIntent);
                 }
             }
         });
@@ -87,14 +99,9 @@ public class SyncInformation extends AppCompatActivity {
         super.onResume();
         registerReceiver(broadcastReceiver, new IntentFilter(SYNC_BROADCAST_URL));
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean appVersionProblem = sharedPreferences.getBoolean("version", false);
-        if (appVersionProblem) {
-            Intent versionIntent = new Intent(this, AppVersion.class);
-            versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(versionIntent);
-        }
+        new ServiceResumeCheck(this);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
         if (isServiceRunning) {
             checkUpdationButton.setVisibility(View.GONE);

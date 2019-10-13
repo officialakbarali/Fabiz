@@ -37,13 +37,23 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_request"
             android:layout_centerHorizontal="true"
-            android:text="Sync Detail" />
+            android:text="Sync Detail"
+            android:textAllCaps="false" />
+
+    <Button
+            android:id="@+id/settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view_sync"
+            android:layout_centerHorizontal="true"
+            android:text="Settings"
+            android:textAllCaps="false" />
 
     <Button
             android:id="@+id/dummy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/view_sync"
+            android:layout_below="@+id/settings"
             android:layout_centerHorizontal="true"
             android:text="Add Dummy Data" />
 

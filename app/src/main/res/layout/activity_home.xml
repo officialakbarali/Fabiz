@@ -75,6 +75,33 @@
                 android:orientation="horizontal">
 
             <TextView
+                    android:id="@+id/cust_home_cr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    tools:text="CR_No :38" />
+
+            <TextView
+                    android:id="@+id/cust_home_shop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    tools:text="Shop Name :38" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="7dp"
+                android:orientation="horizontal">
+
+            <TextView
                     android:id="@+id/cust_home_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -174,21 +201,6 @@
             android:layout_margin="4dp"
             android:orientation="vertical">
 
-        <TextView
-                android:id="@+id/cust_home_total"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:visibility="gone"
-                tools:text="Total Amount :30" />
-
-        <TextView
-                android:id="@+id/cust_home_paid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:visibility="gone"
-                tools:text="Paid :30" />
 
         <TextView
                 android:id="@+id/cust_home_due"

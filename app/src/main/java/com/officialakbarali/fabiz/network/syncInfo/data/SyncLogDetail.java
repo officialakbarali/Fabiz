@@ -1,7 +1,6 @@
 package com.officialakbarali.fabiz.network.syncInfo.data;
 
 public class SyncLogDetail {
-
     private long rawId;
     private String tableName;
     private String operation;

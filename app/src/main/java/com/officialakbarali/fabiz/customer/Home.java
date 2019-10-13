@@ -30,6 +30,8 @@ public class Home extends AppCompatActivity {
     private String custPhone;
     private String custEmail;
     private String custAddress;
+    private String custCrNo;
+    private String custShopName;
 
     private FabizProvider provider;
     private Toast toast;
@@ -130,6 +132,10 @@ public class Home extends AppCompatActivity {
 
             custName = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_NAME));
             custPhone = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_PHONE));
+
+            custCrNo = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_CR_NO));
+            custShopName = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_SHOP_NAME));
+
             custEmail = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_EMAIL));
             custAddress = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_ADDRESS));
 
@@ -149,6 +155,21 @@ public class Home extends AppCompatActivity {
             } else {
                 phoneView.setText("Phone :" + custPhone);
             }
+
+            TextView crNoView = findViewById(R.id.cust_home_cr);
+            if (custCrNo.length() > 38) {
+                crNoView.setText("CR_NO :" + custCrNo.substring(0, 34) + "...");
+            } else {
+                crNoView.setText("CR_NO :" + custCrNo);
+            }
+
+            TextView shopNameView = findViewById(R.id.cust_home_shop_name);
+            if (custShopName.length() > 19) {
+                shopNameView.setText("Shop Name :" + custShopName.substring(0, 15) + "...");
+            } else {
+                shopNameView.setText("Shop Name :" + custShopName);
+            }
+
 
             TextView emailView = findViewById(R.id.cust_home_email);
             if (custEmail.length() > 38) {
@@ -170,20 +191,14 @@ public class Home extends AppCompatActivity {
     }
 
     private void setPaymentsDetail() {
-        TextView custTotal, custPaid, custDue;
-        custTotal = findViewById(R.id.cust_home_total);
-        custPaid = findViewById(R.id.cust_home_paid);
+        TextView custDue;
+
         custDue = findViewById(R.id.cust_home_due);
 
-        Cursor paymentDetails = provider.query(FabizContract.AccountDetail.TABLE_NAME,
-                new String[]{FabizContract.AccountDetail.COLUMN_TOTAL, FabizContract.AccountDetail.COLUMN_PAID, FabizContract.AccountDetail.COLUMN_DUE},
-                FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""}, null);
-        if (paymentDetails.moveToNext()) {
-            custTotal.setText("Total Amount :" + TruncateDecimal(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_TOTAL))));
-            custPaid.setText("Paid :" + TruncateDecimal(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_PAID))));
-            custDue.setText("Due Amount :" + TruncateDecimal(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE))));
-            custDueAmt = Double.parseDouble(paymentDetails.getString(paymentDetails.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE)));
-        }
+        custDueAmt = provider.getCount(FabizContract.BillDetail.TABLE_NAME, FabizContract.BillDetail.COLUMN_DUE, FabizContract.BillDetail.COLUMN_CUST_ID + "=?",
+                new String[]{custId + ""});
+        custDue.setText("Due Amount :" + TruncateDecimal(custDueAmt + ""));
+
     }
 
     private void showToast(String msgForToast) {

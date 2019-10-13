@@ -14,7 +14,7 @@ import android.widget.EditText;
 
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.customer.adapter.PaymentReviewAdapter;
+import com.officialakbarali.fabiz.customer.payment.adapter.PaymentReviewAdapter;
 import com.officialakbarali.fabiz.customer.data.PaymentReviewDetail;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
@@ -63,7 +63,7 @@ public class PaymentReview extends AppCompatActivity {
                     showPayments(null, null);
                     return;
                 }
-                showPayments(FabizContract.Payment._ID + "=?", new String[]{searchString});
+                showPayments(FabizContract.Payment.FULL_COLUMN_ID + "=?", new String[]{searchString});
             }
         });
 
@@ -80,7 +80,7 @@ public class PaymentReview extends AppCompatActivity {
         List<PaymentReviewDetail> details = new ArrayList<>();
         FabizProvider provider = new FabizProvider(this, false);
 
-        String selection = FabizContract.Payment.COLUMN_CUST_ID + "=?";
+        String selection = FabizContract.BillDetail.FULL_COLUMN_CUST_ID + "=?";
 
         String[] selectionArg;
         if (Fselection != null) {
@@ -90,22 +90,21 @@ public class PaymentReview extends AppCompatActivity {
             selectionArg = new String[]{custId + ""};
         }
 
-        Cursor paymentDetailCursor = provider.query(FabizContract.Payment.TABLE_NAME,
+        Cursor paymentDetailCursor = provider.queryExplicit(true, FabizContract.Payment.TABLE_NAME + " INNER JOIN " + FabizContract.BillDetail.TABLE_NAME
+                        + " ON " + FabizContract.Payment.FULL_COLUMN_BILL_ID + " = " + FabizContract.BillDetail.FULL_COLUMN_ID,
                 new String[]{
-                        FabizContract.Payment._ID, FabizContract.Payment.COLUMN_DATE, FabizContract.Payment.COLUMN_AMOUNT,
-                        FabizContract.Payment.COLUMN_TOTAL, FabizContract.Payment.COLUMN_PAID, FabizContract.Payment.COLUMN_DUE
+                        FabizContract.Payment.FULL_COLUMN_ID, FabizContract.Payment.FULL_COLUMN_DATE, FabizContract.Payment.FULL_COLUMN_AMOUNT,
+                        FabizContract.Payment.FULL_COLUMN_BILL_ID
                 },
                 selection,
                 selectionArg,
-                null);
+                null, null, null, null);
         while (paymentDetailCursor.moveToNext()) {
             details.add(new PaymentReviewDetail(
                     paymentDetailCursor.getInt(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment._ID)),
                     paymentDetailCursor.getString(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_DATE)),
                     paymentDetailCursor.getDouble(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_AMOUNT)),
-                    paymentDetailCursor.getDouble(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_TOTAL)),
-                    paymentDetailCursor.getDouble(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_PAID)),
-                    paymentDetailCursor.getDouble(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_DUE))
+                    paymentDetailCursor.getInt(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_BILL_ID))
             ));
         }
         adapter.swapAdapter(details);
@@ -124,7 +123,7 @@ public class PaymentReview extends AppCompatActivity {
                         String fromDateTime = year + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth) + "T";
 
                         try {
-                            showPayments(FabizContract.Payment.COLUMN_DATE + " LIKE ?", new String[]{convertDateToSearchFormat(fromDateTime) + "%"});
+                            showPayments(FabizContract.Payment.FULL_COLUMN_DATE + " LIKE ?", new String[]{convertDateToSearchFormat(fromDateTime) + "%"});
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }

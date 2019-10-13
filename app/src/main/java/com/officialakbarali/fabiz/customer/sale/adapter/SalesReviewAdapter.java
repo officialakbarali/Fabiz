@@ -24,14 +24,16 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
 
     private List<SalesReviewDetail> salesList;
 
+    private boolean FROM_PAYMENT_PAGE;
 
     public interface SalesReviewAdapterOnClickListener {
-        void onClick(int idOfBill);
+        void onClick(SalesReviewDetail salesReviewDetail);
     }
 
-    public SalesReviewAdapter(Context context, SalesReviewAdapterOnClickListener salesReviewAdapterOnClickListener) {
+    public SalesReviewAdapter(Context context, SalesReviewAdapterOnClickListener salesReviewAdapterOnClickListener, boolean forPayment) {
         this.mContext = context;
         this.mClickHandler = salesReviewAdapterOnClickListener;
+        this.FROM_PAYMENT_PAGE = forPayment;
     }
 
 
@@ -75,10 +77,42 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
 
 
         String totalS = TruncateDecimal(salesReview.getTotal() + "");
-        if (qtyS.length() > 17) {
+        if (totalS.length() > 17) {
             holder.totV.setText("Total Amount :" + totalS.substring(0, 13) + "...");
         } else {
             holder.totV.setText("Total Amount :" + totalS);
+        }
+
+        String paidS = TruncateDecimal(salesReview.getPaid() + "");
+        if (paidS.length() > 13) {
+            holder.paidV.setText("Paid Amount :" + paidS.substring(0, 13) + "...");
+        } else {
+            holder.paidV.setText("Paid Amount :" + paidS);
+        }
+
+        String dueS = TruncateDecimal(salesReview.getDue() + "");
+        if (dueS.length() > 13) {
+            holder.dueV.setText("Due Amount :" + dueS.substring(0, 13) + "...");
+        } else {
+            holder.dueV.setText("Due Amount :" + dueS);
+        }
+
+        String returnS = TruncateDecimal(salesReview.getReturnedAmount() + "");
+        if (returnS.length() > 13) {
+            holder.returnV.setText("Return Amount :" + returnS.substring(0, 13) + "...");
+        } else {
+            holder.returnV.setText("Return Amount :" + returnS);
+        }
+
+        String currentTotalS = TruncateDecimal(salesReview.getCurrentTotal() + "");
+        if (currentTotalS.length() > 13) {
+            holder.cTotalV.setText("Current Total Amount :" + currentTotalS.substring(0, 13) + "...");
+        } else {
+            holder.cTotalV.setText("Current Total Amount :" + currentTotalS);
+        }
+
+        if(FROM_PAYMENT_PAGE){
+            holder.viewB.setText("Pay this Bill");
         }
     }
 
@@ -97,7 +131,7 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
 
 
     class SalesReviewHolder extends RecyclerView.ViewHolder {
-        TextView billIdV, dateV, totQtyV, totV;
+        TextView billIdV, dateV, totQtyV, totV, paidV, dueV, returnV, cTotalV;
         Button viewB;
 
         public SalesReviewHolder(@NonNull View itemView) {
@@ -107,12 +141,17 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             totQtyV = itemView.findViewById(R.id.sales_review_view_tot_items);
             totV = itemView.findViewById(R.id.sales_review_view_total);
 
+
+            paidV = itemView.findViewById(R.id.sales_review_view_paid);
+            dueV = itemView.findViewById(R.id.sales_review_due);
+            returnV = itemView.findViewById(R.id.sales_review_view_return_total);
+            cTotalV = itemView.findViewById(R.id.sales_review_view_current_total);
+
             viewB = itemView.findViewById(R.id.sales_review_view_view);
             viewB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SalesReviewDetail salesReview = salesList.get(getAdapterPosition());
-                    mClickHandler.onClick(salesReview.getId());
+                    mClickHandler.onClick(salesList.get(getAdapterPosition()));
                 }
             });
         }

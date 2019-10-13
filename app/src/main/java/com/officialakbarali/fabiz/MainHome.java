@@ -72,6 +72,15 @@ public class MainHome extends AppCompatActivity {
                 insertSomeDummyItems();
             }
         });
+
+        Button settingsBtn = findViewById(R.id.settings);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentSettings = new Intent(MainHome.this,Settings.class);
+                startActivity(intentSettings);
+            }
+        });
     }
 
     @Override
@@ -83,8 +92,8 @@ public class MainHome extends AppCompatActivity {
     private void insertSomeDummyItems() {
         FabizProvider fabizProvider = new FabizProvider(this, true);
         ContentValues values = new ContentValues();
-
-        values.put(FabizContract.Item.COLUMN_NAME, "EMINEM");
+        values.put(FabizContract.Item._ID, "1");
+        values.put(FabizContract.Item.COLUMN_NAME, "A EMINEM");
         values.put(FabizContract.Item.COLUMN_BRAND, "RAP");
         values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
         values.put(FabizContract.Item.COLUMN_BARCODE, "DR2039");
@@ -92,14 +101,16 @@ public class MainHome extends AppCompatActivity {
         Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
 
         values = new ContentValues();
-        values.put(FabizContract.Item.COLUMN_NAME, "JUSTIN");
+        values.put(FabizContract.Item._ID, "11");
+        values.put(FabizContract.Item.COLUMN_NAME, "B JUSTIN");
         values.put(FabizContract.Item.COLUMN_BRAND, "POP");
         values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
         values.put(FabizContract.Item.COLUMN_PRICE, "10.321");
         Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
 
         values = new ContentValues();
-        values.put(FabizContract.Item.COLUMN_NAME, "ELON");
+        values.put(FabizContract.Item._ID, "111");
+        values.put(FabizContract.Item.COLUMN_NAME, "C ELON");
         values.put(FabizContract.Item.COLUMN_BRAND, "TESLA");
         values.put(FabizContract.Item.COLUMN_CATEGORY, "ENTREPRENEUR");
         values.put(FabizContract.Item.COLUMN_PRICE, "500.510");

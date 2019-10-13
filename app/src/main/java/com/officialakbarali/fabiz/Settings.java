@@ -10,12 +10,8 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
-
-import static com.officialakbarali.fabiz.data.CommonInformation.setPassword;
-import static com.officialakbarali.fabiz.data.CommonInformation.setUsername;
 
 public class Settings extends AppCompatActivity {
     Toast toast;
@@ -30,13 +26,7 @@ public class Settings extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean appVersionProblem = sharedPreferences.getBoolean("version", false);
-        if (appVersionProblem) {
-            Intent versionIntent = new Intent(this, AppVersion.class);
-            versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(versionIntent);
-        }
+        new ServiceResumeCheck(this);
     }
 
     public void logout(View view) {
@@ -53,9 +43,6 @@ public class Settings extends AppCompatActivity {
             editor.putBoolean("update_data", false);
             editor.putBoolean("force_pull", false);
             editor.apply();
-
-            setUsername(null);
-            setPassword(null);
 
             Intent logIntent = new Intent(this, LogIn.class);
             logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

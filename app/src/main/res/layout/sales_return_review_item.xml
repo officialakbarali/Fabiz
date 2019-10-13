@@ -14,6 +14,14 @@
             tools:text="Bill Id :17" />
 
     <TextView
+            android:layout_below="@+id/sales_return_review_item_date"
+            android:id="@+id/sales_return_review_item_return_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            tools:text="Bill Id :17" />
+
+    <TextView
             android:id="@+id/sales_return_review_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -155,15 +155,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:textStyle="bold"
-                    tools:text="Current Due Amount :300" />
-
-            <TextView
-                    android:id="@+id/cust_sale_tot_due"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:textStyle="bold"
-                    tools:text="Total Due Amount :1100" />
+                    tools:text="Previous Due Amount :300" />
 
 
             <LinearLayout
@@ -182,10 +174,19 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:inputType="numberSigned|numberDecimal"
+                        android:inputType="numberDecimal"
                         android:textStyle="bold" />
             </LinearLayout>
 
+
+            <TextView
+                    android:id="@+id/cust_sale_tot_due"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    tools:text="Total Due Amount :1100" />
 
         </LinearLayout>
 

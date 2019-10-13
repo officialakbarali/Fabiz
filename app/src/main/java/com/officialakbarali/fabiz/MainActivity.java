@@ -19,9 +19,9 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.ForcePull;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.UpdateData;
+import com.officialakbarali.fabiz.blockPages.AppVersion;
+import com.officialakbarali.fabiz.blockPages.ForcePull;
+import com.officialakbarali.fabiz.blockPages.UpdateData;
 import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
 import com.officialakbarali.fabiz.network.VolleyRequest;
 
@@ -31,8 +31,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
-import static com.officialakbarali.fabiz.data.CommonInformation.setPassword;
-import static com.officialakbarali.fabiz.data.CommonInformation.setUsername;
 import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private void initialSetup() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        //TODO SET THIS ON SETTINGS
         int DECIMAL_PRECISION = sharedPreferences.getInt("decimal_precision", 3);
         SET_DECIMAL_LENGTH(DECIMAL_PRECISION);
 
@@ -73,9 +72,6 @@ public class MainActivity extends AppCompatActivity {
             if (userName == null || password == null) {
                 checkLatestVersion();
             } else {
-                setUsername(userName);
-                setPassword(password);
-
                 boolean forcePullActivate =
                         sharedPreferences.getBoolean("force_pull", false);
                 if (forcePullActivate) {
@@ -106,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     private void checkLatestVersion() {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
-
         final VolleyRequest volleyRequest = new VolleyRequest("version.php", hashMap, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -126,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                             Intent versionIntent = new Intent(MainActivity.this, AppVersion.class);
                             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(versionIntent);
+                        } else {
+                            showToast("Something went wrong");
                         }
                     }
                 } catch (JSONException e) {

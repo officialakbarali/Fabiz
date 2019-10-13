@@ -17,9 +17,9 @@ import android.widget.Spinner;
 
 import com.officialakbarali.fabiz.LogIn;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.AppVersion;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.ForcePull;
-import com.officialakbarali.fabiz.network.syncInfo.blockPages.UpdateData;
+import com.officialakbarali.fabiz.blockPages.AppVersion;
+import com.officialakbarali.fabiz.blockPages.ForcePull;
+import com.officialakbarali.fabiz.blockPages.UpdateData;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
 import com.officialakbarali.fabiz.customer.route.ManageRoute;
@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.officialakbarali.fabiz.data.CommonInformation.getPassword;
-import static com.officialakbarali.fabiz.data.CommonInformation.getUsername;
 import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;
 
 public class Customer extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener {
@@ -186,7 +184,9 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(versionIntent);
         } else {
-            if (getUsername() == null || getPassword() == null) {
+            String userName = sharedPreferences.getString("my_username", null);
+            String password = sharedPreferences.getString("my_password", null);
+            if (userName == null || password == null) {
                 Intent loginIntent = new Intent(context, LogIn.class);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(loginIntent);

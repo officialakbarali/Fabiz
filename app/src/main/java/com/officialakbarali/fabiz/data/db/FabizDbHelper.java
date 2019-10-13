@@ -33,19 +33,10 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.SyncLog._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FabizContract.SyncLog.COLUMN_ROW_ID + " INTEGER NOT NULL, "
                 + FabizContract.SyncLog.COLUMN_TABLE_NAME + " TEXT NOT NULL, "
+                + FabizContract.SyncLog.COLUMN_OP_CODE + " TEXT NOT NULL, "
+                + FabizContract.SyncLog.COLUMN_TIMESTAMP + " DATETIME  NOT NULL, "
                 + FabizContract.SyncLog.COLUMN_OPERATION + " TEXT NOT NULL)";
         db.execSQL(SQL_CREATE_SYNC_LOG_TABLE);
-
-        //CREATING ACCOUNT_DETAIL TABLE
-        String SQL_CREATE_ACCOUNT_DETAIL_TABLE = "CREATE TABLE "
-                + FabizContract.AccountDetail.TABLE_NAME
-                + " ("
-                + FabizContract.AccountDetail._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + " INTEGER NOT NULL, "
-                + FabizContract.AccountDetail.COLUMN_TOTAL + " REAL NOT NULL, "
-                + FabizContract.AccountDetail.COLUMN_PAID + " REAL NOT NULL, "
-                + FabizContract.AccountDetail.COLUMN_DUE + " REAL NOT NULL)";
-        db.execSQL(SQL_CREATE_ACCOUNT_DETAIL_TABLE);
 
         //CREATING ITEM TABLE
         String SQL_CREATE_ITEM_TABLE = "CREATE TABLE "
@@ -66,6 +57,8 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Customer._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + FabizContract.Customer.COLUMN_BARCODE + " TEXT, "
                 + FabizContract.Customer.COLUMN_DAY + " TEXT, "
+                + FabizContract.Customer.COLUMN_CR_NO + " TEXT NOT NULL, "
+                + FabizContract.Customer.COLUMN_SHOP_NAME + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_NAME + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_PHONE + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_EMAIL + " TEXT NOT NULL,"
@@ -80,6 +73,10 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.BillDetail.COLUMN_DATE + " TEXT NOT NULL, "
                 + FabizContract.BillDetail.COLUMN_CUST_ID + " INTEGER NOT NULL, "
                 + FabizContract.BillDetail.COLUMN_PRICE + " REAL NOT NULL,"
+                + FabizContract.BillDetail.COLUMN_RETURNED_TOTAL + " REAL NOT NULL,"
+                + FabizContract.BillDetail.COLUMN_CURRENT_TOTAL + " REAL NOT NULL,"
+                + FabizContract.BillDetail.COLUMN_PAID + " REAL NOT NULL,"
+                + FabizContract.BillDetail.COLUMN_DUE + " REAL NOT NULL,"
                 + FabizContract.BillDetail.COLUMN_QTY + " INTEGER NOT NULL)";
         db.execSQL(SQL_CREATE_BILL_DETAIL_TABLE);
 
@@ -118,12 +115,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Payment.TABLE_NAME
                 + " ("
                 + FabizContract.Payment._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FabizContract.Payment.COLUMN_CUST_ID + " INTEGER NOT NULL, "
+                + FabizContract.Payment.COLUMN_BILL_ID + " INTEGER NOT NULL, "
                 + FabizContract.Payment.COLUMN_DATE + " TEXT NOT NULL,"
-                + FabizContract.Payment.COLUMN_AMOUNT + " REAL NOT NULL, "
-                + FabizContract.Payment.COLUMN_TOTAL + " REAL NOT NULL, "
-                + FabizContract.Payment.COLUMN_PAID + " REAL NOT NULL, "
-                + FabizContract.Payment.COLUMN_DUE + " REAL NOT NULL)";
+                + FabizContract.Payment.COLUMN_AMOUNT + " REAL NOT NULL)";
 
         db.execSQL(SQL_CREATE_PAYMENT);
     }
@@ -132,9 +126,6 @@ public class FabizDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //DELETING OLD SYNC_LOG TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.SyncLog.TABLE_NAME);
-
-        //DELETING ACCOUNT_DETAIL TABLE
-        db.execSQL("DROP TABLE IF EXISTS " + FabizContract.AccountDetail.TABLE_NAME);
 
         //DELETING ITEM TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.Item.TABLE_NAME);

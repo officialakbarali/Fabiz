@@ -39,6 +39,15 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
     public void onBindViewHolder(@NonNull SalesReturnReviewViewHolder holder, int position) {
         SalesReturnReviewItem salesReturnReviewItem = salesReturnList.get(position);
 
+
+        String returnIdS = salesReturnReviewItem.getId() + "";
+        if (returnIdS.length() > 17) {
+            holder.returnIdT.setText("Return Id :" + returnIdS.substring(0, 13));
+        } else {
+            holder.returnIdT.setText("Return Id :" + returnIdS);
+        }
+
+
         String billIdS = salesReturnReviewItem.getBillId() + "";
         if (billIdS.length() > 17) {
             holder.billIdT.setText("Bill Id :" + billIdS.substring(0, 13));
@@ -96,7 +105,7 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
     }
 
     class SalesReturnReviewViewHolder extends RecyclerView.ViewHolder {
-        TextView billIdT, dateT, itemNameT, priceT, qtyT, totalT;
+        TextView billIdT, dateT, itemNameT, priceT, qtyT, totalT, returnIdT;
 
         public SalesReturnReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,6 +116,7 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
             priceT = itemView.findViewById(R.id.sales_return_review_item_price);
             qtyT = itemView.findViewById(R.id.sales_return_review_item_qty);
             totalT = itemView.findViewById(R.id.sales_return_review_item_tot);
+            returnIdT = itemView.findViewById(R.id.sales_return_review_item_return_id);
         }
     }
 }

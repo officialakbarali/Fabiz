@@ -41,6 +41,7 @@ import java.util.List;
 import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_REAL;
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
+import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_CODE_SALE_RETURN;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_UPDATE;
 
@@ -116,7 +117,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         Cursor billCursor = fabizProvider.query(FabizContract.BillDetail.TABLE_NAME,
                 new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_QTY,
-                        FabizContract.BillDetail.COLUMN_DATE, FabizContract.BillDetail.COLUMN_PRICE}
+                        FabizContract.BillDetail.COLUMN_DATE, FabizContract.BillDetail.COLUMN_CURRENT_TOTAL}
                 , FabizContract.BillDetail._ID + "=?", new String[]{billId + ""}
                 , null);
 
@@ -126,7 +127,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
             dateView.setText("Time :" + billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)));
 
             totQtyView.setText("Total Item :" + billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)));
-            totalView.setText("Total :" + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)) + ""));
+            totalView.setText("Total :" + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)) + ""));
         }
     }
 
@@ -288,7 +289,15 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
     private ContentValues validateAndReturnContentValues(String dateR, int itemIdR, String qtyR, String priceR, String totalR, int maxLimitOfReturn) {
         if (conditionsForDialogue(priceR, qtyR, totalR, maxLimitOfReturn)) {
+            int idForInsert = fabizProvider.getIdForInsert(FabizContract.SalesReturn.TABLE_NAME);
+
+            if (idForInsert == -1) {
+                showToast("Max limit of offline operation reached.please contact customer care");
+                return null;
+            }
+
             ContentValues values = new ContentValues();
+            values.put(FabizContract.SalesReturn._ID, idForInsert);
             values.put(FabizContract.SalesReturn.COLUMN_DATE, dateR);
             values.put(FabizContract.SalesReturn.COLUMN_BILL_ID, billId);
             values.put(FabizContract.SalesReturn.COLUMN_ITEM_ID, itemIdR);
@@ -396,20 +405,21 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
                 syncLogList.add(new SyncLogDetail(idOfSalesReturn, FabizContract.SalesReturn.TABLE_NAME, OP_INSERT));
 
-                Cursor amountUpdateCursor = saveProvider.query(FabizContract.AccountDetail.TABLE_NAME,
-                        new String[]{FabizContract.AccountDetail._ID, FabizContract.AccountDetail.COLUMN_TOTAL,
-                                FabizContract.AccountDetail.COLUMN_PAID
-                                , FabizContract.AccountDetail.COLUMN_DUE}
-                        , FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""}, null);
+                Cursor amountUpdateCursor = saveProvider.query(FabizContract.BillDetail.TABLE_NAME,
+                        new String[]{FabizContract.BillDetail.COLUMN_CURRENT_TOTAL,
+                                FabizContract.BillDetail.COLUMN_RETURNED_TOTAL
+                                , FabizContract.BillDetail.COLUMN_DUE}
+                        , FabizContract.BillDetail._ID + "=?", new String[]{billId + ""}, null);
 
                 if (amountUpdateCursor.moveToNext()) {
 
-                    int thatRowOfAcUp = amountUpdateCursor.getInt(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail._ID));
-                    double totUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_TOTAL));
-                    double paidUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_PAID));
-                    double dueUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.AccountDetail.COLUMN_DUE));
 
-                    totUpdate -= values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL);
+                    double totCurrentUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL));
+                    double totReturnedUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL));
+                    double dueUpdate = amountUpdateCursor.getDouble(amountUpdateCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE));
+
+                    totReturnedUpdate += values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL);
+                    totCurrentUpdate -= values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL);
                     dueUpdate -= values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL);
 
                     if (dueUpdate < 0) {
@@ -418,14 +428,15 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
 
                     ContentValues accUpValues = new ContentValues();
-                    accUpValues.put(FabizContract.AccountDetail.COLUMN_TOTAL, totUpdate);
-                    accUpValues.put(FabizContract.AccountDetail.COLUMN_DUE, dueUpdate);
-                    int upAffectedRows = saveProvider.update(FabizContract.AccountDetail.TABLE_NAME, accUpValues,
-                            FabizContract.AccountDetail.COLUMN_CUSTOMER_ID + "=?", new String[]{custId + ""});
+                    accUpValues.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, totCurrentUpdate);
+                    accUpValues.put(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL, totReturnedUpdate);
+                    accUpValues.put(FabizContract.BillDetail.COLUMN_DUE, dueUpdate);
 
+                    int upAffectedRows = saveProvider.update(FabizContract.BillDetail.TABLE_NAME, accUpValues,
+                            FabizContract.BillDetail._ID + "=?", new String[]{billId + ""});
                     if (upAffectedRows == 1) {
 
-                        syncLogList.add(new SyncLogDetail(thatRowOfAcUp, FabizContract.AccountDetail.TABLE_NAME, OP_UPDATE));
+                        syncLogList.add(new SyncLogDetail(billId, FabizContract.BillDetail.TABLE_NAME, OP_UPDATE));
 
                         Cursor returnUpdateToBillCursor = saveProvider.query(FabizContract.Cart.TABLE_NAME,
                                 new String[]{FabizContract.Cart._ID, FabizContract.Cart.COLUMN_RETURN_QTY}
@@ -451,11 +462,11 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
                             if (upReturnAffectedRaw > 0) {
                                 syncLogList.add(new SyncLogDetail(idOfRowReturn, FabizContract.Cart.TABLE_NAME, OP_UPDATE));
-                                new SetupSync(this, syncLogList, saveProvider, "Successfully Returned");
+                                new SetupSync(this, syncLogList, saveProvider, "Successfully Returned", OP_CODE_SALE_RETURN);
 
                                 //END HERE *****************************************************
                                 showFinalInfoDialogue(NEGATIVE_DUE, values.getAsDouble(FabizContract.SalesReturn.COLUMN_TOTAL),
-                                        totUpdate, paidUpdate, dueUpdate);
+                                        dueUpdate);
                             } else {
                                 saveProvider.finishTransaction();
                                 showToast("Something went wrong");
@@ -492,7 +503,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
     }
 
-    private void showFinalInfoDialogue(boolean NEGATIVE_DUE, double returnedAmt, double totAmnt, double paidAmt, double dueAmnt) {
+    private void showFinalInfoDialogue(boolean NEGATIVE_DUE, double returnedAmt, double dueAmnt) {
         //TODO NEGATIVE DUE WARNING
 
         paymentDialog.dismiss();
@@ -520,14 +531,15 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         returnedAmntLabel.setText("Returned Amount");
 
         final TextView returnedAmntV = lastDialog.findViewById(R.id.pop_up_for_payment_ent_amt);
-        final TextView totAmntV = lastDialog.findViewById(R.id.pop_up_for_payment_tot);
-        final TextView paidAmtV = lastDialog.findViewById(R.id.pop_up_for_payment_paid);
+
         final TextView dueAmtV = lastDialog.findViewById(R.id.pop_up_for_payment_due);
+
+        TextView dueLabelText = lastDialog.findViewById(R.id.pop_up_for_payment_due_label);
+        dueLabelText.setText("Bill Due Amount");
 
         dateV.setText(": " + DcurrentTime);
         returnedAmntV.setText(": " + TruncateDecimal(returnedAmt + ""));
-        totAmntV.setText(": " + TruncateDecimal(totAmnt + ""));
-        paidAmtV.setText(": " + TruncateDecimal(paidAmt + ""));
+
         dueAmtV.setText(": " + TruncateDecimal(dueAmnt + ""));
 
         lastDialog.show();

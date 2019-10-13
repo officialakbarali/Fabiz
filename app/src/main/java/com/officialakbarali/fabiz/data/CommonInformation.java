@@ -13,8 +13,6 @@ public final class CommonInformation {
     private static int DECIMAL_LENGTH = 3;
     private static String REAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static String REAL_DATE_FORMAT_OF_SEARCH = "yyyy-MM-dd";
-    private static String USERNAME = null;
-    private static String PASSWORD = null;
 
     public static String convertDateToDisplayFormat(String dateString) throws ParseException {
         DateFormat sdf = new SimpleDateFormat(REAL_DATE_FORMAT);
@@ -85,20 +83,34 @@ public final class CommonInformation {
         return returnString;
     }
 
-    public static void setUsername(String username) {
-        USERNAME = username;
-    }
+    public static int getNumberFromDayName(String dayPassed) {
+        int returnDay = 1;
 
-    public static void setPassword(String password) {
-        PASSWORD = password;
-    }
+        switch (dayPassed) {
+            case "MONDAY":
+                returnDay = Calendar.MONDAY;
+                break;
+            case "TUESDAY":
+                returnDay = Calendar.TUESDAY;
+                break;
+            case "WEDNESDAY":
+                returnDay = Calendar.WEDNESDAY;
+                break;
+            case "THURSDAY":
+                returnDay = Calendar.THURSDAY;
+                break;
+            case "FRIDAY":
+                returnDay = Calendar.FRIDAY;
+                break;
+            case "SATURDAY":
+                returnDay = Calendar.SATURDAY;
+                break;
+            case "SUNDAY":
+                returnDay = Calendar.SUNDAY;
+                break;
+        }
 
-    public static String getUsername() {
-        return USERNAME;
-    }
-
-    public static String getPassword() {
-        return PASSWORD;
+        return returnDay;
     }
 }
 
