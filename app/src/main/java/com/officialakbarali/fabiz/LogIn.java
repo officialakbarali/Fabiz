@@ -134,7 +134,7 @@ public class LogIn extends AppCompatActivity {
         editor.putString("my_username", username);
         editor.putString("my_password", password);
         editor.putBoolean("update_data", false);
-        editor.putBoolean("force_pull", false);//TODO SET THIS TO TRUE
+        editor.putBoolean("force_pull", false); //TODO SET THIS TO TRUE
         editor.putInt("precision",precision);
         editor.putInt("idOfStaff",idOfStaff);
         editor.apply();
