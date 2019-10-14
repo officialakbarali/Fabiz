@@ -159,35 +159,45 @@ public class SyncService extends Service {
                                 stopSetUp("Failed to update local db");
                             }
                         } else {
-                            if (jsonObject.getString("status").equals("VERSION")) {
-                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putBoolean("version", true);
-                                editor.apply();
-                                stopSetUp("VERSION");
-                            } else if (jsonObject.getString("status").equals("PUSH")) {
-                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putBoolean("force_pull", true);
-                                editor.apply();
-                                stopSetUp("PUSH");
-                            } else if (jsonObject.getString("status").equals("UPDATE")) {
-                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putBoolean("update_data", true);
-                                editor.apply();
-                                stopSetUp("UPDATE");
-                            } else if (jsonObject.getString("status").equals("USER")) {
-                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("my_username", null);
-                                editor.putString("my_password", null);
-                                editor.putBoolean("update_data", false);
-                                editor.putBoolean("force_pull", false);
-                                editor.apply();
-                                stopSetUp("USER");
-                            } else {
-                                stopSetUp("Something went wrong");
+                            switch (jsonObject.getString("status")) {
+                                case "VERSION": {
+                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putBoolean("version", true);
+                                    editor.apply();
+                                    stopSetUp("VERSION");
+                                    break;
+                                }
+                                case "PUSH": {
+                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putBoolean("force_pull", true);
+                                    editor.apply();
+                                    stopSetUp("PUSH");
+                                    break;
+                                }
+                                case "UPDATE": {
+                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putBoolean("update_data", true);
+                                    editor.apply();
+                                    stopSetUp("UPDATE");
+                                    break;
+                                }
+                                case "USER": {
+                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("my_username", null);
+                                    editor.putString("my_password", null);
+                                    editor.putBoolean("update_data", false);
+                                    editor.putBoolean("force_pull", false);
+                                    editor.apply();
+                                    stopSetUp("USER");
+                                    break;
+                                }
+                                default:
+                                    stopSetUp("Something went wrong");
+                                    break;
                             }
                         }
                     } catch (JSONException e) {
@@ -225,9 +235,8 @@ public class SyncService extends Service {
 
     private boolean deleteRowFromSyncLog(int indexToDelete) {
         String deleteRowsTimestampId = logDetailsList.get(indexToDelete);
-//        int deleteCount = provider.delete(FabizContract.SyncLog.TABLE_NAME, FabizContract.SyncLog.COLUMN_TIMESTAMP + "=?", new String[]{deleteRowsTimestampId});
-//        return deleteCount > 0;
-        return true;
+        int deleteCount = provider.delete(FabizContract.SyncLog.TABLE_NAME, FabizContract.SyncLog.COLUMN_TIMESTAMP + "=?", new String[]{deleteRowsTimestampId});
+        return deleteCount > 0;
     }
 
     private void checkForUpdate() {
@@ -246,35 +255,45 @@ public class SyncService extends Service {
                     if (jsonObject.getBoolean("success")) {
                         stopSetUp("Sync Successfully");
                     } else {
-                        if (jsonObject.getString("status").equals("VERSION")) {
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("version", true);
-                            editor.apply();
-                            stopSetUp("VERSION");
-                        } else if (jsonObject.getString("status").equals("PUSH")) {
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("force_pull", true);
-                            editor.apply();
-                            stopSetUp("PUSH");
-                        } else if (jsonObject.getString("status").equals("UPDATE")) {
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean("update_data", true);
-                            editor.apply();
-                            stopSetUp("UPDATE");
-                        } else if (jsonObject.getString("status").equals("USER")) {
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("my_username", null);
-                            editor.putString("my_password", null);
-                            editor.putBoolean("update_data", false);
-                            editor.putBoolean("force_pull", false);
-                            editor.apply();
-                            stopSetUp("USER");
-                        } else {
-                            stopSetUp("Something went wrong");
+                        switch (jsonObject.getString("status")) {
+                            case "VERSION": {
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("version", true);
+                                editor.apply();
+                                stopSetUp("VERSION");
+                                break;
+                            }
+                            case "PUSH": {
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("force_pull", true);
+                                editor.apply();
+                                stopSetUp("PUSH");
+                                break;
+                            }
+                            case "UPDATE": {
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("update_data", true);
+                                editor.apply();
+                                stopSetUp("UPDATE");
+                                break;
+                            }
+                            case "USER": {
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("my_username", null);
+                                editor.putString("my_password", null);
+                                editor.putBoolean("update_data", false);
+                                editor.putBoolean("force_pull", false);
+                                editor.apply();
+                                stopSetUp("USER");
+                                break;
+                            }
+                            default:
+                                stopSetUp("Something went wrong");
+                                break;
                         }
                     }
                 } catch (JSONException e) {
