@@ -225,8 +225,9 @@ public class SyncService extends Service {
 
     private boolean deleteRowFromSyncLog(int indexToDelete) {
         String deleteRowsTimestampId = logDetailsList.get(indexToDelete);
-        int deleteCount = provider.delete(FabizContract.SyncLog.TABLE_NAME, FabizContract.SyncLog.COLUMN_TIMESTAMP + "=?", new String[]{deleteRowsTimestampId});
-        return deleteCount > 0;
+//        int deleteCount = provider.delete(FabizContract.SyncLog.TABLE_NAME, FabizContract.SyncLog.COLUMN_TIMESTAMP + "=?", new String[]{deleteRowsTimestampId});
+//        return deleteCount > 0;
+        return true;
     }
 
     private void checkForUpdate() {

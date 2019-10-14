@@ -142,7 +142,7 @@ public class HashMapHelper {
                         FabizContract.Cart._ID, FabizContract.Cart.COLUMN_BILL_ID, FabizContract.Cart.COLUMN_ITEM_ID, FabizContract.Cart.COLUMN_NAME,
                         FabizContract.Cart.COLUMN_BRAND, FabizContract.Cart.COLUMN_CATEGORY, FabizContract.Cart.COLUMN_PRICE,
                         FabizContract.Cart.COLUMN_QTY, FabizContract.Cart.COLUMN_TOTAL, FabizContract.Cart.COLUMN_RETURN_QTY,
-                }, FabizContract.Payment._ID + "=?", new String[]{syncLogData.getRawId() + ""}, null);
+                }, FabizContract.Cart._ID + "=?", new String[]{syncLogData.getRawId() + ""}, null);
 
                 if (cartCursor.moveToNext()) {
                     hashMap.put(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID + cartRowIndex, cartCursor.getInt(cartCursor.getColumnIndexOrThrow(FabizContract.Cart._ID)) + "");
@@ -217,15 +217,53 @@ public class HashMapHelper {
 
     private HashMap<String, String> getSalesReturnMap(HashMap<String, String> hashMap) {
         for (int i = 0; i < list.size(); i++) {
-            SyncLogData syncLogData = list.get(0);
-            if (syncLogData.getTableName().matches(FabizContract.Customer.TABLE_NAME)) {
-                Cursor custCursor = provider.query(FabizContract.Customer.TABLE_NAME,
-                        new String[]{},
-                        FabizContract.Customer._ID,
+            SyncLogData syncLogData = list.get(i);
+            if (syncLogData.getTableName().matches(FabizContract.BillDetail.TABLE_NAME)) {
+                Cursor billCursor = provider.query(FabizContract.BillDetail.TABLE_NAME,
+                        new String[]{FabizContract.BillDetail._ID,  FabizContract.BillDetail.COLUMN_RETURNED_TOTAL
+                                , FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, FabizContract.BillDetail.COLUMN_DUE},
+                        FabizContract.BillDetail._ID + "=?",
                         new String[]{
                                 syncLogData.getRawId() + ""
                         }, null);
-            } else {
+
+                if (billCursor.moveToNext()) {
+                    hashMap.put(FabizContract.BillDetail.TABLE_NAME + FabizContract.BillDetail._ID, billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail._ID)) + "");
+                    hashMap.put(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL)) + "");
+                    hashMap.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)) + "");
+                    hashMap.put(FabizContract.BillDetail.COLUMN_DUE, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE)) + "");
+                }
+
+
+            } else if (syncLogData.getTableName().matches(FabizContract.Cart.TABLE_NAME)) {
+
+                Cursor cartCursor = provider.query(FabizContract.Cart.TABLE_NAME, new String[]{
+                        FabizContract.Cart._ID, FabizContract.Cart.COLUMN_RETURN_QTY,
+                }, FabizContract.Cart._ID + "=?", new String[]{syncLogData.getRawId() + ""}, null);
+
+                if (cartCursor.moveToNext()) {
+                    hashMap.put(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID, cartCursor.getInt(cartCursor.getColumnIndexOrThrow(FabizContract.Cart._ID)) + "");
+                    hashMap.put(FabizContract.Cart.COLUMN_RETURN_QTY, cartCursor.getInt(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY)) + "");
+                }
+            } else if (syncLogData.getTableName().matches(FabizContract.SalesReturn.TABLE_NAME)) {
+
+                Cursor payCursor = provider.query(FabizContract.SalesReturn.TABLE_NAME, new String[]{FabizContract.SalesReturn._ID
+                                , FabizContract.SalesReturn.COLUMN_BILL_ID, FabizContract.SalesReturn.COLUMN_DATE, FabizContract.SalesReturn.COLUMN_ITEM_ID
+                                , FabizContract.SalesReturn.COLUMN_PRICE, FabizContract.SalesReturn.COLUMN_QTY, FabizContract.SalesReturn.COLUMN_TOTAL
+                        },
+                        FabizContract.SalesReturn._ID + "=?", new String[]{syncLogData.getRawId() + ""},
+                        null);
+
+
+                if (payCursor.moveToNext()) {
+                    hashMap.put(FabizContract.SalesReturn.TABLE_NAME + FabizContract.SalesReturn._ID, payCursor.getInt(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn._ID)) + "");
+                    hashMap.put(FabizContract.SalesReturn.COLUMN_BILL_ID, payCursor.getInt(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_BILL_ID)) + "");
+                    hashMap.put(FabizContract.SalesReturn.COLUMN_DATE, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_DATE)));
+                    hashMap.put(FabizContract.SalesReturn.COLUMN_ITEM_ID, payCursor.getInt(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_ITEM_ID)) + "");
+                    hashMap.put(FabizContract.SalesReturn.COLUMN_PRICE, payCursor.getDouble(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_PRICE)) + "");
+                    hashMap.put(FabizContract.SalesReturn.COLUMN_QTY, payCursor.getInt(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_QTY)) + "");
+                    hashMap.put(FabizContract.SalesReturn.COLUMN_TOTAL, payCursor.getDouble(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_TOTAL)) + "");
+                }
 
             }
         }
