@@ -42,19 +42,19 @@
                     android:id="@+id/cust_add_cr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter CR Number (optional)" />
+                    android:hint="Enter CR Number" />
 
             <EditText
                     android:id="@+id/cust_add_shop_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Shop Name (optional)" />
+                    android:hint="Enter Shop Name" />
 
             <EditText
                     android:id="@+id/cust_add_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Email (optional)"
+                    android:hint="Enter Email"
                     android:inputType="textEmailAddress" />
 
 
@@ -62,7 +62,20 @@
                     android:id="@+id/cust_add_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Address (optional)" />
+                    android:hint="Enter Address" />
+
+            <EditText
+                    android:id="@+id/cust_add_telephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:hint="Enter Telephone" />
+
+            <EditText
+                    android:id="@+id/cust_add_vat_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Vat Number" />
 
 
             <LinearLayout

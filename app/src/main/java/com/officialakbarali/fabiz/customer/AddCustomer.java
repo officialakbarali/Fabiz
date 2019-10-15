@@ -58,6 +58,12 @@ public class AddCustomer extends AppCompatActivity {
                 String crNumber = crE.getText().toString().toUpperCase().trim();
                 String shopName = shopNameE.getText().toString().toUpperCase().trim();
 
+                EditText telephoneE = findViewById(R.id.cust_add_telephone);
+                String telephone = telephoneE.getText().toString().trim();
+
+                EditText vatNoE = findViewById(R.id.cust_add_vat_no);
+                String vatNo = vatNoE.getText().toString().trim();
+
                 Spinner filterSpinner = findViewById(R.id.cust_add_day_list);
                 String selectedDay = "" + getNumberFromDayName(String.valueOf(filterSpinner.getSelectedItem()));
 
@@ -96,6 +102,18 @@ public class AddCustomer extends AppCompatActivity {
                     values.put(FabizContract.Customer.COLUMN_ADDRESS, address);
                 }
 
+                if (telephone.matches("")) {
+                    values.put(FabizContract.Customer.COLUMN_TELEPHONE, "NA");
+                } else {
+                    values.put(FabizContract.Customer.COLUMN_TELEPHONE, telephone);
+                }
+
+                if (vatNo.matches("")) {
+                    values.put(FabizContract.Customer.COLUMN_VAT_NO, "NA");
+                } else {
+                    values.put(FabizContract.Customer.COLUMN_VAT_NO, vatNo);
+                }
+
 
                 if (validateCustomerFields(values)) {
                     saveCustomer(values);
@@ -121,18 +139,18 @@ public class AddCustomer extends AppCompatActivity {
     private boolean validatePhoneNumber(String phoneNumber) {
         Pattern pattern = Pattern.compile("[^0-9+ ]");
         Matcher matcher = pattern.matcher(phoneNumber);
-        return phoneNumber.length() >= GET_PHONE_NUMBER_LENGTH() && !matcher.find();
+        return phoneNumber.length() >= GET_PHONE_NUMBER_LENGTH() && phoneNumber.length() <= 25 && !matcher.find();
     }
 
     private boolean validateEmail(String email) {
-        if (email.matches("NA")) return true;
+        if (email.matches("NA")) return false;
         return email.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$");
     }
 
-    private boolean validateAddress(String address) {
-        if (address.matches("NA")) return true;
+    private boolean validateCommonInformation(String passedString) {
+        if (passedString.matches("NA")) return false;
         Pattern pattern = Pattern.compile("[^A-Za-z0-9 ._-]");
-        Matcher matcher = pattern.matcher(address);
+        Matcher matcher = pattern.matcher(passedString);
         return !matcher.find();
     }
 
@@ -141,8 +159,24 @@ public class AddCustomer extends AppCompatActivity {
         if (validateName(values.getAsString(FabizContract.Customer.COLUMN_NAME))) {
             if (validatePhoneNumber(values.getAsString(FabizContract.Customer.COLUMN_PHONE))) {
                 if (validateEmail(values.getAsString(FabizContract.Customer.COLUMN_EMAIL))) {
-                    if (validateAddress(values.getAsString(FabizContract.Customer.COLUMN_ADDRESS))) {
-                        return true;
+                    if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_ADDRESS))) {
+                        if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_SHOP_NAME))) {
+                            if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_CR_NO))) {
+                                if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_VAT_NO))) {
+                                    if (validatePhoneNumber(values.getAsString(FabizContract.Customer.COLUMN_TELEPHONE))) {
+                                        return true;
+                                    } else {
+                                        showToast("Please enter valid Telephone");
+                                    }
+                                } else {
+                                    showToast("Please enter valid Vat Number");
+                                }
+                            } else {
+                                showToast("Please enter valid CR Number");
+                            }
+                        } else {
+                            showToast("Please enter valid Shop Name");
+                        }
                     } else {
                         showToast("Please enter valid Address");
                     }

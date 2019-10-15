@@ -82,7 +82,7 @@ public class HashMapHelper {
                 new String[]{
                         FabizContract.Customer._ID, FabizContract.Customer.COLUMN_CR_NO, FabizContract.Customer.COLUMN_SHOP_NAME, FabizContract.Customer.COLUMN_BARCODE,
                         FabizContract.Customer.COLUMN_DAY, FabizContract.Customer.COLUMN_NAME, FabizContract.Customer.COLUMN_PHONE, FabizContract.Customer.COLUMN_EMAIL,
-                        FabizContract.Customer.COLUMN_ADDRESS
+                        FabizContract.Customer.COLUMN_ADDRESS, FabizContract.Customer.COLUMN_VAT_NO, FabizContract.Customer.COLUMN_TELEPHONE
                 },
                 FabizContract.Customer._ID + "=?",
                 new String[]{
@@ -91,9 +91,9 @@ public class HashMapHelper {
 
         if (custCursor.moveToNext()) {
             hashMap.put(FabizContract.Customer.TABLE_NAME + FabizContract.Customer._ID, custCursor.getInt(custCursor.getColumnIndexOrThrow(FabizContract.Customer._ID)) + "");
-            hashMap.put(FabizContract.Customer.COLUMN_CR_NO, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_CR_NO)) + "");
-            hashMap.put(FabizContract.Customer.COLUMN_SHOP_NAME, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_SHOP_NAME)) + "");
-            hashMap.put(FabizContract.Customer.COLUMN_BARCODE, "NA");
+            hashMap.put(FabizContract.Customer.COLUMN_CR_NO, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_CR_NO)));
+            hashMap.put(FabizContract.Customer.COLUMN_SHOP_NAME, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_SHOP_NAME)));
+            hashMap.put(FabizContract.Customer.COLUMN_BARCODE, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_BARCODE)));
             String dayToUp = custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_DAY));
             if (dayToUp.matches("NA")) {
                 dayToUp = getDayNameFromNumber(Calendar.MONDAY + "");
@@ -102,9 +102,11 @@ public class HashMapHelper {
             }
             hashMap.put(FabizContract.Customer.COLUMN_DAY, dayToUp);
             hashMap.put(FabizContract.Customer.COLUMN_NAME, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_NAME)));
-            hashMap.put(FabizContract.Customer.COLUMN_PHONE, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_PHONE)) + "");
-            hashMap.put(FabizContract.Customer.COLUMN_EMAIL, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_EMAIL)) + "");
-            hashMap.put(FabizContract.Customer.COLUMN_ADDRESS, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_ADDRESS)) + "");
+            hashMap.put(FabizContract.Customer.COLUMN_PHONE, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_PHONE)));
+            hashMap.put(FabizContract.Customer.COLUMN_EMAIL, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_EMAIL)));
+            hashMap.put(FabizContract.Customer.COLUMN_ADDRESS, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_ADDRESS)));
+            hashMap.put(FabizContract.Customer.COLUMN_VAT_NO, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_VAT_NO)));
+            hashMap.put(FabizContract.Customer.COLUMN_TELEPHONE, custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_TELEPHONE)));
         }
         return hashMap;
     }
@@ -126,7 +128,7 @@ public class HashMapHelper {
                 if (billCursor.moveToNext()) {
                     hashMap.put(FabizContract.BillDetail.TABLE_NAME + FabizContract.BillDetail._ID, billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail._ID)) + "");
                     hashMap.put(FabizContract.BillDetail.COLUMN_CUST_ID, billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CUST_ID)) + "");
-                    hashMap.put(FabizContract.BillDetail.COLUMN_DATE, billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)) + "");
+                    hashMap.put(FabizContract.BillDetail.COLUMN_DATE, billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)));
                     hashMap.put(FabizContract.BillDetail.COLUMN_QTY, billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)) + "");
                     hashMap.put(FabizContract.BillDetail.COLUMN_PRICE, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)) + "");
                     hashMap.put(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL)) + "");
@@ -220,7 +222,7 @@ public class HashMapHelper {
             SyncLogData syncLogData = list.get(i);
             if (syncLogData.getTableName().matches(FabizContract.BillDetail.TABLE_NAME)) {
                 Cursor billCursor = provider.query(FabizContract.BillDetail.TABLE_NAME,
-                        new String[]{FabizContract.BillDetail._ID,  FabizContract.BillDetail.COLUMN_RETURNED_TOTAL
+                        new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_RETURNED_TOTAL
                                 , FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, FabizContract.BillDetail.COLUMN_DUE},
                         FabizContract.BillDetail._ID + "=?",
                         new String[]{

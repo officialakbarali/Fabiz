@@ -59,6 +59,11 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Customer.COLUMN_DAY + " TEXT, "
                 + FabizContract.Customer.COLUMN_CR_NO + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_SHOP_NAME + " TEXT NOT NULL, "
+
+                + FabizContract.Customer.COLUMN_VAT_NO + " TEXT NOT NULL, "
+                + FabizContract.Customer.COLUMN_TELEPHONE + " TEXT NOT NULL, "
+
+
                 + FabizContract.Customer.COLUMN_NAME + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_PHONE + " TEXT NOT NULL, "
                 + FabizContract.Customer.COLUMN_EMAIL + " TEXT NOT NULL,"

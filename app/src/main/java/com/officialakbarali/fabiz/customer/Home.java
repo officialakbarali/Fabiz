@@ -32,6 +32,8 @@ public class Home extends AppCompatActivity {
     private String custAddress;
     private String custCrNo;
     private String custShopName;
+    private String vatNo;
+    private String telephone;
 
     private FabizProvider provider;
     private Toast toast;
@@ -139,6 +141,9 @@ public class Home extends AppCompatActivity {
             custEmail = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_EMAIL));
             custAddress = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_ADDRESS));
 
+            telephone = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_TELEPHONE));
+            vatNo = customerDetailCursor.getString(customerDetailCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_VAT_NO));
+
             TextView idView = findViewById(R.id.cust_home_id);
             idView.setText("Cust Id :" + custId);
 
@@ -184,6 +189,21 @@ public class Home extends AppCompatActivity {
             } else {
                 addressView.setText("Address :" + custAddress);
             }
+
+            TextView vatView = findViewById(R.id.cust_home_vat_no);
+            if (vatNo.length() > 38) {
+                vatView.setText("Vat No :" + vatNo.substring(0, 34) + "...");
+            } else {
+                vatView.setText("Vat No :" + vatNo);
+            }
+
+            TextView telephoneV = findViewById(R.id.cust_home_telephone);
+            if (telephone.length() > 38) {
+                telephoneV.setText("Telephone :" + telephone.substring(0, 34) + "...");
+            } else {
+                telephoneV.setText("Telephone :" + telephone);
+            }
+
         } else {
             showToast("Something went wrong");
             finish();

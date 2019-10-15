@@ -16,7 +16,6 @@ public class FabizContract {
     }
 
 
-
     //3 TABLE ITEM
     public static final class Item implements BaseColumns {
         public static final String TABLE_NAME = "tb_item";
@@ -55,6 +54,9 @@ public class FabizContract {
         public static final String COLUMN_EMAIL = TABLE_NAME + "_" + "email";
         public static final String COLUMN_ADDRESS = TABLE_NAME + "_" + "address";
 
+        public static final String COLUMN_TELEPHONE = TABLE_NAME + "_" + "telephone";
+        public static final String COLUMN_VAT_NO = TABLE_NAME + "_" + "vat_no";
+
         //FULL COLUMN NAME
         public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
 
@@ -66,6 +68,8 @@ public class FabizContract {
         public static final String FULL_COLUMN_PHONE = TABLE_NAME + "." + COLUMN_PHONE;
         public static final String FULL_COLUMN_EMAIL = TABLE_NAME + "." + COLUMN_EMAIL;
         public static final String FULL_COLUMN_ADDRESS = TABLE_NAME + "." + COLUMN_ADDRESS;
+        public static final String FULL_COLUMN_TELEPHONE = TABLE_NAME + "_" + COLUMN_TELEPHONE;
+        public static final String FULL_COLUMN_VAT_NO = TABLE_NAME + "_" + COLUMN_VAT_NO;
     }
 
     //5 TABLE BILL DETAIL
