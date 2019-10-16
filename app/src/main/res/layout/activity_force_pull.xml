@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
         tools:context=".blockPages.ForcePull">
 
     <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/txt_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Fetching..."
+            android:visibility="gone" />
+
+    <Button
+            android:id="@+id/pull_btn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Force pull" />
+            android:layout_margin="10dp"
+            android:text="Pull From Server" />
 
 </LinearLayout>

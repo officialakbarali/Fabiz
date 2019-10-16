@@ -54,8 +54,12 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
         <service
                 android:name="com.officialakbarali.fabiz.network.syncInfo.services.SyncService"
+                android:enabled="true"></service>
+        <service
+                android:name=".network.syncInfo.services.ForcePullService"
                 android:enabled="true"></service>
     </application>
 

@@ -20,6 +20,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.officialakbarali.fabiz.blockPages.AppVersion;
+import com.officialakbarali.fabiz.blockPages.ForcePull;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.network.VolleyRequest;
 
@@ -134,15 +135,15 @@ public class LogIn extends AppCompatActivity {
         editor.putString("my_username", username);
         editor.putString("my_password", password);
         editor.putBoolean("update_data", false);
-        editor.putBoolean("force_pull", false); //TODO SET THIS TO TRUE
-        editor.putInt("precision",precision);
-        editor.putInt("idOfStaff",idOfStaff);
+        editor.putBoolean("force_pull", true);
+        editor.putInt("precision", precision);
+        editor.putInt("idOfStaff", idOfStaff);
         editor.apply();
 
         FabizProvider provider = new FabizProvider(this, true);
         provider.deleteAllTables();
 
-        Intent mainHomeIntent = new Intent(LogIn.this, MainHome.class);
+        Intent mainHomeIntent = new Intent(LogIn.this, ForcePull.class);
         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainHomeIntent);
     }
