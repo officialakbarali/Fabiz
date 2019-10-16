@@ -154,6 +154,10 @@ public class ForcePullService extends Service {
                                 stopSetUp("USER");
                                 break;
                             }
+                            case "PAUSE": {
+                                stopSetUp("PAUSE");
+                                break;
+                            }
                             case "ITEM": {
                                 stopSetUp("Server is empty");
                                 break;
@@ -195,16 +199,8 @@ public class ForcePullService extends Service {
                         if (insertCart(jsonObject)) {
                             if (insertSalesReturn(jsonObject)) {
                                 if (insertPayment(jsonObject)) {
-                                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putBoolean("force_pull", false);
-                                    editor.putBoolean("update_data", false);
-                                    editor.apply();
-
-                                    provider.successfulTransaction();
-                                    provider.finishTransaction();
-                                    stopSetUp("SUCCESS");
-                                    return;
+                                   sendConfirmRequest();
+                                   return;
                                 }
                             }
                         }
@@ -217,6 +213,84 @@ public class ForcePullService extends Service {
 
         provider.finishTransaction();
         stopSetUp("FAILED");
+    }
+
+    private void sendConfirmRequest(){
+        provider.successfulTransaction();
+        provider.finishTransaction();
+
+        Log.i("SyncLog","Simple Request");
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("app_version", "" + GET_MY_APP_VERSION());
+        hashMap.put("my_username", "" + userName);
+        hashMap.put("my_password", "" + password);
+        hashMap.put("confirm_pull", "true");
+
+        final VolleyRequest volleyRequest = new VolleyRequest("simple.php", hashMap, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("Response :", response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (jsonObject.getBoolean("success")) {
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ForcePullService.this);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("force_pull", false);
+                        editor.putBoolean("update_data", false);
+                        editor.apply();
+                        stopSetUp("SUCCESS");
+                    } else {
+                        switch (jsonObject.getString("status")) {
+                            case "VERSION": {
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ForcePullService.this);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putBoolean("version", true);
+                                editor.apply();
+                                stopSetUp("VERSION");
+                                break;
+                            }
+                            case "PUSH": {
+                                stopSetUp("PUSH");
+                                break;
+                            } case "FAIL": {
+                                stopSetUp("FAILED");
+                                break;
+                            }
+                            case "USER": {
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ForcePullService.this);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("my_username", null);
+                                editor.putString("my_password", null);
+                                editor.putBoolean("update_data", false);
+                                editor.putBoolean("force_pull", false);
+                                editor.apply();
+                                stopSetUp("USER");
+                                break;
+                            }
+                            default:
+                                stopSetUp("Something went wrong");
+                                break;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    stopSetUp("Bad Response From Server");
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof ServerError) {
+                    stopSetUp("Server Error");
+                } else if (error instanceof TimeoutError) {
+                    stopSetUp("Connection Timed Out");
+                } else if (error instanceof NetworkError) {
+                    stopSetUp("Bad Network Connection");
+                }
+            }
+        });
+        requestQueue.add(volleyRequest);
     }
 
     private boolean insertItem(JSONArray itemArray) throws JSONException {
@@ -239,28 +313,129 @@ public class ForcePullService extends Service {
         return thisSuccess;
     }
 
-    private boolean insertCustomer(JSONObject jsonObject) {
+    private boolean insertCustomer(JSONObject jsonObject) throws JSONException {
         boolean thisSuccess = true;
+        if (jsonObject.getBoolean(FabizContract.Customer.TABLE_NAME + "status")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(FabizContract.Customer.TABLE_NAME);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                ContentValues values = new ContentValues();
+                values.put(FabizContract.Customer._ID, obj.getString(FabizContract.Customer.TABLE_NAME + FabizContract.Customer._ID));
+                values.put(FabizContract.Customer.COLUMN_BARCODE, obj.getString(FabizContract.Customer.COLUMN_BARCODE));
+                values.put(FabizContract.Customer.COLUMN_CR_NO, obj.getString(FabizContract.Customer.COLUMN_CR_NO));
+                values.put(FabizContract.Customer.COLUMN_SHOP_NAME, obj.getString(FabizContract.Customer.COLUMN_SHOP_NAME));
+                values.put(FabizContract.Customer.COLUMN_NAME, obj.getString(FabizContract.Customer.COLUMN_NAME));
+                values.put(FabizContract.Customer.COLUMN_DAY, obj.getString(FabizContract.Customer.COLUMN_DAY));
+                values.put(FabizContract.Customer.COLUMN_PHONE, obj.getString(FabizContract.Customer.COLUMN_PHONE));
+                values.put(FabizContract.Customer.COLUMN_EMAIL, obj.getString(FabizContract.Customer.COLUMN_EMAIL));
+                values.put(FabizContract.Customer.COLUMN_ADDRESS, obj.getString(FabizContract.Customer.COLUMN_ADDRESS));
+                values.put(FabizContract.Customer.COLUMN_TELEPHONE, obj.getString(FabizContract.Customer.COLUMN_TELEPHONE));
+                values.put(FabizContract.Customer.COLUMN_VAT_NO, obj.getString(FabizContract.Customer.COLUMN_VAT_NO));
+                long insertId = provider.insert(FabizContract.Customer.TABLE_NAME, values);
+                if (insertId < 0) {
+                    thisSuccess = false;
+                }
+            }
+        }
         return thisSuccess;
     }
 
-    private boolean insertBillDetail(JSONObject jsonObject) {
+    private boolean insertBillDetail(JSONObject jsonObject) throws JSONException {
         boolean thisSuccess = true;
+        if (jsonObject.getBoolean(FabizContract.BillDetail.TABLE_NAME + "status")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(FabizContract.BillDetail.TABLE_NAME);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                ContentValues values = new ContentValues();
+                values.put(FabizContract.BillDetail._ID, obj.getString(FabizContract.BillDetail.TABLE_NAME + FabizContract.BillDetail._ID));
+                values.put(FabizContract.BillDetail.COLUMN_DATE, obj.getString(FabizContract.BillDetail.COLUMN_DATE));
+                values.put(FabizContract.BillDetail.COLUMN_CUST_ID, obj.getString(FabizContract.BillDetail.COLUMN_CUST_ID));
+                values.put(FabizContract.BillDetail.COLUMN_QTY, obj.getString(FabizContract.BillDetail.COLUMN_QTY));
+                values.put(FabizContract.BillDetail.COLUMN_PRICE, obj.getString(FabizContract.BillDetail.COLUMN_PRICE));
+                values.put(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL, obj.getString(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL));
+                values.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, obj.getString(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL));
+                values.put(FabizContract.BillDetail.COLUMN_PAID, obj.getString(FabizContract.BillDetail.COLUMN_PAID));
+                values.put(FabizContract.BillDetail.COLUMN_DUE, obj.getString(FabizContract.BillDetail.COLUMN_DUE));
+                long insertId = provider.insert(FabizContract.BillDetail.TABLE_NAME, values);
+                if (insertId < 0) {
+                    thisSuccess = false;
+                }
+            }
+        }
         return thisSuccess;
     }
 
-    private boolean insertCart(JSONObject jsonObject) {
+    private boolean insertCart(JSONObject jsonObject) throws JSONException {
         boolean thisSuccess = true;
+        if (jsonObject.getBoolean(FabizContract.Cart.TABLE_NAME + "status")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(FabizContract.Cart.TABLE_NAME);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                ContentValues values = new ContentValues();
+                values.put(FabizContract.Cart._ID, obj.getString(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID));
+                values.put(FabizContract.Cart.COLUMN_BILL_ID, obj.getString(FabizContract.Cart.COLUMN_BILL_ID));
+                values.put(FabizContract.Cart.COLUMN_ITEM_ID, obj.getString(FabizContract.Cart.COLUMN_ITEM_ID));
+                values.put(FabizContract.Cart.COLUMN_NAME, obj.getString(FabizContract.Cart.COLUMN_NAME));
+                values.put(FabizContract.Cart.COLUMN_BRAND, obj.getString(FabizContract.Cart.COLUMN_BRAND));
+                values.put(FabizContract.Cart.COLUMN_CATEGORY, obj.getString(FabizContract.Cart.COLUMN_CATEGORY));
+                values.put(FabizContract.Cart.COLUMN_PRICE, obj.getString(FabizContract.Cart.COLUMN_PRICE));
+                values.put(FabizContract.Cart.COLUMN_QTY, obj.getString(FabizContract.Cart.COLUMN_QTY));
+                values.put(FabizContract.Cart.COLUMN_TOTAL, obj.getString(FabizContract.Cart.COLUMN_TOTAL));
+                values.put(FabizContract.Cart.COLUMN_RETURN_QTY, obj.getString(FabizContract.Cart.COLUMN_RETURN_QTY));
+                long insertId = provider.insert(FabizContract.Cart.TABLE_NAME, values);
+                if (insertId < 0) {
+                    thisSuccess = false;
+                }
+            }
+        }
         return thisSuccess;
     }
 
-    private boolean insertSalesReturn(JSONObject jsonObject) {
+    private boolean insertSalesReturn(JSONObject jsonObject) throws JSONException {
         boolean thisSuccess = true;
+        if (jsonObject.getBoolean(FabizContract.SalesReturn.TABLE_NAME + "status")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(FabizContract.SalesReturn.TABLE_NAME);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                ContentValues values = new ContentValues();
+                values.put(FabizContract.SalesReturn._ID, obj.getString(FabizContract.SalesReturn.TABLE_NAME + FabizContract.SalesReturn._ID));
+                values.put(FabizContract.SalesReturn.COLUMN_DATE, obj.getString(FabizContract.SalesReturn.COLUMN_DATE));
+                values.put(FabizContract.SalesReturn.COLUMN_BILL_ID, obj.getString(FabizContract.SalesReturn.COLUMN_BILL_ID));
+                values.put(FabizContract.SalesReturn.COLUMN_ITEM_ID, obj.getString(FabizContract.SalesReturn.COLUMN_ITEM_ID));
+                values.put(FabizContract.SalesReturn.COLUMN_PRICE, obj.getString(FabizContract.SalesReturn.COLUMN_PRICE));
+                values.put(FabizContract.SalesReturn.COLUMN_QTY, obj.getString(FabizContract.SalesReturn.COLUMN_QTY));
+                values.put(FabizContract.SalesReturn.COLUMN_TOTAL, obj.getString(FabizContract.SalesReturn.COLUMN_TOTAL));
+                long insertId = provider.insert(FabizContract.SalesReturn.TABLE_NAME, values);
+                if (insertId < 0) {
+                    thisSuccess = false;
+                }
+            }
+        }
         return thisSuccess;
     }
 
-    private boolean insertPayment(JSONObject jsonObject) {
+    private boolean insertPayment(JSONObject jsonObject) throws JSONException {
         boolean thisSuccess = true;
+        if (jsonObject.getBoolean(FabizContract.Payment.TABLE_NAME + "status")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(FabizContract.Payment.TABLE_NAME);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                ContentValues values = new ContentValues();
+                values.put(FabizContract.Payment._ID, obj.getString(FabizContract.Payment.TABLE_NAME + FabizContract.Payment._ID));
+                values.put(FabizContract.Payment.COLUMN_BILL_ID, obj.getString(FabizContract.Payment.COLUMN_BILL_ID));
+                values.put(FabizContract.Payment.COLUMN_DATE, obj.getString(FabizContract.Payment.COLUMN_DATE));
+                values.put(FabizContract.Payment.COLUMN_AMOUNT, obj.getString(FabizContract.Payment.COLUMN_AMOUNT));
+                long insertId = provider.insert(FabizContract.Payment.TABLE_NAME, values);
+                if (insertId < 0) {
+                    thisSuccess = false;
+                }
+            }
+        }
         return thisSuccess;
     }
 }

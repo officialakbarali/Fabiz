@@ -245,6 +245,7 @@ public class SyncService extends Service {
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);
         hashMap.put("my_password", "" + password);
+        hashMap.put("confirm_pull", "false");
 
         final VolleyRequest volleyRequest = new VolleyRequest("simple.php", hashMap, new Response.Listener<String>() {
             @Override

@@ -21,7 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.officialakbarali.fabiz.blockPages.AppVersion;
 import com.officialakbarali.fabiz.blockPages.ForcePull;
-import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.network.VolleyRequest;
 
 import org.json.JSONException;
@@ -139,9 +138,6 @@ public class LogIn extends AppCompatActivity {
         editor.putInt("precision", precision);
         editor.putInt("idOfStaff", idOfStaff);
         editor.apply();
-
-        FabizProvider provider = new FabizProvider(this, true);
-        provider.deleteAllTables();
 
         Intent mainHomeIntent = new Intent(LogIn.this, ForcePull.class);
         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

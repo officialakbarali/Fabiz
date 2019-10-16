@@ -50,17 +50,23 @@ public class ForcePull extends AppCompatActivity {
                     Intent logIntent = new Intent(ForcePull.this, LogIn.class);
                     logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(logIntent);
-                }else if (msgPassed.matches("SUCCESS")) {
+                } else if (msgPassed.matches("SUCCESS")) {
                     Intent mainHomeIntent = new Intent(ForcePull.this, MainHome.class);
                     mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(mainHomeIntent);
-                }
-                else if (msgPassed.matches("FAILED")) {
+                } else if (msgPassed.matches("FAILED")) {
                     textMsg.setVisibility(View.VISIBLE);
                     textMsg.setText("Failed to Sync");
                     pullDataBtn.setVisibility(View.GONE);
-                }
-                else {
+                } else if (msgPassed.matches("PAUSE")) {
+                    textMsg.setVisibility(View.VISIBLE);
+                    textMsg.setText("Server is currently syncing with desktop.Please try after some time");
+                    pullDataBtn.setVisibility(View.GONE);
+                } else if (msgPassed.matches("PUSH")) {
+                    textMsg.setVisibility(View.GONE);
+                    pullDataBtn.setVisibility(View.VISIBLE);
+                    pullDataBtn.setText("Please Sync Again,Something new added");
+                } else {
                     textMsg.setVisibility(View.VISIBLE);
                     textMsg.setText(msgPassed);
                     pullDataBtn.setVisibility(View.GONE);
