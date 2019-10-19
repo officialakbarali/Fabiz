@@ -1,15 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_margin="10dp"
         tools:context=".Settings">
 
+
+    <LinearLayout
+            android:id="@+id/precision_cont"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/log_out"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Precision"
+                android:textSize="22sp" />
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/pre_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2" />
+
+            <Button
+                    android:id="@+id/pre_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3" />
+        </LinearLayout>
+
+    </LinearLayout>
+
     <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/log_out"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="logout"
+            android:layout_alignParentBottom="true"
             android:text="LogOut" />
 
-</LinearLayout>
+</RelativeLayout>

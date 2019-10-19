@@ -8,10 +8,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
+
+import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 
 public class Settings extends AppCompatActivity {
     Toast toast;
@@ -20,6 +23,48 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        final Button logOut = findViewById(R.id.log_out);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
+
+
+        Button pre2 = findViewById(R.id.pre_2);
+        pre2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final SharedPreferences
+                        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+                final SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                final Intent mainHomeIntent = new Intent(Settings.this, MainHome.class);
+                mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                editor.putInt("decimal_precision", 2);
+                SET_DECIMAL_LENGTH(2);
+                editor.apply();
+                startActivity(mainHomeIntent);
+            }
+        });
+        Button pre3 = findViewById(R.id.pre_3);
+        pre3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final SharedPreferences
+                        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+                final SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                final Intent mainHomeIntent = new Intent(Settings.this, MainHome.class);
+                mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                editor.putInt("decimal_precision", 3);
+                SET_DECIMAL_LENGTH(3);
+                editor.apply();
+                startActivity(mainHomeIntent);
+            }
+        });
     }
 
     @Override
@@ -29,7 +74,7 @@ public class Settings extends AppCompatActivity {
         new ServiceResumeCheck(this);
     }
 
-    public void logout(View view) {
+    public void logout() {
         FabizProvider provider = new FabizProvider(this, false);
         Cursor cursor = provider.query(FabizContract.SyncLog.TABLE_NAME, new String[]{FabizContract.SyncLog._ID}, null, null, null);
         if (cursor.getCount() > 0) {

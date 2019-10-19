@@ -16,4 +16,8 @@ public class RequestItem {
     public String getQty() {
         return qty;
     }
+
+    public void setQty(String qty) {
+        this.qty = qty;
+    }
 }

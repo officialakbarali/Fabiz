@@ -51,8 +51,7 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
         pickItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent pickItemIntent = new Intent(RequestStock.this, Item.class);
-                pickItemIntent.putExtra("fromSalesRequest", true);
+                Intent pickItemIntent = new Intent(RequestStock.this, com.officialakbarali.fabiz.requestStock.RequestItem.class);
                 startActivity(pickItemIntent);
             }
         });

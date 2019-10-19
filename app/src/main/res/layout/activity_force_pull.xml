@@ -22,4 +22,12 @@
             android:layout_margin="10dp"
             android:text="Pull From Server" />
 
+
+    <Button
+            android:layout_margin="10dp"
+            android:id="@+id/log_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LogOut" />
+
 </LinearLayout>

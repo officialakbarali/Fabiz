@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.NetworkError;
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
 
 public class LogIn extends AppCompatActivity {
@@ -128,20 +130,44 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void proceed(String username, String password, int precision, int idOfStaff) {
-        SharedPreferences
+        final SharedPreferences
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("my_username", username);
         editor.putString("my_password", password);
         editor.putBoolean("update_data", false);
         editor.putBoolean("force_pull", true);
         editor.putInt("precision", precision);
         editor.putInt("idOfStaff", idOfStaff);
-        editor.apply();
 
-        Intent mainHomeIntent = new Intent(LogIn.this, ForcePull.class);
+        final Intent mainHomeIntent = new Intent(LogIn.this, ForcePull.class);
         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(mainHomeIntent);
+
+        LinearLayout precisionContainer = findViewById(R.id.precision_cont);
+        LinearLayout logInContainer = findViewById(R.id.log_in_cont);
+        logInContainer.setVisibility(View.GONE);
+        precisionContainer.setVisibility(View.VISIBLE);
+
+        Button pre2 = findViewById(R.id.pre_2);
+        pre2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putInt("decimal_precision", 2);
+                SET_DECIMAL_LENGTH(2);
+                editor.apply();
+                startActivity(mainHomeIntent);
+            }
+        });
+        Button pre3 = findViewById(R.id.pre_3);
+        pre3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.putInt("decimal_precision", 3);
+                SET_DECIMAL_LENGTH(3);
+                editor.apply();
+                startActivity(mainHomeIntent);
+            }
+        });
     }
 
     private void showToast(String msgForToast) {

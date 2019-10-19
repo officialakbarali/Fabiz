@@ -3,6 +3,7 @@ package com.officialakbarali.fabiz.data;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,10 +32,16 @@ public final class CommonInformation {
     }
 
     public static String TruncateDecimal(String value) {
-        return new BigDecimal(value)
+        BigDecimal truncateValue = new BigDecimal(value)
                 .setScale(DECIMAL_LENGTH, RoundingMode.DOWN)
-                .stripTrailingZeros()
-                .toPlainString();
+                .stripTrailingZeros();
+        DecimalFormat df;
+        if (DECIMAL_LENGTH == 2) {
+            df = new DecimalFormat("#0.00");
+        } else {
+            df = new DecimalFormat("#0.000");
+        }
+        return df.format(truncateValue);
     }
 
     public static int GET_PHONE_NUMBER_LENGTH() {

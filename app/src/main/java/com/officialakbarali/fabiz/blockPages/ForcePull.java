@@ -101,6 +101,26 @@ public class ForcePull extends AppCompatActivity {
                 }
             }
         });
+
+        final Button logOut = findViewById(R.id.log_out);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences
+                        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ForcePull.this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("my_username", null);
+                editor.putString("my_password", null);
+                editor.putBoolean("update_data", false);
+                editor.putBoolean("force_pull", false);
+                editor.apply();
+
+                Intent logIntent = new Intent(ForcePull.this, LogIn.class);
+                logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(logIntent);
+            }
+        });
     }
 
     @Override

@@ -30,7 +30,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,10 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initialSetup() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        //TODO SET THIS ON SETTINGS
-        int DECIMAL_PRECISION = sharedPreferences.getInt("decimal_precision", 3);
-        SET_DECIMAL_LENGTH(DECIMAL_PRECISION);
 
         boolean appVersionProblem = sharedPreferences.getBoolean("version", false);
         if (appVersionProblem) {

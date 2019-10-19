@@ -12,7 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,14 +24,14 @@ import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.item.adapter.ItemAdapter;
 import com.officialakbarali.fabiz.item.data.ItemDetail;
-import com.officialakbarali.fabiz.requestStock.data.RequestItem;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.customer.sale.Sales.cartItems;
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
-import static com.officialakbarali.fabiz.requestStock.RequestStock.itemsForRequest;
+
 
 public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOnClickListener {
     RecyclerView recyclerView;
@@ -40,7 +40,6 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
 
     private boolean FOR_SALE = false;
-    private boolean FOR_ITEM_REQUEST = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         setContentView(R.layout.activity_item);
 
         FOR_SALE = getIntent().getBooleanExtra("fromSales", false);
-        FOR_ITEM_REQUEST = getIntent().getBooleanExtra("fromSalesRequest", false);
 
         Button searchButton = findViewById(R.id.search_item_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -85,66 +83,16 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
     public void onClick(ItemDetail itemDetail) {
         if (FOR_SALE) {
             enterQtyDialogue(itemDetail);
-        } else if (FOR_ITEM_REQUEST) {
-            dialogueForItemRequest(itemDetail);
         }
     }
 
-    private void dialogueForItemRequest(final ItemDetail itemDetail) {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.pop_up_customer_sale_item_qty);
-
-        final TextView labelText = dialog.findViewById(R.id.cust_sale_add_item_label_pop);
-        labelText.setText(itemDetail.getName() + " / " + itemDetail.getBrand() + " / " +
-                itemDetail.getCategory());
-
-        //WE DON'T NEED THESE VIEWS
-        LinearLayout priceCont = dialog.findViewById(R.id.cust_sale_add_item_cont_price_pop);
-        priceCont.setVisibility(View.GONE);
-        LinearLayout totalCont = dialog.findViewById(R.id.cust_sale_add_item_cont_total_pop);
-        totalCont.setVisibility(View.GONE);
-        //*************************
-
-
-        final EditText quantityText = dialog.findViewById(R.id.cust_sale_add_item_qty);
-        quantityText.setText("1");
-
-
-        Button addItemButton = dialog.findViewById(R.id.cust_sale_add_item_add);
-        addItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String qtyS = quantityText.getText().toString().trim();
-
-                if (qtyS.matches("") || qtyS.matches("0")) {
-                    showToast("Please enter valid QTY");
-                } else {
-                    itemsForRequest.add(new RequestItem(itemDetail.getName() + " / " + itemDetail.getBrand() + " / " +
-                            itemDetail.getCategory(), qtyS));
-                    dialog.dismiss();
-                    finish();
-                }
-            }
-        });
-
-        Button cancelDialogue = dialog.findViewById(R.id.cust_sale_add_item_cancel);
-        cancelDialogue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
 
     private void enterQtyDialogue(final ItemDetail itemDetail) {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.pop_up_customer_sale_item_qty);
 
         final TextView labelText = dialog.findViewById(R.id.cust_sale_add_item_label_pop);
-        labelText.setText(itemDetail.getName() + " / " + itemDetail.getBrand() + " / " +
-                itemDetail.getCategory());
+        labelText.setText(String.format("%s / %s / %s", itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory()));
 
         final EditText priceText = dialog.findViewById(R.id.cust_sale_add_item_price);
         priceText.setText(TruncateDecimal(itemDetail.getPrice() + ""));
@@ -215,7 +163,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {
-                    showToast("Please enter valid number");
+                    showToast();
                 }
                 dialog.dismiss();
             }
@@ -271,11 +219,11 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         return caseSelection + " LIKE ?";
     }
 
-    private void showToast(String msgForToast) {
+    private void showToast() {
         if (toast != null) {
             toast.cancel();
         }
-        toast = Toast.makeText(this, msgForToast, Toast.LENGTH_LONG);
+        toast = Toast.makeText(this, "Please enter valid number", Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -289,11 +237,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 int quantityToCart = Integer.parseInt(s2);
                 double totalToCart = Double.parseDouble(s3);
 
-                if (priceToCart > 0 && quantityToCart > 0 && totalToCart > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return priceToCart > 0 && quantityToCart > 0 && totalToCart > 0;
             } catch (Error e) {
                 return false;
             }
