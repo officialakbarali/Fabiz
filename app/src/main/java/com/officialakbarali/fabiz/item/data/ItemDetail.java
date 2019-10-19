@@ -1,13 +1,13 @@
 package com.officialakbarali.fabiz.item.data;
 
 public class ItemDetail {
-    private int id;
+    private String id;
     private String name;
     private String brand;
     private String category;
     private double price;
 
-    public ItemDetail(int id, String name, String brand, String catagory, double price) {
+    public ItemDetail(String id, String name, String brand, String catagory, double price) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -15,7 +15,7 @@ public class ItemDetail {
         this.price = price;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

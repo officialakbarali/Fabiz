@@ -123,7 +123,7 @@ public class RequestItem extends AppCompatActivity implements PickItemAdapter.It
 
         itemList = new ArrayList<>();
         while (iCursor.moveToNext()) {
-            itemList.add(new PickItemData(iCursor.getInt(iCursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
+            itemList.add(new PickItemData(iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_NAME)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_BRAND)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_CATEGORY)),
@@ -132,6 +132,7 @@ public class RequestItem extends AppCompatActivity implements PickItemAdapter.It
         }
 
         if (fullItem == null) {
+            setPreviousQty();
             fullItem = itemList;
         } else {
             makeQty();
@@ -180,5 +181,21 @@ public class RequestItem extends AppCompatActivity implements PickItemAdapter.It
         }
         toast = Toast.makeText(this, msgForToast, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    private void setPreviousQty() {
+        for (int i = 0; i < itemList.size(); i++) {
+            PickItemData itemDetail = itemList.get(i);
+            String itemNameToUpdate = itemDetail.getName() + " / " + itemDetail.getBrand() + " / " +
+                    itemDetail.getCategory();
+            for (int j = 0; j < itemsForRequest.size(); j++) {
+                com.officialakbarali.fabiz.requestStock.data.RequestItem checkItem = itemsForRequest.get(j);
+                if (checkItem.getName().matches(itemNameToUpdate)) {
+                    itemDetail.setQty(Integer.parseInt(checkItem.getQty()));
+                    itemList.set(i, itemDetail);
+                    break;
+                }
+            }
+        }
     }
 }

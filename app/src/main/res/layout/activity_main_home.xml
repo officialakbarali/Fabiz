@@ -49,12 +49,6 @@
             android:text="Settings"
             android:textAllCaps="false" />
 
-    <Button
-            android:id="@+id/dummy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/settings"
-            android:layout_centerHorizontal="true"
-            android:text="Add Dummy Data" />
+
 
 </RelativeLayout>

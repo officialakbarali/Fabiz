@@ -28,7 +28,7 @@ import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToSea
 
 public class PaymentReview extends AppCompatActivity {
 
-    int custId;
+    String custId;
     PaymentReviewAdapter adapter;
 
     @Override
@@ -36,7 +36,7 @@ public class PaymentReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_review);
 
-        custId = Integer.parseInt(getIntent().getStringExtra("id"));
+        custId = getIntent().getStringExtra("id");
 
         RecyclerView recyclerView = findViewById(R.id.payment_review_recycler);
         adapter = new PaymentReviewAdapter(this);
@@ -101,10 +101,10 @@ public class PaymentReview extends AppCompatActivity {
                 null, null, null, null);
         while (paymentDetailCursor.moveToNext()) {
             details.add(new PaymentReviewDetail(
-                    paymentDetailCursor.getInt(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment._ID)),
+                    paymentDetailCursor.getString(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment._ID)),
                     paymentDetailCursor.getString(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_DATE)),
                     paymentDetailCursor.getDouble(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_AMOUNT)),
-                    paymentDetailCursor.getInt(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_BILL_ID))
+                    paymentDetailCursor.getString(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_BILL_ID))
             ));
         }
         adapter.swapAdapter(details);

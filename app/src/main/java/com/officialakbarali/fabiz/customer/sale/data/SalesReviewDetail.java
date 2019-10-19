@@ -1,7 +1,7 @@
 package com.officialakbarali.fabiz.customer.sale.data;
 
 public class SalesReviewDetail {
-    private int id;
+    private String id;
     private String date;
     private int qty;
     private double total;
@@ -10,7 +10,7 @@ public class SalesReviewDetail {
     private double returnedAmount;
     private double currentTotal;
 
-    public SalesReviewDetail(int id, String date, int qty, double total, double paid, double due, double returnedAmount, double currentTotal) {
+    public SalesReviewDetail(String id, String date, int qty, double total, double paid, double due, double returnedAmount, double currentTotal) {
         this.id = id;
         this.date = date;
         this.qty = qty;
@@ -21,7 +21,7 @@ public class SalesReviewDetail {
         this.currentTotal = currentTotal;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

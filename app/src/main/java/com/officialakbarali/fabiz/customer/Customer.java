@@ -136,7 +136,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
 
         List<CustomerDetail> customerList = new ArrayList<>();
         while (custCursor.moveToNext()) {
-            customerList.add(new CustomerDetail(custCursor.getInt(custCursor.getColumnIndexOrThrow(FabizContract.Customer._ID)),
+            customerList.add(new CustomerDetail(custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer._ID)),
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_NAME)),
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_PHONE)),
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_EMAIL)),

@@ -1,14 +1,14 @@
 package com.officialakbarali.fabiz.customer.data;
 
 public class CustomerDetail {
-    private int id;
+    private String id;
     private String name;
     private String phone;
     private String email;
     private String address;
     private String day;
 
-    public CustomerDetail(int id, String name, String phone, String email, String address, String day) {
+    public CustomerDetail(String id, String name, String phone, String email, String address, String day) {
         this.id = id;
         this.name = name;
         this.phone = phone;
@@ -17,7 +17,7 @@ public class CustomerDetail {
         this.day = day;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

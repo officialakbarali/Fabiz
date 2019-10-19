@@ -1,7 +1,7 @@
 package com.officialakbarali.fabiz.requestStock.data;
 
 public class PickItemData {
-    private int id;
+    private String id;
     private String name;
     private String brand;
     private String category;
@@ -9,7 +9,7 @@ public class PickItemData {
     private int qty;
 
 
-    public PickItemData(int id, String name, String brand, String catagory, double price) {
+    public PickItemData(String id, String name, String brand, String catagory, double price) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -18,7 +18,7 @@ public class PickItemData {
         this.qty = 0;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

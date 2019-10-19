@@ -159,7 +159,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
-                    cartItems.add(new Cart(0, 0, itemDetail.getId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
+                    cartItems.add(new Cart("", "", itemDetail.getId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {
@@ -189,7 +189,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
         List<ItemDetail> itemList = new ArrayList<>();
         while (iCursor.moveToNext()) {
-            itemList.add(new ItemDetail(iCursor.getInt(iCursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
+            itemList.add(new ItemDetail(iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_NAME)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_BRAND)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_CATEGORY)),

@@ -72,7 +72,7 @@ public class AddCustomer extends AppCompatActivity {
                 int idOfCuustomerToInsert = fabizProvider.getIdForInsert(FabizContract.Customer.TABLE_NAME);
 
 
-                values.put(FabizContract.Customer._ID, idOfCuustomerToInsert + "");
+                values.put(FabizContract.Customer._ID, idOfCuustomerToInsert);
                 values.put(FabizContract.Customer.COLUMN_BARCODE, idOfCuustomerToInsert + "");
                 values.put(FabizContract.Customer.COLUMN_DAY, selectedDay);//String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)));
                 values.put(FabizContract.Customer.COLUMN_NAME, name);
@@ -147,6 +147,14 @@ public class AddCustomer extends AppCompatActivity {
         return email.matches("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$");
     }
 
+
+    private boolean validateVatNumber(String passedString) {
+        if (passedString.matches("NA")) return true;
+        Pattern pattern = Pattern.compile("[^A-Za-z0-9 ._-]");
+        Matcher matcher = pattern.matcher(passedString);
+        return !matcher.find();
+    }
+
     private boolean validateCommonInformation(String passedString) {
         if (passedString.matches("NA")) return false;
         Pattern pattern = Pattern.compile("[^A-Za-z0-9 ._-]");
@@ -162,7 +170,7 @@ public class AddCustomer extends AppCompatActivity {
                     if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_ADDRESS))) {
                         if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_SHOP_NAME))) {
                             if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_CR_NO))) {
-                                if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_VAT_NO))) {
+                                if (validateVatNumber(values.getAsString(FabizContract.Customer.COLUMN_VAT_NO))) {
                                     if (validatePhoneNumber(values.getAsString(FabizContract.Customer.COLUMN_TELEPHONE))) {
                                         return true;
                                     } else {
@@ -200,8 +208,8 @@ public class AddCustomer extends AppCompatActivity {
 
             if (idOfCustomer > 0) {
                 List<SyncLogDetail> syncLogList = new ArrayList<>();
-                syncLogList.add(new SyncLogDetail(idOfCustomer, FabizContract.Customer.TABLE_NAME, OP_INSERT));
-                new SetupSync(this, syncLogList, fabizProvider, "Successfully Saved. Id:" + idOfCustomer, OP_CODE_ADD_CUSTOMER);
+                syncLogList.add(new SyncLogDetail(values.get(FabizContract.Customer._ID) + "", FabizContract.Customer.TABLE_NAME, OP_INSERT));
+                new SetupSync(this, syncLogList, fabizProvider, "Successfully Saved. Id:" + values.get(FabizContract.Customer._ID), OP_CODE_ADD_CUSTOMER);
                 finish();
             } else {
                 fabizProvider.finishTransaction();

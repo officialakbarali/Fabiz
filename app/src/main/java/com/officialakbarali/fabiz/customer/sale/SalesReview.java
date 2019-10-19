@@ -32,7 +32,7 @@ import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToSea
 
 public class SalesReview extends AppCompatActivity implements SalesReviewAdapter.SalesReviewAdapterOnClickListener {
     SalesReviewAdapter salesReviewAdapter;
-    private int custId;
+    private String custId;
 
     private boolean FROM_SALERS_RETURN = false;
 
@@ -42,7 +42,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         setContentView(R.layout.activity_sales_review);
 
         FROM_SALERS_RETURN = getIntent().getBooleanExtra("fromSalesReturn", false);
-        custId = Integer.parseInt(getIntent().getStringExtra("id"));
+        custId =getIntent().getStringExtra("id");
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
 
@@ -90,7 +90,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
 
     @Override
     public void onClick(SalesReviewDetail salesReviewDetail) {
-        int idOfBill = salesReviewDetail.getId();
+        String idOfBill = salesReviewDetail.getId();
         Intent salesDetaiiilIntent = new Intent(SalesReview.this, com.officialakbarali.fabiz.customer.sale.SalesReviewDetail.class);
         salesDetaiiilIntent.putExtra("custId", custId + "");
         salesDetaiiilIntent.putExtra("billId", idOfBill + "");
@@ -141,7 +141,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         List<SalesReviewDetail> salesReviewList = new ArrayList<>();
 
         while (cursorBills.moveToNext()) {
-            salesReviewList.add(new SalesReviewDetail(cursorBills.getInt(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail._ID)),
+            salesReviewList.add(new SalesReviewDetail(cursorBills.getString(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail._ID)),
                     cursorBills.getString(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)),
                     cursorBills.getInt(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)),
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)),

@@ -84,7 +84,7 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         }
     }
 
-    private void toggleCurrentDay(int idToOperate, boolean add) {
+    private void toggleCurrentDay(String idToOperate, boolean add) {
         ContentValues updateValues = new ContentValues();
         if (add) {
             updateValues.put(FabizContract.Customer.COLUMN_DAY, TODAY);
@@ -116,7 +116,7 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
 
         List<CustomerDetail> customerList = new ArrayList<>();
         while (custCursor.moveToNext()) {
-            customerList.add(new CustomerDetail(custCursor.getInt(custCursor.getColumnIndexOrThrow(FabizContract.Customer._ID)),
+            customerList.add(new CustomerDetail(custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer._ID)),
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_NAME)),
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_PHONE)),
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_EMAIL)),

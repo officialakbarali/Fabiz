@@ -28,7 +28,7 @@ import java.util.List;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToSearchFormat;
 
 public class SalesReturnReview extends AppCompatActivity {
-    private int custId;
+    private String custId;
 
     SalesReturnReviewAdapter reviewAdapter;
 
@@ -37,7 +37,7 @@ public class SalesReturnReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_return_review);
 
-        custId = Integer.parseInt(getIntent().getStringExtra("id"));
+        custId = getIntent().getStringExtra("id");
 
         RecyclerView recyclerView = findViewById(R.id.sales_return_review_recycler);
         reviewAdapter = new SalesReturnReviewAdapter(this);
@@ -100,7 +100,7 @@ public class SalesReturnReview extends AppCompatActivity {
                 FabizContract.SalesReturn.FULL_COLUMN_TOTAL
         };
 
-        String selection = FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID + " = " + FabizContract.Cart.FULL_COLUMN_ITEM_ID  + " AND " + FabizContract.BillDetail.FULL_COLUMN_CUST_ID + "=?";
+        String selection = FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID + " = " + FabizContract.Cart.FULL_COLUMN_ITEM_ID + " AND " + FabizContract.BillDetail.FULL_COLUMN_CUST_ID + "=?";
 
         String[] selectionArg;
 
@@ -116,10 +116,10 @@ public class SalesReturnReview extends AppCompatActivity {
         List<SalesReturnReviewItem> salesReturnReviewItems = new ArrayList<>();
         while (returnCursor.moveToNext()) {
             salesReturnReviewItems.add(new SalesReturnReviewItem(
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn._ID)),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_BILL_ID)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn._ID)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_BILL_ID)),
                     returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_DATE)),
-                    returnCursor.getInt(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)),
+                    returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)),
                     returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_NAME)),
                     returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BRAND)),
                     returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_CATEGORY)),

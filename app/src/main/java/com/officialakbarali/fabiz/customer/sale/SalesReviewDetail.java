@@ -47,7 +47,7 @@ import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_UPDATE;
 
 public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter.SalesAdapterOnClickListener {
     private Toast toast;
-    private int custId, billId;
+    private String custId, billId;
 
     private TextView dateView, totQtyView, totalView, billIdView;
     FabizProvider fabizProvider;
@@ -81,8 +81,8 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         totalView = findViewById(R.id.cust_sale_total);
         dateView = findViewById(R.id.cust_sale_time);
 
-        custId = Integer.parseInt(getIntent().getStringExtra("custId"));
-        billId = Integer.parseInt(getIntent().getStringExtra("billId"));
+        custId = getIntent().getStringExtra("custId");
+        billId = getIntent().getStringExtra("billId");
 
         RecyclerView recyclerView = findViewById(R.id.cust_sale_recycler);
 
@@ -142,9 +142,9 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         while (billItemsCursor.moveToNext()) {
             cartItems.add(new Cart(
-                    billItemsCursor.getInt(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart._ID)),
-                    billItemsCursor.getInt(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BILL_ID)),
-                    billItemsCursor.getInt(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)),
+                    billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart._ID)),
+                    billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BILL_ID)),
+                    billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_NAME)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BRAND)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_CATEGORY)),
@@ -287,7 +287,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         }
     }
 
-    private ContentValues validateAndReturnContentValues(String dateR, int itemIdR, String qtyR, String priceR, String totalR, int maxLimitOfReturn) {
+    private ContentValues validateAndReturnContentValues(String dateR, String itemIdR, String qtyR, String priceR, String totalR, int maxLimitOfReturn) {
         if (conditionsForDialogue(priceR, qtyR, totalR, maxLimitOfReturn)) {
             int idForInsert = fabizProvider.getIdForInsert(FabizContract.SalesReturn.TABLE_NAME);
 
@@ -403,7 +403,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
             if (idOfSalesReturn > 0) {
 
-                syncLogList.add(new SyncLogDetail(idOfSalesReturn, FabizContract.SalesReturn.TABLE_NAME, OP_INSERT));
+                syncLogList.add(new SyncLogDetail(values.get(FabizContract.SalesReturn._ID) + "", FabizContract.SalesReturn.TABLE_NAME, OP_INSERT));
 
                 Cursor amountUpdateCursor = saveProvider.query(FabizContract.BillDetail.TABLE_NAME,
                         new String[]{FabizContract.BillDetail.COLUMN_CURRENT_TOTAL,
@@ -448,7 +448,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                             int retQtyUpdate = returnUpdateToBillCursor.getInt(
                                     returnUpdateToBillCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY));
 
-                            int idOfRowReturn = returnUpdateToBillCursor.getInt(
+                            String idOfRowReturn = returnUpdateToBillCursor.getString(
                                     returnUpdateToBillCursor.getColumnIndexOrThrow(FabizContract.Cart._ID));
 
                             retQtyUpdate += values.getAsInteger(FabizContract.SalesReturn.COLUMN_QTY);
@@ -461,7 +461,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                                     new String[]{idOfRowReturn + ""});
 
                             if (upReturnAffectedRaw > 0) {
-                                syncLogList.add(new SyncLogDetail(idOfRowReturn, FabizContract.Cart.TABLE_NAME, OP_UPDATE));
+                                syncLogList.add(new SyncLogDetail(idOfRowReturn + "", FabizContract.Cart.TABLE_NAME, OP_UPDATE));
                                 new SetupSync(this, syncLogList, saveProvider, "Successfully Returned", OP_CODE_SALE_RETURN);
 
                                 //END HERE *****************************************************

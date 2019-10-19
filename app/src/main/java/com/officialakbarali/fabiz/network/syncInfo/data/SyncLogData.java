@@ -3,13 +3,13 @@ package com.officialakbarali.fabiz.network.syncInfo.data;
 public class SyncLogData {
 
     private int id;
-    private long rawId;
+    private String rawId;
     private String tableName;
     private String operation;
     private String opCode;
     private String timestamp;
 
-    public SyncLogData(int id, long rawId, String tableName, String operation, String opCode, String timestamp) {
+    public SyncLogData(int id, String rawId, String tableName, String operation, String opCode, String timestamp) {
         this.id = id;
         this.rawId = rawId;
         this.tableName = tableName;
@@ -19,7 +19,7 @@ public class SyncLogData {
     }
 
 
-    public long getRawId() {
+    public String getRawId() {
         return rawId;
     }
 

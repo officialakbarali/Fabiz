@@ -162,10 +162,10 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
         if (cursor.moveToNext()) {
             if (FOR_WHO == FOR_CUSTOMER) {
                 showCustIntent = new Intent(this, Home.class);
-                showCustIntent.putExtra("id", cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.Customer._ID)) + "");
+                showCustIntent.putExtra("id", cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Customer._ID)));
                 finish();
             } else {
-                enterQtyDialogue(new ItemDetail(cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
+                enterQtyDialogue(new ItemDetail(cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_NAME)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_BRAND)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_CATEGORY)),
@@ -260,7 +260,7 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
-                    cartItems.add(new Cart(0, 0, itemDetail.getId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
+                    cartItems.add(new Cart("0", "0", itemDetail.getId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {

@@ -1,18 +1,18 @@
 package com.officialakbarali.fabiz.network.syncInfo.data;
 
 public class SyncLogDetail {
-    private long rawId;
+    private String rawId;
     private String tableName;
     private String operation;
 
-    public SyncLogDetail(long rawId, String tableName, String operation) {
+    public SyncLogDetail(String rawId, String tableName, String operation) {
         this.rawId = rawId;
         this.tableName = tableName;
         this.operation = operation;
     }
 
 
-    public long getRawId() {
+    public String getRawId() {
         return rawId;
     }
 

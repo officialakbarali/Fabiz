@@ -1,10 +1,10 @@
 package com.officialakbarali.fabiz.customer.sale.data;
 
 public class SalesReturnReviewItem {
-    private int id;
-    private int billId;
+    private String id;
+    private String billId;
     private String date;
-    private int itemId;
+    private String itemId;
     private String name;
     private String brand;
     private String catagory;
@@ -12,7 +12,7 @@ public class SalesReturnReviewItem {
     private int qty;
     private double total;
 
-    public SalesReturnReviewItem(int id, int billId, String date, int itemId, String name, String brand, String catagory, double price, int qty, double total) {
+    public SalesReturnReviewItem(String id, String billId, String date, String itemId, String name, String brand, String catagory, double price, int qty, double total) {
         this.id = id;
         this.billId = billId;
         this.date = date;
@@ -25,11 +25,11 @@ public class SalesReturnReviewItem {
         this.total = total;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public int getBillId() {
+    public String getBillId() {
         return billId;
     }
 
@@ -37,7 +37,7 @@ public class SalesReturnReviewItem {
         return date;
     }
 
-    public int getItemId() {
+    public String getItemId() {
         return itemId;
     }
 

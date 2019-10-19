@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 
 public class Home extends AppCompatActivity {
-    private int custId;
+    private String custId;
     private String custName;
     private String custPhone;
     private String custEmail;
@@ -45,7 +45,7 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        custId = Integer.parseInt(getIntent().getStringExtra("id"));
+        custId = getIntent().getStringExtra("id");
 
         provider = new FabizProvider(this, false);
 

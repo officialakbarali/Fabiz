@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import static com.officialakbarali.fabiz.data.CommonInformation.getNumberFromDayName;
 import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
 import static com.officialakbarali.fabiz.network.syncInfo.NotificationFrame.CHANNEL_ID;
 
@@ -199,8 +200,8 @@ public class ForcePullService extends Service {
                         if (insertCart(jsonObject)) {
                             if (insertSalesReturn(jsonObject)) {
                                 if (insertPayment(jsonObject)) {
-                                   sendConfirmRequest();
-                                   return;
+                                    sendConfirmRequest();
+                                    return;
                                 }
                             }
                         }
@@ -215,11 +216,11 @@ public class ForcePullService extends Service {
         stopSetUp("FAILED");
     }
 
-    private void sendConfirmRequest(){
+    private void sendConfirmRequest() {
         provider.successfulTransaction();
         provider.finishTransaction();
 
-        Log.i("SyncLog","Simple Request");
+        Log.i("SyncLog", "Simple Request");
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);
@@ -252,7 +253,8 @@ public class ForcePullService extends Service {
                             case "PUSH": {
                                 stopSetUp("PUSH");
                                 break;
-                            } case "FAIL": {
+                            }
+                            case "FAIL": {
                                 stopSetUp("FAILED");
                                 break;
                             }
@@ -299,16 +301,20 @@ public class ForcePullService extends Service {
             JSONObject obj = itemArray.getJSONObject(i);
 
             ContentValues values = new ContentValues();
-            values.put(FabizContract.Item._ID, obj.getString(FabizContract.Item.TABLE_NAME + FabizContract.Item._ID));
+
+            try {
+                values.put(FabizContract.Item._ID, obj.getInt(FabizContract.Item.TABLE_NAME + FabizContract.Item._ID));
+            } catch (NumberFormatException | JSONException | NullPointerException nfe) {
+                values.put(FabizContract.Item._ID, obj.getString(FabizContract.Item.TABLE_NAME + FabizContract.Item._ID));
+            }
+
             values.put(FabizContract.Item.COLUMN_BARCODE, obj.getString(FabizContract.Item.COLUMN_BARCODE));
             values.put(FabizContract.Item.COLUMN_NAME, obj.getString(FabizContract.Item.COLUMN_NAME));
             values.put(FabizContract.Item.COLUMN_BRAND, obj.getString(FabizContract.Item.COLUMN_BRAND));
             values.put(FabizContract.Item.COLUMN_CATEGORY, obj.getString(FabizContract.Item.COLUMN_CATEGORY));
             values.put(FabizContract.Item.COLUMN_PRICE, obj.getString(FabizContract.Item.COLUMN_PRICE));
-            long insertId = provider.insert(FabizContract.Item.TABLE_NAME, values);
-            if (insertId < 0) {
-                thisSuccess = false;
-            }
+            provider.insert(FabizContract.Item.TABLE_NAME, values);
+
         }
         return thisSuccess;
     }
@@ -321,21 +327,28 @@ public class ForcePullService extends Service {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
                 ContentValues values = new ContentValues();
-                values.put(FabizContract.Customer._ID, obj.getString(FabizContract.Customer.TABLE_NAME + FabizContract.Customer._ID));
+
+                try {
+                    values.put(FabizContract.Customer._ID, obj.getInt(FabizContract.Customer.TABLE_NAME + FabizContract.Customer._ID));
+                } catch (NumberFormatException | NullPointerException | JSONException e) {
+                    values.put(FabizContract.Customer._ID, obj.getString(FabizContract.Customer.TABLE_NAME + FabizContract.Customer._ID));
+                }
+
                 values.put(FabizContract.Customer.COLUMN_BARCODE, obj.getString(FabizContract.Customer.COLUMN_BARCODE));
                 values.put(FabizContract.Customer.COLUMN_CR_NO, obj.getString(FabizContract.Customer.COLUMN_CR_NO));
                 values.put(FabizContract.Customer.COLUMN_SHOP_NAME, obj.getString(FabizContract.Customer.COLUMN_SHOP_NAME));
                 values.put(FabizContract.Customer.COLUMN_NAME, obj.getString(FabizContract.Customer.COLUMN_NAME));
-                values.put(FabizContract.Customer.COLUMN_DAY, obj.getString(FabizContract.Customer.COLUMN_DAY));
+
+                int numberOfDay = getNumberFromDayName(obj.getString(FabizContract.Customer.COLUMN_DAY));
+
+                values.put(FabizContract.Customer.COLUMN_DAY, numberOfDay + "");
                 values.put(FabizContract.Customer.COLUMN_PHONE, obj.getString(FabizContract.Customer.COLUMN_PHONE));
                 values.put(FabizContract.Customer.COLUMN_EMAIL, obj.getString(FabizContract.Customer.COLUMN_EMAIL));
                 values.put(FabizContract.Customer.COLUMN_ADDRESS, obj.getString(FabizContract.Customer.COLUMN_ADDRESS));
                 values.put(FabizContract.Customer.COLUMN_TELEPHONE, obj.getString(FabizContract.Customer.COLUMN_TELEPHONE));
                 values.put(FabizContract.Customer.COLUMN_VAT_NO, obj.getString(FabizContract.Customer.COLUMN_VAT_NO));
-                long insertId = provider.insert(FabizContract.Customer.TABLE_NAME, values);
-                if (insertId < 0) {
-                    thisSuccess = false;
-                }
+                provider.insert(FabizContract.Customer.TABLE_NAME, values);
+
             }
         }
         return thisSuccess;
@@ -349,7 +362,14 @@ public class ForcePullService extends Service {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
                 ContentValues values = new ContentValues();
-                values.put(FabizContract.BillDetail._ID, obj.getString(FabizContract.BillDetail.TABLE_NAME + FabizContract.BillDetail._ID));
+
+                try {
+                    values.put(FabizContract.BillDetail._ID, obj.getInt(FabizContract.BillDetail.TABLE_NAME + FabizContract.BillDetail._ID));
+                } catch (NumberFormatException | JSONException | NullPointerException nfe) {
+                    values.put(FabizContract.BillDetail._ID, obj.getString(FabizContract.BillDetail.TABLE_NAME + FabizContract.BillDetail._ID));
+                }
+
+
                 values.put(FabizContract.BillDetail.COLUMN_DATE, obj.getString(FabizContract.BillDetail.COLUMN_DATE));
                 values.put(FabizContract.BillDetail.COLUMN_CUST_ID, obj.getString(FabizContract.BillDetail.COLUMN_CUST_ID));
                 values.put(FabizContract.BillDetail.COLUMN_QTY, obj.getString(FabizContract.BillDetail.COLUMN_QTY));
@@ -358,10 +378,8 @@ public class ForcePullService extends Service {
                 values.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, obj.getString(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL));
                 values.put(FabizContract.BillDetail.COLUMN_PAID, obj.getString(FabizContract.BillDetail.COLUMN_PAID));
                 values.put(FabizContract.BillDetail.COLUMN_DUE, obj.getString(FabizContract.BillDetail.COLUMN_DUE));
-                long insertId = provider.insert(FabizContract.BillDetail.TABLE_NAME, values);
-                if (insertId < 0) {
-                    thisSuccess = false;
-                }
+                provider.insert(FabizContract.BillDetail.TABLE_NAME, values);
+
             }
         }
         return thisSuccess;
@@ -375,7 +393,14 @@ public class ForcePullService extends Service {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
                 ContentValues values = new ContentValues();
-                values.put(FabizContract.Cart._ID, obj.getString(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID));
+
+                try {
+                    values.put(FabizContract.Cart._ID, obj.getInt(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID));
+                } catch (NumberFormatException | JSONException | NullPointerException nfe) {
+                    values.put(FabizContract.Cart._ID, obj.getString(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID));
+                }
+
+
                 values.put(FabizContract.Cart.COLUMN_BILL_ID, obj.getString(FabizContract.Cart.COLUMN_BILL_ID));
                 values.put(FabizContract.Cart.COLUMN_ITEM_ID, obj.getString(FabizContract.Cart.COLUMN_ITEM_ID));
                 values.put(FabizContract.Cart.COLUMN_NAME, obj.getString(FabizContract.Cart.COLUMN_NAME));
@@ -385,10 +410,8 @@ public class ForcePullService extends Service {
                 values.put(FabizContract.Cart.COLUMN_QTY, obj.getString(FabizContract.Cart.COLUMN_QTY));
                 values.put(FabizContract.Cart.COLUMN_TOTAL, obj.getString(FabizContract.Cart.COLUMN_TOTAL));
                 values.put(FabizContract.Cart.COLUMN_RETURN_QTY, obj.getString(FabizContract.Cart.COLUMN_RETURN_QTY));
-                long insertId = provider.insert(FabizContract.Cart.TABLE_NAME, values);
-                if (insertId < 0) {
-                    thisSuccess = false;
-                }
+                provider.insert(FabizContract.Cart.TABLE_NAME, values);
+
             }
         }
         return thisSuccess;
@@ -402,17 +425,22 @@ public class ForcePullService extends Service {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
                 ContentValues values = new ContentValues();
-                values.put(FabizContract.SalesReturn._ID, obj.getString(FabizContract.SalesReturn.TABLE_NAME + FabizContract.SalesReturn._ID));
+
+                try {
+                    values.put(FabizContract.SalesReturn._ID, obj.getInt(FabizContract.SalesReturn.TABLE_NAME + FabizContract.SalesReturn._ID));
+                } catch (NumberFormatException | JSONException | NullPointerException nfe) {
+                    values.put(FabizContract.SalesReturn._ID, obj.getString(FabizContract.SalesReturn.TABLE_NAME + FabizContract.SalesReturn._ID));
+                }
+
+
                 values.put(FabizContract.SalesReturn.COLUMN_DATE, obj.getString(FabizContract.SalesReturn.COLUMN_DATE));
                 values.put(FabizContract.SalesReturn.COLUMN_BILL_ID, obj.getString(FabizContract.SalesReturn.COLUMN_BILL_ID));
                 values.put(FabizContract.SalesReturn.COLUMN_ITEM_ID, obj.getString(FabizContract.SalesReturn.COLUMN_ITEM_ID));
                 values.put(FabizContract.SalesReturn.COLUMN_PRICE, obj.getString(FabizContract.SalesReturn.COLUMN_PRICE));
                 values.put(FabizContract.SalesReturn.COLUMN_QTY, obj.getString(FabizContract.SalesReturn.COLUMN_QTY));
                 values.put(FabizContract.SalesReturn.COLUMN_TOTAL, obj.getString(FabizContract.SalesReturn.COLUMN_TOTAL));
-                long insertId = provider.insert(FabizContract.SalesReturn.TABLE_NAME, values);
-                if (insertId < 0) {
-                    thisSuccess = false;
-                }
+                provider.insert(FabizContract.SalesReturn.TABLE_NAME, values);
+
             }
         }
         return thisSuccess;
@@ -426,14 +454,17 @@ public class ForcePullService extends Service {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
                 ContentValues values = new ContentValues();
-                values.put(FabizContract.Payment._ID, obj.getString(FabizContract.Payment.TABLE_NAME + FabizContract.Payment._ID));
+
+                try {
+                    values.put(FabizContract.Payment._ID, obj.getInt(FabizContract.Payment.TABLE_NAME + FabizContract.Payment._ID));
+                } catch (NumberFormatException | JSONException | NullPointerException nfe) {
+                    values.put(FabizContract.Payment._ID, obj.getString(FabizContract.Payment.TABLE_NAME + FabizContract.Payment._ID));
+                }
                 values.put(FabizContract.Payment.COLUMN_BILL_ID, obj.getString(FabizContract.Payment.COLUMN_BILL_ID));
                 values.put(FabizContract.Payment.COLUMN_DATE, obj.getString(FabizContract.Payment.COLUMN_DATE));
                 values.put(FabizContract.Payment.COLUMN_AMOUNT, obj.getString(FabizContract.Payment.COLUMN_AMOUNT));
-                long insertId = provider.insert(FabizContract.Payment.TABLE_NAME, values);
-                if (insertId < 0) {
-                    thisSuccess = false;
-                }
+                provider.insert(FabizContract.Payment.TABLE_NAME, values);
+
             }
         }
         return thisSuccess;

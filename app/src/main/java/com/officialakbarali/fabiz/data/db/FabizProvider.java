@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.officialakbarali.fabiz.LogIn;
 import com.officialakbarali.fabiz.data.db.FabizDbHelper;
@@ -70,22 +71,32 @@ public class FabizProvider {
     public int getIdForInsert(String tableName) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int precision = sharedPreferences.getInt("precision", 1);
-        precision = precision * 100000;
-        int maxLimit = precision + 100000;
+        precision = precision * 500000;
+        int maxLimit = precision + 500000;
 
         SQLiteDatabase databaseQ = fabizDbHelper.getReadableDatabase();
-        Cursor cursor = databaseQ.query(tableName, new String[]{"_id"}, "_id BETWEEN ? AND ?"
-                , new String[]{precision + "", maxLimit + ""},
-                null, null,
-                "_id DESC", "1");
+        String queryForIdSelection = "SELECT _id FROM " + tableName + ";";
+
+        Cursor cursor = databaseQ.rawQuery(queryForIdSelection, null);
 
         int currentLatest = 0;
-        if (cursor.moveToNext()) {
-            currentLatest = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
-            currentLatest++;
-        } else {
-            currentLatest = precision;
+        while (cursor.moveToNext()) {
+            try {
+                int fromCursor = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
+                if (fromCursor > currentLatest) {
+                    currentLatest = fromCursor;
+                }
+            } catch (NumberFormatException | NullPointerException nfe) {
+                Log.i("Found String Id", cursor.getString(cursor.getColumnIndexOrThrow("_id")));
+            }
         }
+
+        if (currentLatest == 0) {
+            currentLatest = precision;
+        } else {
+            currentLatest++;
+        }
+
 
         if (currentLatest >= maxLimit) {
             currentLatest = -1;

@@ -1,9 +1,9 @@
 package com.officialakbarali.fabiz.customer.sale.data;
 
 public class Cart {
-    private int id;
-    private int billid;
-    private  int itemId;
+    private String id;
+    private String billid;
+    private  String itemId;
     private String name;
     private String brand;
     private String category;
@@ -12,7 +12,7 @@ public class Cart {
     private double total;
     private int returnQty;
 
-    public Cart(int id, int billid,int itemId, String name, String brand, String category, double price, int qty, double total, int returnQty) {
+    public Cart(String id, String billid,String itemId, String name, String brand, String category, double price, int qty, double total, int returnQty) {
         this.id = id;
         this.billid = billid;
        this.itemId = itemId;
@@ -25,15 +25,15 @@ public class Cart {
         this.returnQty = returnQty;
     }
 
-    public int getId() {
+    public String  getId() {
         return id;
     }
 
-    public int getBillid() {
+    public String getBillid() {
         return billid;
     }
 
-    public int getItemId() {
+    public String getItemId() {
         return itemId;
     }
 

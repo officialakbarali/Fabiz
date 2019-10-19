@@ -61,7 +61,7 @@ public class PaymentReviewAdapter extends RecyclerView.Adapter<PaymentReviewAdap
         }
 
 
-        String billId = TruncateDecimal("" + detail.getBillId());
+        String billId = detail.getBillId();
         if (billId.length() > 25) {
             holder.billId.setText("Paid Bill Id :" + billId.substring(0, 21) + "...");
         } else {

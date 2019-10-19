@@ -1,20 +1,20 @@
 package com.officialakbarali.fabiz.customer.data;
 
 public class PaymentReviewDetail {
-    private int id;
+    private String id;
     private String date;
     private double amount;
-    private double billId;
+    private String billId;
 
 
-    public PaymentReviewDetail(int id, String date, double amount, int billId) {
+    public PaymentReviewDetail(String id, String date, double amount, String billId) {
         this.id = id;
         this.date = date;
         this.amount = amount;
         this.billId = billId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -26,7 +26,7 @@ public class PaymentReviewDetail {
         return amount;
     }
 
-    public double getBillId() {
+    public String getBillId() {
         return billId;
     }
 }

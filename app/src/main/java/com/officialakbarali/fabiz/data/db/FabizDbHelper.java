@@ -31,7 +31,7 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.SyncLog.TABLE_NAME
                 + " ("
                 + FabizContract.SyncLog._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FabizContract.SyncLog.COLUMN_ROW_ID + " INTEGER NOT NULL, "
+                + FabizContract.SyncLog.COLUMN_ROW_ID + " TEXT NOT NULL, "
                 + FabizContract.SyncLog.COLUMN_TABLE_NAME + " TEXT NOT NULL, "
                 + FabizContract.SyncLog.COLUMN_OP_CODE + " TEXT NOT NULL, "
                 + FabizContract.SyncLog.COLUMN_TIMESTAMP + " DATETIME  NOT NULL, "
@@ -42,7 +42,7 @@ public class FabizDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_ITEM_TABLE = "CREATE TABLE "
                 + FabizContract.Item.TABLE_NAME
                 + " ("
-                + FabizContract.Item._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.Item._ID + " TEXT PRIMARY KEY , "
                 + FabizContract.Item.COLUMN_BARCODE + " TEXT, "
                 + FabizContract.Item.COLUMN_NAME + " TEXT NOT NULL, "
                 + FabizContract.Item.COLUMN_BRAND + " TEXT NOT NULL, "
@@ -54,7 +54,7 @@ public class FabizDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_CUSTOMER_TABLE = "CREATE TABLE "
                 + FabizContract.Customer.TABLE_NAME
                 + " ("
-                + FabizContract.Customer._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.Customer._ID + " TEXT PRIMARY KEY , "
                 + FabizContract.Customer.COLUMN_BARCODE + " TEXT, "
                 + FabizContract.Customer.COLUMN_DAY + " TEXT, "
                 + FabizContract.Customer.COLUMN_CR_NO + " TEXT NOT NULL, "
@@ -74,9 +74,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_BILL_DETAIL_TABLE = "CREATE TABLE "
                 + FabizContract.BillDetail.TABLE_NAME
                 + " ("
-                + FabizContract.BillDetail._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.BillDetail._ID + " TEXT PRIMARY KEY , "
                 + FabizContract.BillDetail.COLUMN_DATE + " TEXT NOT NULL, "
-                + FabizContract.BillDetail.COLUMN_CUST_ID + " INTEGER NOT NULL, "
+                + FabizContract.BillDetail.COLUMN_CUST_ID + " TEXT NOT NULL, "
                 + FabizContract.BillDetail.COLUMN_PRICE + " REAL NOT NULL,"
                 + FabizContract.BillDetail.COLUMN_RETURNED_TOTAL + " REAL NOT NULL,"
                 + FabizContract.BillDetail.COLUMN_CURRENT_TOTAL + " REAL NOT NULL,"
@@ -89,9 +89,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_CART_TABLE = "CREATE TABLE "
                 + FabizContract.Cart.TABLE_NAME
                 + " ("
-                + FabizContract.Cart._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FabizContract.Cart.COLUMN_BILL_ID + " INTEGER NOT NULL, "
-                + FabizContract.Cart.COLUMN_ITEM_ID + " INTEGER NOT NULL, "
+                + FabizContract.Cart._ID + " TEXT PRIMARY KEY , "
+                + FabizContract.Cart.COLUMN_BILL_ID + " TEXT NOT NULL, "
+                + FabizContract.Cart.COLUMN_ITEM_ID + " TEXT NOT NULL, "
                 + FabizContract.Cart.COLUMN_NAME + " TEXT NOT NULL,"
                 + FabizContract.Cart.COLUMN_BRAND + " TEXT NOT NULL,"
                 + FabizContract.Cart.COLUMN_CATEGORY + " TEXT NOT NULL,"
@@ -105,10 +105,10 @@ public class FabizDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_SALES_RETURN_TABLE = "CREATE TABLE "
                 + FabizContract.SalesReturn.TABLE_NAME
                 + " ("
-                + FabizContract.SalesReturn._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FabizContract.SalesReturn._ID + " TEXT PRIMARY KEY , "
                 + FabizContract.SalesReturn.COLUMN_DATE + " TEXT NOT NULL,"
-                + FabizContract.SalesReturn.COLUMN_BILL_ID + " INTEGER NOT NULL, "
-                + FabizContract.SalesReturn.COLUMN_ITEM_ID + " INTEGER NOT NULL, "
+                + FabizContract.SalesReturn.COLUMN_BILL_ID + " TEXT NOT NULL, "
+                + FabizContract.SalesReturn.COLUMN_ITEM_ID + " TEXT NOT NULL, "
                 + FabizContract.SalesReturn.COLUMN_PRICE + " REAL NOT NULL,"
                 + FabizContract.SalesReturn.COLUMN_QTY + " INTEGER NOT NULL,"
                 + FabizContract.SalesReturn.COLUMN_TOTAL + " REAL NOT NULL)";
@@ -119,8 +119,8 @@ public class FabizDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_PAYMENT = "CREATE TABLE "
                 + FabizContract.Payment.TABLE_NAME
                 + " ("
-                + FabizContract.Payment._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FabizContract.Payment.COLUMN_BILL_ID + " INTEGER NOT NULL, "
+                + FabizContract.Payment._ID + " TEXT PRIMARY KEY , "
+                + FabizContract.Payment.COLUMN_BILL_ID + " TEXT NOT NULL, "
                 + FabizContract.Payment.COLUMN_DATE + " TEXT NOT NULL,"
                 + FabizContract.Payment.COLUMN_AMOUNT + " REAL NOT NULL)";
 

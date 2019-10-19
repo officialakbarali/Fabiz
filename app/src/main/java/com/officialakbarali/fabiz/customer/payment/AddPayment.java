@@ -49,7 +49,7 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
     private Toast toast;
 
     SalesReviewAdapter salesReviewAdapter;
-    private int custId;
+    private String custId;
 
     private TextView dateV;
 
@@ -65,7 +65,7 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_payment);
 
-        custId = Integer.parseInt(getIntent().getStringExtra("id"));
+        custId = getIntent().getStringExtra("id");
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
         salesReviewAdapter = new SalesReviewAdapter(this, this, true);
@@ -138,7 +138,7 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
 
         List<SalesReviewDetail> salesReviewList = new ArrayList<>();
         while (cursorBills.moveToNext()) {
-            salesReviewList.add(new SalesReviewDetail(cursorBills.getInt(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail._ID)),
+            salesReviewList.add(new SalesReviewDetail(cursorBills.getString(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail._ID)),
                     cursorBills.getString(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)),
                     cursorBills.getInt(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)),
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)),
@@ -258,11 +258,6 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
                 }
 
 
-//                if (dueA == 0) {
-//                    showToast("Due amount already settled");
-//                    return;
-//                }
-
                 if (dueA <= 0 && enteredAmount <= 0 && enteredAmount < dueA) {
                     showToast("You giving more amount than total credit");
                     return;
@@ -345,7 +340,7 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
             long insertIdPayment = provider.insert(FabizContract.Payment.TABLE_NAME, logTranscValues);
 
             if (insertIdPayment > 0) {
-                syncLogList.add(new SyncLogDetail(insertIdPayment, FabizContract.Payment.TABLE_NAME, OP_INSERT));
+                syncLogList.add(new SyncLogDetail(idToInsertPayment + "", FabizContract.Payment.TABLE_NAME, OP_INSERT));
                 new SetupSync(this, syncLogList, provider, "Amount saved successful", OP_CODE_PAY);
                 paymentDialog.dismiss();
                 showDialogueInfo(enteredAmount, dueAmountToUpdate);

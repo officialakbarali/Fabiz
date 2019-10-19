@@ -43,7 +43,7 @@ public class SyncFromAppToServer extends AppCompatActivity {
 
         List<SyncLogDetail> syncLogsList = new ArrayList<>();
         while (syncCursor.moveToNext()) {
-            syncLogsList.add(new SyncLogDetail(syncCursor.getInt(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_ROW_ID)),
+            syncLogsList.add(new SyncLogDetail(syncCursor.getString(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_ROW_ID)),
                     syncCursor.getString(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_TABLE_NAME)),
                     syncCursor.getString(syncCursor.getColumnIndexOrThrow(FabizContract.SyncLog.COLUMN_OPERATION))));
         }
