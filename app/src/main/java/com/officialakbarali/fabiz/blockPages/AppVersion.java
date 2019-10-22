@@ -32,4 +32,10 @@ public class AppVersion extends AppCompatActivity {
         FabizProvider provider = new FabizProvider(this, true);
         provider.deleteAllTables();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 }

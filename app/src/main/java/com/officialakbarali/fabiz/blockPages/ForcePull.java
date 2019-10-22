@@ -46,14 +46,17 @@ public class ForcePull extends AppCompatActivity {
                     Intent versionIntent = new Intent(ForcePull.this, AppVersion.class);
                     versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(versionIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else if (msgPassed.matches("USER")) {
                     Intent logIntent = new Intent(ForcePull.this, LogIn.class);
                     logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(logIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else if (msgPassed.matches("SUCCESS")) {
                     Intent mainHomeIntent = new Intent(ForcePull.this, MainHome.class);
                     mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(mainHomeIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else if (msgPassed.matches("FAILED")) {
                     textMsg.setVisibility(View.VISIBLE);
                     textMsg.setText("Failed to Sync");
@@ -98,6 +101,7 @@ public class ForcePull extends AppCompatActivity {
                     Intent loginIntent = new Intent(ForcePull.this, LogIn.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 }
             }
         });
@@ -119,6 +123,7 @@ public class ForcePull extends AppCompatActivity {
                 Intent logIntent = new Intent(ForcePull.this, LogIn.class);
                 logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(logIntent);
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
     }
@@ -142,5 +147,11 @@ public class ForcePull extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

@@ -46,18 +46,22 @@ public class SyncInformation extends AppCompatActivity {
                     Intent versionIntent = new Intent(SyncInformation.this, AppVersion.class);
                     versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(versionIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else if (msgPassed.matches("PUSH")) {
                     Intent forcePullIntent = new Intent(SyncInformation.this, ForcePull.class);
                     forcePullIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(forcePullIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else if (msgPassed.matches("UPDATE")) {
                     Intent updateDataIntent = new Intent(SyncInformation.this, UpdateData.class);
                     updateDataIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(updateDataIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else if (msgPassed.matches("USER")) {
                     Intent logIntent = new Intent(SyncInformation.this, LogIn.class);
                     logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(logIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else {
                     checkingText.setVisibility(View.VISIBLE);
                     checkingText.setText(msgPassed);
@@ -89,6 +93,7 @@ public class SyncInformation extends AppCompatActivity {
                     Intent loginIntent = new Intent(SyncInformation.this, LogIn.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 }
             }
         });
@@ -113,5 +118,11 @@ public class SyncInformation extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

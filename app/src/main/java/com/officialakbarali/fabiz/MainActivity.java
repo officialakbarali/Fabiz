@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 initialSetup();
             }
-        }, 3000);
+        }, 1500);
     }
 
     private void initialSetup() {
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             Intent versionIntent = new Intent(this, AppVersion.class);
             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(versionIntent);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
         } else {
             String userName = sharedPreferences.getString("my_username", null);
             String password = sharedPreferences.getString("my_password", null);
@@ -73,12 +74,14 @@ public class MainActivity extends AppCompatActivity {
                     Intent forcePullIntent = new Intent(this, ForcePull.class);
                     forcePullIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(forcePullIntent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 } else {
                     boolean updateData = sharedPreferences.getBoolean("update_data", false);
                     if (updateData) {
                         Intent updateDataIntent = new Intent(this, UpdateData.class);
                         updateDataIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(updateDataIntent);
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     } else {
                         boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
                         if (!isServiceRunning) {
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent mainHomeIntent = new Intent(this, MainHome.class);
                         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(mainHomeIntent);
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     }
                 }
             }
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent loginIntent = new Intent(MainActivity.this, LogIn.class);
                         loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(loginIntent);
+                        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     } else {
                         if (jsonObject.getString("status").equals("VERSION")) {
                             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -116,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent versionIntent = new Intent(MainActivity.this, AppVersion.class);
                             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(versionIntent);
+                            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                         } else {
                             showToast("Something went wrong");
                         }
