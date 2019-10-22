@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.customer.Customer;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
@@ -33,59 +35,6 @@ public class MainHome extends AppCompatActivity {
         setContentView(R.layout.activity_main_home);
 
         setUpHomeButton();
-
-        Button customerIntent = findViewById(R.id.cust);
-        customerIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent custIntent = new Intent(MainHome.this, Customer.class);
-                startActivity(custIntent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-
-        Button itemIntent = findViewById(R.id.item);
-        itemIntent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent itemShow = new Intent(MainHome.this, Item.class);
-                startActivity(itemShow);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-
-        Button requestStockButton = findViewById(R.id.item_request);
-        requestStockButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent requestStockShow = new Intent(MainHome.this, RequestStock.class);
-                itemsForRequest = new ArrayList<>();
-                startActivity(requestStockShow);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-
-
-        Button viewSyncButton = findViewById(R.id.view_sync);
-        viewSyncButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewSyncIntent = new Intent(MainHome.this, SyncInformation.class);
-                startActivity(viewSyncIntent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-
-        Button settingsBtn = findViewById(R.id.settings);
-        settingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentSettings = new Intent(MainHome.this, Settings.class);
-                startActivity(intentSettings);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-        setUpHomeButton();
     }
 
 
@@ -93,6 +42,7 @@ public class MainHome extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
+        setUpAnimation();
     }
 
     @Override
@@ -101,33 +51,6 @@ public class MainHome extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
-//    private void insertSomeDummyItems() {
-//        FabizProvider fabizProvider = new FabizProvider(this, true);
-//        ContentValues values = new ContentValues();
-//        values.put(FabizContract.Item._ID, "1");
-//        values.put(FabizContract.Item.COLUMN_NAME, "A EMINEM");
-//        values.put(FabizContract.Item.COLUMN_BRAND, "RAP");
-//        values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
-//        values.put(FabizContract.Item.COLUMN_BARCODE, "DR2039");
-//        values.put(FabizContract.Item.COLUMN_PRICE, "250.123");
-//        Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
-//
-//        values = new ContentValues();
-//        values.put(FabizContract.Item._ID, "11");
-//        values.put(FabizContract.Item.COLUMN_NAME, "B JUSTIN");
-//        values.put(FabizContract.Item.COLUMN_BRAND, "POP");
-//        values.put(FabizContract.Item.COLUMN_CATEGORY, "MUSIC");
-//        values.put(FabizContract.Item.COLUMN_PRICE, "10.321");
-//        Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
-//
-//        values = new ContentValues();
-//        values.put(FabizContract.Item._ID, "111");
-//        values.put(FabizContract.Item.COLUMN_NAME, "C ELON");
-//        values.put(FabizContract.Item.COLUMN_BRAND, "TESLA");
-//        values.put(FabizContract.Item.COLUMN_CATEGORY, "ENTREPRENEUR");
-//        values.put(FabizContract.Item.COLUMN_PRICE, "500.510");
-//        Log.i("Item table Filling", "Inserted Id:" + fabizProvider.insert(FabizContract.Item.TABLE_NAME, values));
-//    }
 
     private void setUpHomeButton() {
 
@@ -151,6 +74,9 @@ public class MainHome extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         customerL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
+                        Intent custIntent = new Intent(MainHome.this, Customer.class);
+                        startActivity(custIntent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true; // if you want to handle the touch event
                 }
                 return false;
@@ -171,6 +97,9 @@ public class MainHome extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         stockL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
+                        Intent itemShow = new Intent(MainHome.this, Item.class);
+                        startActivity(itemShow);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true; // if you want to handle the touch event
                 }
                 return false;
@@ -190,6 +119,10 @@ public class MainHome extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         requestL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
+                        Intent requestStockShow = new Intent(MainHome.this, RequestStock.class);
+                        itemsForRequest = new ArrayList<>();
+                        startActivity(requestStockShow);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true; // if you want to handle the touch event
                 }
                 return false;
@@ -209,6 +142,9 @@ public class MainHome extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         syncL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
+                        Intent viewSyncIntent = new Intent(MainHome.this, SyncInformation.class);
+                        startActivity(viewSyncIntent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true; // if you want to handle the touch event
                 }
                 return false;
@@ -228,12 +164,34 @@ public class MainHome extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         settingsL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
+                        Intent intentSettings = new Intent(MainHome.this, Settings.class);
+                        startActivity(intentSettings);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true; // if you want to handle the touch event
                 }
                 return false;
             }
         });
 
+
+    }
+
+    private void setUpAnimation() {
+        TextView head, belowHead;
+        head = findViewById(R.id.home_cust_head);
+        belowHead = findViewById(R.id.home_cust_below_head);
+
+        YoYo.with(Techniques.SlideInLeft).duration(1200).repeat(0).playOn(customerL);
+        YoYo.with(Techniques.SlideInRight).duration(1300).repeat(0).playOn(stockL);
+
+        YoYo.with(Techniques.SlideInLeft).duration(1400).repeat(0).playOn(requestL);
+        YoYo.with(Techniques.SlideInRight).duration(1500).repeat(0).playOn(syncL);
+
+        YoYo.with(Techniques.SlideInUp).duration(1600).repeat(0).playOn(settingsL);
+
+        YoYo.with(Techniques.FadeInDown).duration(1000).repeat(0).playOn(head);
+
+        YoYo.with(Techniques.FadeInUp).duration(1100).repeat(0).playOn(belowHead);
 
     }
 }

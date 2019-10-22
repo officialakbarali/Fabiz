@@ -31,6 +31,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
@@ -78,7 +80,7 @@ public class LogIn extends AppCompatActivity {
             Intent versionIntent = new Intent(this, AppVersion.class);
             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(versionIntent);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
             setUpStartAnimation();
         }
@@ -116,7 +118,7 @@ public class LogIn extends AppCompatActivity {
                             Intent versionIntent = new Intent(LogIn.this, AppVersion.class);
                             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(versionIntent);
-                            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         } else if (jsonObject.getString("status").equals("USER")) {
                             showToast("Invalid username or password");
                         } else {
@@ -171,7 +173,7 @@ public class LogIn extends AppCompatActivity {
                 SET_DECIMAL_LENGTH(2);
                 editor.apply();
                 startActivity(mainHomeIntent);
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
         Button pre3 = findViewById(R.id.pre_3);
@@ -182,7 +184,7 @@ public class LogIn extends AppCompatActivity {
                 SET_DECIMAL_LENGTH(3);
                 editor.apply();
                 startActivity(mainHomeIntent);
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
@@ -195,7 +197,9 @@ public class LogIn extends AppCompatActivity {
         toast.show();
     }
 
+
     private void setUpStartAnimation() {
+
         TextView head, belowHead;
         EditText username, password;
 
@@ -209,15 +213,13 @@ public class LogIn extends AppCompatActivity {
         username = findViewById(R.id.log_in_usr);
         password = findViewById(R.id.log_in_pass);
 
+        YoYo.with(Techniques.SlideInLeft).duration(1200).repeat(0).playOn(username);
+        YoYo.with(Techniques.SlideInLeft).duration(1300).repeat(0).playOn(password);
 
-        YoYo.with(Techniques.ZoomInLeft).duration(1000).repeat(0).playOn(head);
-        YoYo.with(Techniques.ZoomInLeft).duration(1100).repeat(0).playOn(belowHead);
+        YoYo.with(Techniques.SlideInRight).duration(1400).repeat(0).playOn(logIn);
 
-        YoYo.with(Techniques.ZoomInLeft).duration(1200).repeat(0).playOn(username);
-        YoYo.with(Techniques.ZoomInLeft).duration(1300).repeat(0).playOn(password);
-
-        YoYo.with(Techniques.ZoomInLeft).duration(1400).repeat(0).playOn(logIn);
-
-        YoYo.with(Techniques.ZoomInLeft).duration(1500).repeat(0).playOn(last);
+        YoYo.with(Techniques.FadeInDown).duration(1000).repeat(0).playOn(head);
+        YoYo.with(Techniques.FadeInUp).duration(1100).repeat(0).playOn(belowHead);
+        YoYo.with(Techniques.FadeInUp).duration(1500).repeat(0).playOn(last);
     }
 }
