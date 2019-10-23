@@ -9,11 +9,13 @@
 
 
     <LinearLayout
+            android:id="@+id/cust_day_cont"
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:layout_margin="18dp"
             android:background="@drawable/rounded_frame_cutsomer_color_blue"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
         <LinearLayout
                 android:layout_width="0dp"
@@ -81,11 +83,13 @@
             android:orientation="horizontal">
 
         <LinearLayout
+                android:id="@+id/cust_barcode_cont"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="18dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageButton
                     android:id="@+id/cust_barcode"
@@ -107,11 +111,13 @@
         </LinearLayout>
 
         <LinearLayout
+                android:id="@+id/cust_view_all_cont"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="18dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageButton
                     android:id="@+id/cust_all"
@@ -133,11 +139,13 @@
         </LinearLayout>
 
         <LinearLayout
+                android:id="@+id/cuust_manage_cont"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="18dp"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageButton
                     android:id="@+id/cust_manage_route"
@@ -159,10 +167,12 @@
         </LinearLayout>
 
         <LinearLayout
+                android:id="@+id/cust_add_cont"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageButton
                     android:id="@+id/add_cust"
@@ -214,14 +224,14 @@
                 android:paddingEnd="18dp"
                 android:paddingBottom="20dp"
                 android:textColor="@color/text_color"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cust_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:visibility="invisible" />
 
     </LinearLayout>
 </LinearLayout>

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,10 +18,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.LogIn;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.blockPages.AppVersion;
@@ -65,6 +69,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                 Intent scanFromBarcodeIntent = new Intent(Customer.this, FabizBarcode.class);
                 scanFromBarcodeIntent.putExtra("FOR_WHO", FOR_CUSTOMER + "");
                 startActivity(scanFromBarcodeIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -74,6 +79,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             public void onClick(View v) {
                 Intent CustomerIntent = new Intent(Customer.this, AddCustomer.class);
                 startActivity(CustomerIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -83,6 +89,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             public void onClick(View v) {
                 Intent manageRouteIntent = new Intent(Customer.this, ManageRoute.class);
                 startActivity(manageRouteIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -137,7 +144,13 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
     protected void onResume() {
         super.onResume();
         checkBeforeResume();
-        showCustomer(FabizContract.Customer.COLUMN_DAY + "=?", new String[]{getCurrentDay()});
+        setUpAnimation();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     @Override
@@ -145,6 +158,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         Intent showHome = new Intent(Customer.this, Home.class);
         showHome.putExtra("id", customer.getId() + "");
         startActivity(showHome);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void setUpDrawableEndEditext() {
@@ -187,6 +201,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_DAY))
             ));
         }
+        recyclerView.setVisibility(View.VISIBLE);
         customerAdapter.swapAdapter(customerList);
     }
 
@@ -226,6 +241,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             Intent versionIntent = new Intent(context, AppVersion.class);
             versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(versionIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else {
             String userName = sharedPreferences.getString("my_username", null);
             String password = sharedPreferences.getString("my_password", null);
@@ -233,18 +249,21 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                 Intent loginIntent = new Intent(context, LogIn.class);
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(loginIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             } else {
                 boolean forcePullActivate = sharedPreferences.getBoolean("force_pull", false);
                 if (forcePullActivate) {
                     Intent forcePullIntent = new Intent(context, ForcePull.class);
                     forcePullIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(forcePullIntent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else {
                     boolean updateData = sharedPreferences.getBoolean("update_data", false);
                     if (updateData) {
                         Intent updateDataIntent = new Intent(context, UpdateData.class);
                         updateDataIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(updateDataIntent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     } else {
                         boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
                         if (!isServiceRunning) {
@@ -262,5 +281,116 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         if (!searcheditText.getText().toString().trim().matches("")) {
             showCustomer(getSelection(filterItem), new String[]{searcheditText.getText().toString().trim() + "%"});
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LinearLayout custDayContainer, barcodeCont, viewallCont, manageCont, addCont;
+
+        custDayContainer = findViewById(R.id.cust_day_cont);
+        barcodeCont = findViewById(R.id.cust_barcode_cont);
+        viewallCont = findViewById(R.id.cust_view_all_cont);
+        manageCont = findViewById(R.id.cuust_manage_cont);
+        addCont = findViewById(R.id.cust_add_cont);
+
+        custDayContainer.setVisibility(View.INVISIBLE);
+        barcodeCont.setVisibility(View.INVISIBLE);
+        viewallCont.setVisibility(View.INVISIBLE);
+        manageCont.setVisibility(View.INVISIBLE);
+        addCont.setVisibility(View.INVISIBLE);
+        searcheditText.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        final LinearLayout custDayContainer, barcodeCont, viewallCont, manageCont, addCont;
+
+        custDayContainer = findViewById(R.id.cust_day_cont);
+        barcodeCont = findViewById(R.id.cust_barcode_cont);
+        viewallCont = findViewById(R.id.cust_view_all_cont);
+        manageCont = findViewById(R.id.cuust_manage_cont);
+        addCont = findViewById(R.id.cust_add_cont);
+
+
+        YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                custDayContainer.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        viewallCont.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(viewallCont);
+
+                        manageCont.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(manageCont);
+
+                        barcodeCont.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(500).repeat(0).playOn(barcodeCont);
+
+                        addCont.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(500).repeat(0).playOn(addCont);
+
+
+                        searcheditText.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInUp).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                showCustomer(FabizContract.Customer.COLUMN_DAY + "=?", new String[]{getCurrentDay()});
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(800).repeat(0).playOn(searcheditText);
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(600).repeat(0).playOn(custDayContainer);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(600).repeat(0).playOn(searcheditText);
+
     }
 }

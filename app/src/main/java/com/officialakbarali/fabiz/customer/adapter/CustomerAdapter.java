@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.officialakbarali.fabiz.R;
@@ -44,6 +46,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     @Override
     public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position) {
+
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale_animation));
+
         CustomerDetail customer = customerList.get(position);
 
         String id = "" + customer.getId();
@@ -93,6 +98,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                 }
             }
         }
+
+
     }
 
     @Override
@@ -111,6 +118,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     class CustomerViewHolder extends RecyclerView.ViewHolder {
         TextView custId, custName, custPhone, custEmail, custAddress;
         ImageButton rmvOrAddOrSelect;
+        RelativeLayout mainParent;
 
         public CustomerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -119,6 +127,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             custPhone = itemView.findViewById(R.id.phone);
             custEmail = itemView.findViewById(R.id.email);
             custAddress = itemView.findViewById(R.id.address);
+
+            mainParent = itemView.findViewById(R.id.customer_home_item);
 
             rmvOrAddOrSelect = itemView.findViewById(R.id.remove_or_add);
             rmvOrAddOrSelect.setOnClickListener(new View.OnClickListener() {

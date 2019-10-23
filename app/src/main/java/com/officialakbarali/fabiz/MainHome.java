@@ -176,14 +176,29 @@ public class MainHome extends AppCompatActivity {
         super.onPause();
         TextView head, belowHead;
         head = findViewById(R.id.home_cust_head);
-        head.setVisibility(View.INVISIBLE);
+
         belowHead = findViewById(R.id.home_cust_below_head);
+
+
+        YoYo.with(Techniques.FadeOutDown).duration(600).repeat(0).playOn(head);
+        head.setVisibility(View.INVISIBLE);
+
+        YoYo.with(Techniques.FadeOutUp).duration(600).repeat(0).playOn(belowHead);
         belowHead.setVisibility(View.INVISIBLE);
 
+        YoYo.with(Techniques.SlideOutLeft).duration(600).repeat(0).playOn(customerL);
         customerL.setVisibility(View.INVISIBLE);
+
+        YoYo.with(Techniques.SlideOutRight).duration(600).repeat(0).playOn(stockL);
         stockL.setVisibility(View.INVISIBLE);
+
+        YoYo.with(Techniques.SlideOutLeft).duration(600).repeat(0).playOn(requestL);
         requestL.setVisibility(View.INVISIBLE);
+
+        YoYo.with(Techniques.SlideOutRight).duration(600).repeat(0).playOn(syncL);
         syncL.setVisibility(View.INVISIBLE);
+
+        YoYo.with(Techniques.SlideOutUp).duration(600).repeat(0).playOn(settingsL);
         settingsL.setVisibility(View.INVISIBLE);
     }
 
