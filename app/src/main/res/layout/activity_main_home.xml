@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Hai Salman!"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:visibility="invisible" />
 
     <TextView
             android:id="@+id/home_cust_below_head"
@@ -25,7 +26,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="33dp"
             android:text="Make your sales awesome!"
-            android:textColor="@color/text_color" />
+            android:textColor="@color/text_color"
+            android:visibility="invisible" />
 
 
     <LinearLayout
@@ -41,26 +43,27 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
                 android:layout_weight="1"
-                android:background="@drawable/color_main_home_icon"
+                android:background="@drawable/button_color_main_home_icon"
                 android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
 
             <ImageView
-                    android:duplicateParentState="true"
                     android:id="@+id/home_cust_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
                     android:src="@drawable/main_home_customer" />
 
             <TextView
-                    android:duplicateParentState="true"
                     android:id="@+id/home_cust_txt"
                     style="@style/text_size_med"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="17dp"
+                    android:duplicateParentState="true"
                     android:text="Customer"
                     android:textColor="@color/text_color" />
 
@@ -74,23 +77,24 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="7dp"
                 android:layout_weight="1"
-                android:background="@drawable/color_main_home_icon"
+                android:background="@drawable/button_color_main_home_icon"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageView
-                    android:duplicateParentState="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
                     android:src="@drawable/main_home_item_detail" />
 
             <TextView
-                    android:duplicateParentState="true"
                     android:id="@+id/home_stock_txt"
                     style="@style/text_size_med"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="17dp"
+                    android:duplicateParentState="true"
                     android:text="Stock Detail"
                     android:textColor="@color/text_color" />
 
@@ -115,23 +119,24 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
                 android:layout_weight="1"
-                android:background="@drawable/color_main_home_icon"
+                android:background="@drawable/button_color_main_home_icon"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageView
-                    android:duplicateParentState="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
                     android:src="@drawable/main_home_item" />
 
             <TextView
-                    android:duplicateParentState="true"
                     android:id="@+id/home_request_txt"
                     style="@style/text_size_med"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="17dp"
+                    android:duplicateParentState="true"
                     android:text="Request Item"
                     android:textColor="@color/text_color" />
 
@@ -144,23 +149,24 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="7dp"
                 android:layout_weight="1"
-                android:background="@drawable/color_main_home_icon"
+                android:background="@drawable/button_color_main_home_icon"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageView
-                    android:duplicateParentState="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
                     android:src="@drawable/main_home_sync" />
 
             <TextView
-                    android:duplicateParentState="true"
                     android:id="@+id/home_sync_txt"
                     style="@style/text_size_med"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="17dp"
+                    android:duplicateParentState="true"
                     android:text="Sync Detail"
                     android:textColor="@color/text_color" />
 
@@ -177,29 +183,29 @@
             android:orientation="horizontal">
 
         <LinearLayout
-
                 android:id="@+id/home_settings"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
                 android:layout_weight="1"
-                android:background="@drawable/color_main_home_icon"
+                android:background="@drawable/button_color_main_home_icon"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="invisible">
 
             <ImageView
-                    android:duplicateParentState="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:duplicateParentState="true"
                     android:src="@drawable/main_home_customer" />
 
             <TextView
-                    android:duplicateParentState="true"
                     android:id="@+id/home_settings_txt"
                     style="@style/text_size_med"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="17dp"
+                    android:duplicateParentState="true"
                     android:text="Settings"
                     android:textColor="@color/text_color" />
 

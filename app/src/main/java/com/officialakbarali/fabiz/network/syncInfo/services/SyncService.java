@@ -68,7 +68,7 @@ public class SyncService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Fabiz Sync")
                 .setContentText("File Uploading")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_logo)
                 .setContentIntent(pendingIntent)
                 .build();
 

@@ -12,7 +12,11 @@
 
     <color name="white">#FCFCFC</color>
 
+    <color name="white_2">#FAFAFA</color>
+
     <color name="pure_white">#FFFFFF</color>
+
+    <color name="white_fade">#DEDEDE</color>
 
     <color name="gray_start_color">#008577</color>
     <color name="gray_end_color">#00574B</color>

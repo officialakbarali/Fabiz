@@ -59,7 +59,7 @@ public class ForcePullService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Fabiz Sync")
                 .setContentText("Fetching file from server")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_logo)
                 .setContentIntent(pendingIntent)
                 .build();
 

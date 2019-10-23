@@ -13,36 +13,84 @@
     <application
             android:name=".network.syncInfo.NotificationFrame"
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/app_logo"
             android:label="@string/app_name"
             android:networkSecurityConfig="@xml/network_security_config"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/app_logo_circle"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".requestStock.RequestItem"></activity>
-        <activity android:name=".Settings" />
-        <activity android:name=".blockPages.UpdateData" />
-        <activity android:name=".blockPages.ForcePull" />
-        <activity android:name=".blockPages.AppVersion" />
-        <activity android:name=".MainHome" />
-        <activity android:name=".LogIn" />
-        <activity android:name=".customer.route.RouteModify" />
-        <activity android:name=".requestStock.RequestStock" />
-        <activity android:name=".data.barcode.FabizBarcode" />
-        <activity android:name=".customer.route.ManageRoute" />
-        <activity android:name=".network.syncInfo.SyncInformation" />
-        <activity android:name=".customer.payment.PaymentReview" />
-        <activity android:name=".customer.payment.AddPayment" />
-        <activity android:name=".customer.sale.SalesReturnReview" />
-        <activity android:name=".customer.sale.SalesReviewDetail" />
-        <activity android:name=".customer.sale.SalesReview" />
-        <activity android:name=".network.syncInfo.OLD.SyncFromAppToServer" />
-        <activity android:name=".customer.sale.Sales" />
-        <activity android:name=".customer.Home" />
-        <activity android:name=".item.Item" />
-        <activity android:name=".customer.AddCustomer" />
-        <activity android:name=".customer.Customer" />
-        <activity android:name=".MainActivity">
+        <activity
+                android:name=".requestStock.RequestItem"
+                android:screenOrientation="portrait"></activity>
+        <activity
+                android:name=".Settings"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".blockPages.UpdateData"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".blockPages.ForcePull"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".blockPages.AppVersion"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".MainHome"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".LogIn"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.route.RouteModify"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".requestStock.RequestStock"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".data.barcode.FabizBarcode"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.route.ManageRoute"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".network.syncInfo.SyncInformation"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.payment.PaymentReview"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.payment.AddPayment"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.sale.SalesReturnReview"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.sale.SalesReviewDetail"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.sale.SalesReview"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".network.syncInfo.OLD.SyncFromAppToServer"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.sale.Sales"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.Home"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".item.Item"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.AddCustomer"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".customer.Customer"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name=".MainActivity"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

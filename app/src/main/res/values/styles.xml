@@ -20,5 +20,9 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="text_size_mid_l">
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
 </resources>

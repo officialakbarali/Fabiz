@@ -10,16 +10,23 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.officialakbarali.fabiz.LogIn;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.blockPages.AppVersion;
 import com.officialakbarali.fabiz.blockPages.ForcePull;
 import com.officialakbarali.fabiz.blockPages.UpdateData;
+import com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
 import com.officialakbarali.fabiz.customer.route.ManageRoute;
@@ -32,18 +39,26 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet.CUSTOMER_FILTER_TAG;
+import static com.officialakbarali.fabiz.data.CommonInformation.getDayNameFromNumber;
 import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;
 
-public class Customer extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener {
+public class Customer extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener, CustomerFilterBottomSheet.CustomerFilterListener {
     RecyclerView recyclerView;
     CustomerAdapter customerAdapter;
+    EditText searcheditText;
+
+    String filterSelection = "Name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
-        Button scanFromBarcodeButton = findViewById(R.id.cust_barcode);
+        TextView dayText = findViewById(R.id.day_text);
+        dayText.setText(getDayNameFromNumber(getCurrentDay()));
+
+        ImageButton scanFromBarcodeButton = findViewById(R.id.cust_barcode);
         scanFromBarcodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +68,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         });
 
-        Button addCustomerButton = findViewById(R.id.add_cust);
+        ImageButton addCustomerButton = findViewById(R.id.add_cust);
         addCustomerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,23 +77,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         });
 
-        Button searchButton = findViewById(R.id.search_cust_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText editText = findViewById(R.id.cust_search);
-                if (!editText.getText().toString().trim().matches("")) {
-                    Spinner filterSpinner = findViewById(R.id.cust_filter);
-                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
-                    showCustomer(selection, new String[]{editText.getText().toString().trim() + "%"});
-                } else {
-                    showCustomer(null, null);
-                }
-
-            }
-        });
-
-        Button manageRouteButton = findViewById(R.id.cust_manage_route);
+        ImageButton manageRouteButton = findViewById(R.id.cust_manage_route);
         manageRouteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +86,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         });
 
-        Button viewTodayButton = findViewById(R.id.cust_today);
+        ImageButton viewTodayButton = findViewById(R.id.cust_today);
         viewTodayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,13 +94,36 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         });
 
-        Button viewAllButton = findViewById(R.id.cust_all);
+        ImageButton viewAllButton = findViewById(R.id.cust_all);
         viewAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCustomer(null, null);
             }
         });
+
+        searcheditText = findViewById(R.id.cust_search);
+        searcheditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!searcheditText.getText().toString().trim().matches("")) {
+                    showCustomer(getSelection(filterSelection), new String[]{searcheditText.getText().toString().trim() + "%"});
+                } else {
+                    showCustomer(null, null);
+                }
+            }
+        });
+        setUpDrawableEndEditext();
 
         recyclerView = findViewById(R.id.cust_recycler);
         customerAdapter = new CustomerAdapter(this, this, null);
@@ -123,6 +145,27 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         Intent showHome = new Intent(Customer.this, Home.class);
         showHome.putExtra("id", customer.getId() + "");
         startActivity(showHome);
+    }
+
+    private void setUpDrawableEndEditext() {
+        searcheditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (searcheditText.getRight() - searcheditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        CustomerFilterBottomSheet customerFilterBottomSheet = CustomerFilterBottomSheet.newInstance();
+                        customerFilterBottomSheet.show(getSupportFragmentManager(), CUSTOMER_FILTER_TAG);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void showCustomer(String selection, String[] selectionArg) {
@@ -202,7 +245,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                         Intent updateDataIntent = new Intent(context, UpdateData.class);
                         updateDataIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(updateDataIntent);
-                    }else {
+                    } else {
                         boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
                         if (!isServiceRunning) {
                             new SyncService();
@@ -210,6 +253,14 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void onFilterSelect(String filterItem) {
+        filterSelection = filterItem;
+        if (!searcheditText.getText().toString().trim().matches("")) {
+            showCustomer(getSelection(filterItem), new String[]{searcheditText.getText().toString().trim() + "%"});
         }
     }
 }

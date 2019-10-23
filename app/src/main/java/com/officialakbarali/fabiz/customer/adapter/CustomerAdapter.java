@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.officialakbarali.fabiz.R;
@@ -83,12 +84,12 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         if (currentDay != null) {
             if (customer.getDay() == null) {
-                holder.rmvOrAddOrSelect.setText("Add");
+                holder.rmvOrAddOrSelect.setImageResource(R.drawable.ic_add);
             } else {
                 if (currentDay.matches(customer.getDay())) {
-                    holder.rmvOrAddOrSelect.setText("Remove");
+                    holder.rmvOrAddOrSelect.setImageResource(R.drawable.ic_remove);
                 } else {
-                    holder.rmvOrAddOrSelect.setText("Add");
+                    holder.rmvOrAddOrSelect.setImageResource(R.drawable.ic_add);
                 }
             }
         }
@@ -109,7 +110,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     class CustomerViewHolder extends RecyclerView.ViewHolder {
         TextView custId, custName, custPhone, custEmail, custAddress;
-        Button rmvOrAddOrSelect;
+        ImageButton rmvOrAddOrSelect;
 
         public CustomerViewHolder(@NonNull View itemView) {
             super(itemView);

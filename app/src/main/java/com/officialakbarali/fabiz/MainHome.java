@@ -2,22 +2,17 @@ package com.officialakbarali.fabiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.customer.Customer;
-import com.officialakbarali.fabiz.data.db.FabizContract;
-import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.item.Item;
 import com.officialakbarali.fabiz.network.syncInfo.SyncInformation;
 import com.officialakbarali.fabiz.requestStock.RequestStock;
@@ -68,11 +63,11 @@ public class MainHome extends AppCompatActivity {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
-                        customerL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon_pressed));
+                        customerL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        customerL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
+                        customerL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent custIntent = new Intent(MainHome.this, Customer.class);
                         startActivity(custIntent);
@@ -91,11 +86,11 @@ public class MainHome extends AppCompatActivity {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
-                        stockL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon_pressed));
+                        stockL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        stockL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
+                        stockL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent itemShow = new Intent(MainHome.this, Item.class);
                         startActivity(itemShow);
@@ -113,11 +108,11 @@ public class MainHome extends AppCompatActivity {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
-                        requestL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon_pressed));
+                        requestL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        requestL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
+                        requestL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent requestStockShow = new Intent(MainHome.this, RequestStock.class);
                         itemsForRequest = new ArrayList<>();
@@ -136,11 +131,11 @@ public class MainHome extends AppCompatActivity {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
-                        syncL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon_pressed));
+                        syncL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        syncL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
+                        syncL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent viewSyncIntent = new Intent(MainHome.this, SyncInformation.class);
                         startActivity(viewSyncIntent);
@@ -158,11 +153,11 @@ public class MainHome extends AppCompatActivity {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
-                        settingsL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon_pressed));
+                        settingsL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
-                        settingsL.setBackground(getResources().getDrawable(R.drawable.color_main_home_icon));
+                        settingsL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent intentSettings = new Intent(MainHome.this, Settings.class);
                         startActivity(intentSettings);
@@ -176,22 +171,104 @@ public class MainHome extends AppCompatActivity {
 
     }
 
-    private void setUpAnimation() {
+    @Override
+    protected void onPause() {
+        super.onPause();
         TextView head, belowHead;
+        head = findViewById(R.id.home_cust_head);
+        head.setVisibility(View.INVISIBLE);
+        belowHead = findViewById(R.id.home_cust_below_head);
+        belowHead.setVisibility(View.INVISIBLE);
+
+        customerL.setVisibility(View.INVISIBLE);
+        stockL.setVisibility(View.INVISIBLE);
+        requestL.setVisibility(View.INVISIBLE);
+        syncL.setVisibility(View.INVISIBLE);
+        settingsL.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        final TextView head, belowHead;
         head = findViewById(R.id.home_cust_head);
         belowHead = findViewById(R.id.home_cust_below_head);
 
-        YoYo.with(Techniques.SlideInLeft).duration(1200).repeat(0).playOn(customerL);
-        YoYo.with(Techniques.SlideInRight).duration(1300).repeat(0).playOn(stockL);
+        YoYo.with(Techniques.SlideInUp).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
-        YoYo.with(Techniques.SlideInLeft).duration(1400).repeat(0).playOn(requestL);
-        YoYo.with(Techniques.SlideInRight).duration(1500).repeat(0).playOn(syncL);
+            }
 
-        YoYo.with(Techniques.SlideInUp).duration(1600).repeat(0).playOn(settingsL);
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                head.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
 
-        YoYo.with(Techniques.FadeInDown).duration(1000).repeat(0).playOn(head);
+                    }
 
-        YoYo.with(Techniques.FadeInUp).duration(1100).repeat(0).playOn(belowHead);
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        belowHead.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+
+                                customerL.setVisibility(View.VISIBLE);
+                                stockL.setVisibility(View.VISIBLE);
+                                requestL.setVisibility(View.VISIBLE);
+                                syncL.setVisibility(View.VISIBLE);
+                                settingsL.setVisibility(View.VISIBLE);
+
+                                YoYo.with(Techniques.SlideInLeft).duration(600).repeat(0).playOn(customerL);
+                                YoYo.with(Techniques.SlideInRight).duration(600).repeat(0).playOn(stockL);
+
+                                YoYo.with(Techniques.SlideInLeft).duration(600).repeat(0).playOn(requestL);
+                                YoYo.with(Techniques.SlideInRight).duration(600).repeat(0).playOn(syncL);
+
+                                YoYo.with(Techniques.SlideInUp).duration(600).repeat(0).playOn(settingsL);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(500).repeat(0).playOn(belowHead);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(600).repeat(0).playOn(head);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(100).repeat(0).playOn(settingsL);
+
 
     }
 }

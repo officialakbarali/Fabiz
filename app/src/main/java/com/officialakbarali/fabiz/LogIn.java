@@ -2,6 +2,7 @@ package com.officialakbarali.fabiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +33,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
 import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
@@ -197,15 +197,41 @@ public class LogIn extends AppCompatActivity {
         toast.show();
     }
 
-
-    private void setUpStartAnimation() {
-
+    @Override
+    protected void onPause() {
+        super.onPause();
         TextView head, belowHead;
         EditText username, password;
 
         Button logIn = findViewById(R.id.log_in_btn);
+        logIn.setVisibility(View.INVISIBLE);
 
-        LinearLayout last = findViewById(R.id.last_container);
+        RadioButton remember = findViewById(R.id.login_remember);
+        TextView forgot = findViewById(R.id.login_forgot);
+        remember.setVisibility(View.INVISIBLE);
+        forgot.setVisibility(View.INVISIBLE);
+
+        head = findViewById(R.id.log_in_head);
+        head.setVisibility(View.INVISIBLE);
+        belowHead = findViewById(R.id.log_in_below_head);
+        belowHead.setVisibility(View.INVISIBLE);
+
+        username = findViewById(R.id.log_in_usr);
+        username.setVisibility(View.INVISIBLE);
+        password = findViewById(R.id.log_in_pass);
+        password.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpStartAnimation() {
+
+        final TextView head, belowHead;
+        final EditText username, password;
+
+        final Button logIn = findViewById(R.id.log_in_btn);
+
+        final RadioButton remember = findViewById(R.id.login_remember);
+        final TextView forgot = findViewById(R.id.login_forgot);
+
 
         head = findViewById(R.id.log_in_head);
         belowHead = findViewById(R.id.log_in_below_head);
@@ -213,13 +239,98 @@ public class LogIn extends AppCompatActivity {
         username = findViewById(R.id.log_in_usr);
         password = findViewById(R.id.log_in_pass);
 
-        YoYo.with(Techniques.SlideInLeft).duration(1200).repeat(0).playOn(username);
-        YoYo.with(Techniques.SlideInLeft).duration(1300).repeat(0).playOn(password);
 
-        YoYo.with(Techniques.SlideInRight).duration(1400).repeat(0).playOn(logIn);
+        YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
 
-        YoYo.with(Techniques.FadeInDown).duration(1000).repeat(0).playOn(head);
-        YoYo.with(Techniques.FadeInUp).duration(1100).repeat(0).playOn(belowHead);
-        YoYo.with(Techniques.FadeInUp).duration(1500).repeat(0).playOn(last);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                head.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        belowHead.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                username.setVisibility(View.VISIBLE);
+                                password.setVisibility(View.VISIBLE);
+                                logIn.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInDown).duration(600).repeat(0).playOn(username);
+                                YoYo.with(Techniques.SlideInUp).duration(600).repeat(0).playOn(password);
+                                YoYo.with(Techniques.SlideInUp).withListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        remember.setVisibility(View.VISIBLE);
+                                        forgot.setVisibility(View.VISIBLE);
+
+                                        YoYo.with(Techniques.SlideInLeft).duration(600).repeat(0).playOn(remember);
+                                        YoYo.with(Techniques.SlideInRight).duration(600).repeat(0).playOn(forgot);
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                }).duration(600).repeat(0).playOn(logIn);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(600).repeat(0).playOn(belowHead);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(500).repeat(0).playOn(head);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(100).repeat(0).playOn(remember);
     }
 }
