@@ -44,6 +44,7 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + " ("
                 + FabizContract.Item._ID + " TEXT PRIMARY KEY , "
                 + FabizContract.Item.COLUMN_BARCODE + " TEXT, "
+                + FabizContract.Item.COLUMN_UNIT_ID + " TEXT NOT NULL, "
                 + FabizContract.Item.COLUMN_NAME + " TEXT NOT NULL, "
                 + FabizContract.Item.COLUMN_BRAND + " TEXT NOT NULL, "
                 + FabizContract.Item.COLUMN_CATEGORY + " TEXT NOT NULL,"
@@ -94,6 +95,7 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Cart.COLUMN_ITEM_ID + " TEXT NOT NULL, "
                 + FabizContract.Cart.COLUMN_NAME + " TEXT NOT NULL,"
                 + FabizContract.Cart.COLUMN_BRAND + " TEXT NOT NULL,"
+                + FabizContract.Cart.COLUMN_UNIT_ID + " TEXT NOT NULL,"
                 + FabizContract.Cart.COLUMN_CATEGORY + " TEXT NOT NULL,"
                 + FabizContract.Cart.COLUMN_PRICE + " REAL NOT NULL,"
                 + FabizContract.Cart.COLUMN_QTY + " INTEGER NOT NULL,"
@@ -109,6 +111,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.SalesReturn.COLUMN_DATE + " TEXT NOT NULL,"
                 + FabizContract.SalesReturn.COLUMN_BILL_ID + " TEXT NOT NULL, "
                 + FabizContract.SalesReturn.COLUMN_ITEM_ID + " TEXT NOT NULL, "
+
+                + FabizContract.SalesReturn.COLUMN_UNIT_ID + " TEXT NOT NULL,"
+
                 + FabizContract.SalesReturn.COLUMN_PRICE + " REAL NOT NULL,"
                 + FabizContract.SalesReturn.COLUMN_QTY + " INTEGER NOT NULL,"
                 + FabizContract.SalesReturn.COLUMN_TOTAL + " REAL NOT NULL)";

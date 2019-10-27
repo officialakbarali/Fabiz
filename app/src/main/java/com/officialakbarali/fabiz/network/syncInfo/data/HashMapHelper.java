@@ -150,6 +150,7 @@ public class HashMapHelper {
                     hashMap.put(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID + cartRowIndex, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart._ID)) + "");
                     hashMap.put(FabizContract.Cart.COLUMN_BILL_ID + cartRowIndex, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BILL_ID)) + "");
                     hashMap.put(FabizContract.Cart.COLUMN_ITEM_ID + cartRowIndex, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)) + "");
+                    hashMap.put(FabizContract.Cart.COLUMN_UNIT_ID + cartRowIndex, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_UNIT_ID)));
                     hashMap.put(FabizContract.Cart.COLUMN_NAME + cartRowIndex, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_NAME)));
                     hashMap.put(FabizContract.Cart.COLUMN_BRAND + cartRowIndex, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BRAND)));
                     hashMap.put(FabizContract.Cart.COLUMN_CATEGORY + cartRowIndex, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_CATEGORY)));
@@ -250,7 +251,8 @@ public class HashMapHelper {
             } else if (syncLogData.getTableName().matches(FabizContract.SalesReturn.TABLE_NAME)) {
 
                 Cursor payCursor = provider.query(FabizContract.SalesReturn.TABLE_NAME, new String[]{FabizContract.SalesReturn._ID
-                                , FabizContract.SalesReturn.COLUMN_BILL_ID, FabizContract.SalesReturn.COLUMN_DATE, FabizContract.SalesReturn.COLUMN_ITEM_ID
+                                , FabizContract.SalesReturn.COLUMN_BILL_ID, FabizContract.SalesReturn.COLUMN_DATE, FabizContract.SalesReturn.COLUMN_ITEM_ID,
+                                FabizContract.SalesReturn.COLUMN_UNIT_ID
                                 , FabizContract.SalesReturn.COLUMN_PRICE, FabizContract.SalesReturn.COLUMN_QTY, FabizContract.SalesReturn.COLUMN_TOTAL
                         },
                         FabizContract.SalesReturn._ID + "=?", new String[]{syncLogData.getRawId() + ""},
@@ -262,6 +264,9 @@ public class HashMapHelper {
                     hashMap.put(FabizContract.SalesReturn.COLUMN_BILL_ID, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_BILL_ID)) + "");
                     hashMap.put(FabizContract.SalesReturn.COLUMN_DATE, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_DATE)));
                     hashMap.put(FabizContract.SalesReturn.COLUMN_ITEM_ID, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_ITEM_ID)) + "");
+
+                    hashMap.put(FabizContract.SalesReturn.COLUMN_UNIT_ID, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_UNIT_ID)));
+
                     hashMap.put(FabizContract.SalesReturn.COLUMN_PRICE, payCursor.getDouble(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_PRICE)) + "");
                     hashMap.put(FabizContract.SalesReturn.COLUMN_QTY, payCursor.getInt(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_QTY)) + "");
                     hashMap.put(FabizContract.SalesReturn.COLUMN_TOTAL, payCursor.getDouble(payCursor.getColumnIndexOrThrow(FabizContract.SalesReturn.COLUMN_TOTAL)) + "");

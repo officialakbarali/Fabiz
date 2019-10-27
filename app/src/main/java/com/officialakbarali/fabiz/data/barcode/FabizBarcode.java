@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.google.zxing.Result;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.customer.Customer;
 import com.officialakbarali.fabiz.customer.Home;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -154,7 +153,7 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
             cursor = provider.query(FabizContract.Customer.TABLE_NAME, new String[]{FabizContract.Customer._ID},
                     FabizContract.Customer.COLUMN_BARCODE + "=?", new String[]{myResult}, null);
         } else {
-            cursor = provider.query(FabizContract.Item.TABLE_NAME, new String[]{FabizContract.Item._ID, FabizContract.Item.COLUMN_NAME, FabizContract.Item.COLUMN_BRAND,
+            cursor = provider.query(FabizContract.Item.TABLE_NAME, new String[]{FabizContract.Item._ID, FabizContract.Item.COLUMN_UNIT_ID, FabizContract.Item.COLUMN_NAME, FabizContract.Item.COLUMN_BRAND,
                             FabizContract.Item.COLUMN_CATEGORY, FabizContract.Item.COLUMN_PRICE},
                     FabizContract.Item.COLUMN_BARCODE + "=?", new String[]{myResult}, null);
         }
@@ -166,6 +165,7 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
                 finish();
             } else {
                 enterQtyDialogue(new ItemDetail(cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_UNIT_ID)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_NAME)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_BRAND)),
                         cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_CATEGORY)),
@@ -260,7 +260,7 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
-                    cartItems.add(new Cart("0", "0", itemDetail.getId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
+                    cartItems.add(new Cart("0", "0", itemDetail.getId(),itemDetail.getUnitId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {

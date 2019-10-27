@@ -24,6 +24,26 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cust_sale_time"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prefix :" />
+
+                <EditText
+                        android:id="@+id/cust_add_prefix"
+                        android:layout_width="70dp"
+                        android:inputType="textCapCharacters"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1" />
+
+            </LinearLayout>
+
             <EditText
                     android:id="@+id/cust_add_name"
                     android:layout_width="match_parent"
@@ -68,8 +88,8 @@
                     android:id="@+id/cust_add_telephone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:hint="Enter Telephone" />
+                    android:hint="Enter Telephone"
+                    android:inputType="phone" />
 
             <EditText
                     android:id="@+id/cust_add_vat_no"

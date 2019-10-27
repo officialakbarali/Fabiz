@@ -326,8 +326,8 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
             List<SyncLogDetail> syncLogList = new ArrayList<>();
             syncLogList.add(new SyncLogDetail(mSalesReviewDetail.getId(), FabizContract.BillDetail.TABLE_NAME, OP_UPDATE));
 
-            int idToInsertPayment = provider.getIdForInsert(FabizContract.Payment.TABLE_NAME);
-            if (idToInsertPayment == -1) {
+            String  idToInsertPayment = provider.getIdForInsert(FabizContract.Payment.TABLE_NAME,"");
+            if (idToInsertPayment .matches("-1")) {
                 provider.finishTransaction();
                 showToast("Maximum limit of offline mode reached,please contact customer support");
                 return;

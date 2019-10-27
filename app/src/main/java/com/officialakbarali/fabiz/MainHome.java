@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,7 +21,9 @@ import com.officialakbarali.fabiz.network.syncInfo.SyncInformation;
 import com.officialakbarali.fabiz.requestStock.RequestStock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import static com.officialakbarali.fabiz.data.CommonInformation.convertToCamelCase;
 import static com.officialakbarali.fabiz.requestStock.RequestStock.itemsForRequest;
 
 public class MainHome extends AppCompatActivity {
@@ -28,6 +33,20 @@ public class MainHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
+        TextView nameText = findViewById(R.id.home_cust_head);
+
+        String nameS = "Hai ";
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String fullName = sharedPreferences.getString("nameOfStaff", "User");
+
+        fullName = convertToCamelCase(fullName);
+
+        fullName = fullName.split(" ",2);
+
+        nameS += fullName + "!";
+        nameText.setText(nameS);
 
         setUpHomeButton();
     }

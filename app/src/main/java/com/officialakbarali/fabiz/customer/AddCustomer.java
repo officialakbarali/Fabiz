@@ -3,7 +3,9 @@ package com.officialakbarali.fabiz.customer;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,13 +69,25 @@ public class AddCustomer extends AppCompatActivity {
                 Spinner filterSpinner = findViewById(R.id.cust_add_day_list);
                 String selectedDay = "" + getNumberFromDayName(String.valueOf(filterSpinner.getSelectedItem()));
 
-                ContentValues values = new ContentValues();
 
-                int idOfCuustomerToInsert = fabizProvider.getIdForInsert(FabizContract.Customer.TABLE_NAME);
+                EditText prefixE = findViewById(R.id.cust_add_prefix);
+                String prefix = prefixE.getText().toString();
+
+                if (prefix.matches("")) {
+                    prefix = "A";
+                }
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AddCustomer.this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("sales_prefix", prefix);
+                editor.apply();
+
+
+                ContentValues values = new ContentValues();
+                String idOfCuustomerToInsert = fabizProvider.getIdForInsert(FabizContract.Customer.TABLE_NAME,prefix);
 
 
                 values.put(FabizContract.Customer._ID, idOfCuustomerToInsert);
-                values.put(FabizContract.Customer.COLUMN_BARCODE, idOfCuustomerToInsert + "");
+                values.put(FabizContract.Customer.COLUMN_BARCODE, idOfCuustomerToInsert);
                 values.put(FabizContract.Customer.COLUMN_DAY, selectedDay);//String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)));
                 values.put(FabizContract.Customer.COLUMN_NAME, name);
                 values.put(FabizContract.Customer.COLUMN_PHONE, phone);
@@ -120,6 +134,11 @@ public class AddCustomer extends AppCompatActivity {
                 }
             }
         });
+
+        EditText prefixE = findViewById(R.id.cust_sale_prefix);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String salesPrefix = sharedPreferences.getString("cust_add_prefix", "A");
+        prefixE.setText(salesPrefix);
     }
 
     private void showToast(String msgForToast) {

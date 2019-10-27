@@ -135,7 +135,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         List<Cart> cartItems = new ArrayList<>();
 
         Cursor billItemsCursor = fabizProvider.query(FabizContract.Cart.TABLE_NAME, new String[]{
-                        FabizContract.Cart._ID, FabizContract.Cart.COLUMN_BILL_ID, FabizContract.Cart.COLUMN_ITEM_ID, FabizContract.Cart.COLUMN_NAME, FabizContract.Cart.COLUMN_BRAND, FabizContract.Cart.COLUMN_CATEGORY,
+                        FabizContract.Cart._ID, FabizContract.Cart.COLUMN_BILL_ID, FabizContract.Cart.COLUMN_ITEM_ID, FabizContract.Cart.COLUMN_UNIT_ID, FabizContract.Cart.COLUMN_NAME, FabizContract.Cart.COLUMN_BRAND, FabizContract.Cart.COLUMN_CATEGORY,
                         FabizContract.Cart.COLUMN_PRICE, FabizContract.Cart.COLUMN_QTY, FabizContract.Cart.COLUMN_TOTAL, FabizContract.Cart.COLUMN_RETURN_QTY
                 }, FabizContract.Cart.COLUMN_BILL_ID + "=?",
                 new String[]{billId + ""}, null);
@@ -145,6 +145,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart._ID)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BILL_ID)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)),
+                    billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_UNIT_ID)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_NAME)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BRAND)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_CATEGORY)),
@@ -272,7 +273,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         returnB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContentValues values = validateAndReturnContentValues(DcurrentTime, cartITemList.getItemId(), qtyTextP.getText().toString(), priceTextP.getText().toString(),
+                ContentValues values = validateAndReturnContentValues(DcurrentTime, cartITemList.getItemId(), cartITemList.getUnitId(), qtyTextP.getText().toString(), priceTextP.getText().toString(),
                         totAmountP.getText().toString(), maxLimitOfReturn);
                 if (values != null) {
                     saveThisReturnedItem(values);
@@ -287,11 +288,11 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         }
     }
 
-    private ContentValues validateAndReturnContentValues(String dateR, String itemIdR, String qtyR, String priceR, String totalR, int maxLimitOfReturn) {
+    private ContentValues validateAndReturnContentValues(String dateR, String itemIdR, String unitIdR, String qtyR, String priceR, String totalR, int maxLimitOfReturn) {
         if (conditionsForDialogue(priceR, qtyR, totalR, maxLimitOfReturn)) {
-            int idForInsert = fabizProvider.getIdForInsert(FabizContract.SalesReturn.TABLE_NAME);
+            String idForInsert = fabizProvider.getIdForInsert(FabizContract.SalesReturn.TABLE_NAME, "");
 
-            if (idForInsert == -1) {
+            if (idForInsert.matches("-1")) {
                 showToast("Max limit of offline operation reached.please contact customer care");
                 return null;
             }
@@ -301,6 +302,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
             values.put(FabizContract.SalesReturn.COLUMN_DATE, dateR);
             values.put(FabizContract.SalesReturn.COLUMN_BILL_ID, billId);
             values.put(FabizContract.SalesReturn.COLUMN_ITEM_ID, itemIdR);
+            values.put(FabizContract.SalesReturn.COLUMN_UNIT_ID, unitIdR);
             values.put(FabizContract.SalesReturn.COLUMN_QTY, qtyR);
             values.put(FabizContract.SalesReturn.COLUMN_PRICE, priceR);
             values.put(FabizContract.SalesReturn.COLUMN_TOTAL, totalR);

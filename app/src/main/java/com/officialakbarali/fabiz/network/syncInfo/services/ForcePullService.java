@@ -308,6 +308,7 @@ public class ForcePullService extends Service {
                 values.put(FabizContract.Item._ID, obj.getString(FabizContract.Item.TABLE_NAME + FabizContract.Item._ID));
             }
 
+            values.put(FabizContract.Item.COLUMN_UNIT_ID, obj.getString(FabizContract.Item.COLUMN_UNIT_ID));
             values.put(FabizContract.Item.COLUMN_BARCODE, obj.getString(FabizContract.Item.COLUMN_BARCODE));
             values.put(FabizContract.Item.COLUMN_NAME, obj.getString(FabizContract.Item.COLUMN_NAME));
             values.put(FabizContract.Item.COLUMN_BRAND, obj.getString(FabizContract.Item.COLUMN_BRAND));
@@ -403,6 +404,7 @@ public class ForcePullService extends Service {
 
                 values.put(FabizContract.Cart.COLUMN_BILL_ID, obj.getString(FabizContract.Cart.COLUMN_BILL_ID));
                 values.put(FabizContract.Cart.COLUMN_ITEM_ID, obj.getString(FabizContract.Cart.COLUMN_ITEM_ID));
+                values.put(FabizContract.Cart.COLUMN_UNIT_ID, obj.getString(FabizContract.Cart.COLUMN_UNIT_ID));
                 values.put(FabizContract.Cart.COLUMN_NAME, obj.getString(FabizContract.Cart.COLUMN_NAME));
                 values.put(FabizContract.Cart.COLUMN_BRAND, obj.getString(FabizContract.Cart.COLUMN_BRAND));
                 values.put(FabizContract.Cart.COLUMN_CATEGORY, obj.getString(FabizContract.Cart.COLUMN_CATEGORY));
@@ -436,6 +438,9 @@ public class ForcePullService extends Service {
                 values.put(FabizContract.SalesReturn.COLUMN_DATE, obj.getString(FabizContract.SalesReturn.COLUMN_DATE));
                 values.put(FabizContract.SalesReturn.COLUMN_BILL_ID, obj.getString(FabizContract.SalesReturn.COLUMN_BILL_ID));
                 values.put(FabizContract.SalesReturn.COLUMN_ITEM_ID, obj.getString(FabizContract.SalesReturn.COLUMN_ITEM_ID));
+
+                values.put(FabizContract.SalesReturn.COLUMN_UNIT_ID, obj.getString(FabizContract.SalesReturn.COLUMN_UNIT_ID));
+
                 values.put(FabizContract.SalesReturn.COLUMN_PRICE, obj.getString(FabizContract.SalesReturn.COLUMN_PRICE));
                 values.put(FabizContract.SalesReturn.COLUMN_QTY, obj.getString(FabizContract.SalesReturn.COLUMN_QTY));
                 values.put(FabizContract.SalesReturn.COLUMN_TOTAL, obj.getString(FabizContract.SalesReturn.COLUMN_TOTAL));

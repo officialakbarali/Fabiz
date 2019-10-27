@@ -108,7 +108,7 @@ public class LogIn extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getBoolean("success")) {
-                        proceed(username, password, jsonObject.getInt("precision"), jsonObject.getInt("idOfStaff"));
+                        proceed(username, password, jsonObject.getInt("precision"), jsonObject.getInt("idOfStaff"), jsonObject.getString("nameOfStaff"));
                     } else {
                         if (jsonObject.getString("status").equals("VERSION")) {
                             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LogIn.this);
@@ -146,7 +146,7 @@ public class LogIn extends AppCompatActivity {
         requestQueue.add(volleyRequest);
     }
 
-    private void proceed(String username, String password, int precision, int idOfStaff) {
+    private void proceed(String username, String password, int precision, int idOfStaff, String staffName) {
         final SharedPreferences
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -156,6 +156,7 @@ public class LogIn extends AppCompatActivity {
         editor.putBoolean("force_pull", true);
         editor.putInt("precision", precision);
         editor.putInt("idOfStaff", idOfStaff);
+        editor.putString("nameOfStaff", staffName);
 
         final Intent mainHomeIntent = new Intent(LogIn.this, ForcePull.class);
         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

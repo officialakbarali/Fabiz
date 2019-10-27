@@ -11,6 +11,8 @@ import android.util.Log;
 import com.officialakbarali.fabiz.LogIn;
 import com.officialakbarali.fabiz.data.db.FabizDbHelper;
 
+import java.math.BigInteger;
+
 public class FabizProvider {
     private FabizDbHelper fabizDbHelper;
     private SQLiteDatabase database;
@@ -68,40 +70,51 @@ public class FabizProvider {
         return database.delete(tableName, selection, selectionArgs);
     }
 
-    public int getIdForInsert(String tableName) {
+    public String getIdForInsert(String tableName, String prefixS) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        int precision = sharedPreferences.getInt("precision", 1);
-        precision = precision * 500000;
-        int maxLimit = precision + 500000;
+        BigInteger precision = new BigInteger(sharedPreferences.getInt("precision", 1) + "");
+
+        precision = precision.multiply(new BigInteger("10000000"));
+
+        BigInteger maxLimit = precision.add(new BigInteger("10000000"));
 
         SQLiteDatabase databaseQ = fabizDbHelper.getReadableDatabase();
-        String queryForIdSelection = "SELECT _id FROM " + tableName + ";";
+        String queryForIdSelection;
+
+        if (prefixS.matches("")) {
+            queryForIdSelection = "SELECT _id FROM " + tableName + ";";
+        } else {
+            queryForIdSelection = "SELECT _id FROM " + tableName + " WHERE _id LIKE " + prefixS + "%;";
+        }
 
         Cursor cursor = databaseQ.rawQuery(queryForIdSelection, null);
 
-        int currentLatest = 0;
+        BigInteger currentLatest = new BigInteger("0");
+
         while (cursor.moveToNext()) {
-            try {
-                int fromCursor = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
-                if (fromCursor > currentLatest) {
-                    currentLatest = fromCursor;
-                }
-            } catch (NumberFormatException | NullPointerException nfe) {
-                Log.i("Found String Id", cursor.getString(cursor.getColumnIndexOrThrow("_id")));
+
+            String fromCursorS = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
+            BigInteger fromCursor = new BigInteger(fromCursorS.replaceAll("[^0-9]", ""));
+
+            if (fromCursor.compareTo(currentLatest) > 0) {
+                currentLatest = fromCursor;
             }
         }
 
-        if (currentLatest == 0) {
+        cursor.close();
+
+        if (currentLatest.equals(new BigInteger("0"))) {
             currentLatest = precision;
         } else {
-            currentLatest++;
+            currentLatest = currentLatest.add(new BigInteger("1"));
         }
 
 
-        if (currentLatest >= maxLimit) {
-            currentLatest = -1;
+        if (currentLatest.compareTo(maxLimit) > 0) {
+            currentLatest = new BigInteger("-1");
         }
-        return currentLatest;
+
+        return currentLatest.toString();
     }
 
     public void deleteAllTables() {

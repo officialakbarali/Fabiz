@@ -44,6 +44,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet.CUSTOMER_FILTER_TAG;
+import static com.officialakbarali.fabiz.data.CommonInformation.convertToCamelCase;
 import static com.officialakbarali.fabiz.data.CommonInformation.getDayNameFromNumber;
 import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_CUSTOMER;
 
@@ -60,7 +61,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         setContentView(R.layout.activity_customer);
 
         TextView dayText = findViewById(R.id.day_text);
-        dayText.setText(getDayNameFromNumber(getCurrentDay()));
+        dayText.setText(convertToCamelCase(getDayNameFromNumber(getCurrentDay())));
 
         ImageButton scanFromBarcodeButton = findViewById(R.id.cust_barcode);
         scanFromBarcodeButton.setOnClickListener(new View.OnClickListener() {

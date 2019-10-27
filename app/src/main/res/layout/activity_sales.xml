@@ -25,6 +25,27 @@
                     android:textSize="16sp"
                     tools:text="Time :" />
 
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cust_sale_time"
+                    android:orientation="horizontal">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prefix :" />
+
+                <EditText
+                        android:id="@+id/cust_sale_prefix"
+                        android:layout_width="70dp"
+                        android:inputType="textCapCharacters"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1" />
+
+            </LinearLayout>
+
+
             <Button
                     android:id="@+id/cust_sale_barcode"
                     android:layout_width="wrap_content"
@@ -184,8 +205,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
                     tools:text="Total Due Amount :1100" />
 
         </LinearLayout>

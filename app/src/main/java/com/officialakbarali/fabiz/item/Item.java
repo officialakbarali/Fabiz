@@ -159,7 +159,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
-                    cartItems.add(new Cart("", "", itemDetail.getId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
+                    cartItems.add(new Cart("", "", itemDetail.getId(), itemDetail.getUnitId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {
@@ -181,7 +181,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
     private void showItem(String selection, String[] selectionArg) {
         FabizProvider provider = new FabizProvider(this, false);
-        String[] projection = {FabizContract.Item._ID, FabizContract.Item.COLUMN_NAME, FabizContract.Item.COLUMN_BRAND,
+        String[] projection = {FabizContract.Item._ID, FabizContract.Item.COLUMN_UNIT_ID, FabizContract.Item.COLUMN_NAME, FabizContract.Item.COLUMN_BRAND,
                 FabizContract.Item.COLUMN_CATEGORY, FabizContract.Item.COLUMN_PRICE};
         Cursor iCursor = provider.query(FabizContract.Item.TABLE_NAME, projection,
                 selection, selectionArg
@@ -190,6 +190,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         List<ItemDetail> itemList = new ArrayList<>();
         while (iCursor.moveToNext()) {
             itemList.add(new ItemDetail(iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item._ID)),
+                    iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_UNIT_ID)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_NAME)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_BRAND)),
                     iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_CATEGORY)),

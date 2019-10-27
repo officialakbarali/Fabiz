@@ -96,7 +96,7 @@
                         android:maxLines="1"
                         android:padding="20dp"
                         android:textColor="@color/text_color"
-                        android:visibility="visible" />
+                        android:visibility="invisible" />
 
                 <EditText
                         android:id="@+id/log_in_pass"
@@ -131,7 +131,6 @@
                         android:visibility="visible">
 
                     <RadioButton
-                            android:visibility="gone"
                             android:id="@+id/login_remember"
                             style="@style/text_size_small"
                             android:layout_width="0dp"
@@ -140,10 +139,10 @@
                             android:buttonTint="@color/text_color"
                             android:checked="true"
                             android:text="Always remember me"
-                            android:textColor="@color/text_color" />
+                            android:textColor="@color/text_color"
+                            android:visibility="gone" />
 
                     <TextView
-                            android:visibility="gone"
                             android:id="@+id/login_forgot"
                             style="@style/text_size_small"
                             android:layout_width="0dp"
@@ -153,7 +152,8 @@
                             android:clickable="true"
                             android:gravity="end"
                             android:text="Forgot Password ?"
-                            android:textColor="@color/text_color" />
+                            android:textColor="@color/text_color"
+                            android:visibility="gone" />
 
                 </LinearLayout>
 

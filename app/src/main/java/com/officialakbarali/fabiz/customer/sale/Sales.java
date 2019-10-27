@@ -10,7 +10,9 @@ import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,6 +37,7 @@ import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.item.Item;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,7 +81,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
 
-        custId =getIntent().getStringExtra("id");
+        custId = getIntent().getStringExtra("id");
         dueAmtPassed = Double.parseDouble(getIntent().getStringExtra("custDueAmt"));
 
         currentDueAmntV = findViewById(R.id.cust_sale_curr_due);
@@ -171,6 +174,11 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(salesAdapter);
+
+        EditText prefixE = findViewById(R.id.cust_sale_prefix);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String salesPrefix = sharedPreferences.getString("sales_prefix", "A");
+        prefixE.setText(salesPrefix);
     }
 
     @Override
@@ -273,8 +281,19 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         FabizProvider provider = new FabizProvider(this, true);
 
 
-        int idToInsertBill = provider.getIdForInsert(FabizContract.BillDetail.TABLE_NAME);
-        if (idToInsertBill == -1) {
+        EditText prefixE = findViewById(R.id.cust_sale_prefix);
+        String prefix = prefixE.getText().toString();
+
+        if (prefix.matches("")) {
+            prefix = "A";
+        }
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("sales_prefix", prefix);
+        editor.apply();
+
+        String idToInsertBill = provider.getIdForInsert(FabizContract.BillDetail.TABLE_NAME, prefix);
+        if (idToInsertBill.matches("-1")) {
             showToast("Maximum limit of offline mode reached,please contact customer support");
             return;
         }
@@ -293,29 +312,36 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         try {
             //********TRANSACTION STARTED
             provider.createTransaction();
-            long billId = provider.insert(FabizContract.BillDetail.TABLE_NAME, billValues);
+            String billId = provider.insert(FabizContract.BillDetail.TABLE_NAME, billValues) + "";
             Log.i("Bill Id:", "GId :" + idToInsertBill + ", RId :" + billId);
 
 
-            if (billId > 0) {
+            if (Long.parseLong(billId) > 0) {
                 billId = idToInsertBill;
                 List<SyncLogDetail> syncLogList = new ArrayList<>();
-                syncLogList.add(new SyncLogDetail(billId + "", FabizContract.BillDetail.TABLE_NAME, OP_INSERT));
+                syncLogList.add(new SyncLogDetail(billId, FabizContract.BillDetail.TABLE_NAME, OP_INSERT));
+
+
                 int i = 0;
-                int idOfEachCart = (provider.getIdForInsert(FabizContract.Cart.TABLE_NAME)) - 1;
+                String idOfEachCartS = provider.getIdForInsert(FabizContract.Cart.TABLE_NAME, "");
+                if (idOfEachCartS.matches("-1")) {
+                    provider.finishTransaction();
+                    showToast("Maximum limit of offline mode reached,please contact customer support");
+                    return;
+                }
+
+                BigInteger idOfEachCart = new BigInteger(idOfEachCartS);
+                idOfEachCart = idOfEachCart.subtract(new BigInteger("1"));
                 while (i < cartItems.size()) {
                     Cart cartI = cartItems.get(i);
 
-                    idOfEachCart++;
-                    if (idOfEachCart == -1) {
-                        showToast("Maximum limit of offline mode reached,please contact customer support");
-                        break;
-                    }
+                    idOfEachCart = idOfEachCart.add(new BigInteger("1"));
 
                     ContentValues cartItemsValues = new ContentValues();
-                    cartItemsValues.put(FabizContract.Cart._ID, idOfEachCart);
+                    cartItemsValues.put(FabizContract.Cart._ID, idOfEachCart.toString());
                     cartItemsValues.put(FabizContract.Cart.COLUMN_BILL_ID, billId);
                     cartItemsValues.put(FabizContract.Cart.COLUMN_ITEM_ID, cartI.getItemId());
+                    cartItemsValues.put(FabizContract.Cart.COLUMN_UNIT_ID, cartI.getUnitId());
                     cartItemsValues.put(FabizContract.Cart.COLUMN_NAME, cartI.getName());
                     cartItemsValues.put(FabizContract.Cart.COLUMN_BRAND, cartI.getBrand());
                     cartItemsValues.put(FabizContract.Cart.COLUMN_CATEGORY, cartI.getCategory());
@@ -339,8 +365,8 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                     long insertIdPayment = 0;
                     if (enteredAmntForUpdate != 0) {
 
-                        int idToInsertPayment = provider.getIdForInsert(FabizContract.Payment.TABLE_NAME);
-                        if (idToInsertPayment == -1) {
+                        String idToInsertPayment = provider.getIdForInsert(FabizContract.Payment.TABLE_NAME, "");
+                        if (idToInsertPayment .matches("-1")) {
                             provider.finishTransaction();
                             showToast("Maximum limit of offline mode reached,please contact customer support");
                             return;
