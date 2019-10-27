@@ -3,129 +3,232 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/app_background"
         android:orientation="vertical"
+        android:padding="18dp"
         tools:context=".customer.AddCustomer">
 
-    <TextView
+
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:gravity="center"
-            android:text="Add Customer"
-            android:textSize="19sp" />
+            android:orientation="horizontal">
+
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <TextView
+                    android:visibility="invisible"
+                    android:id="@+id/cust_add_head"
+                    style="@style/text_size_large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Add Customer"
+                    android:textColor="@color/text_color" />
+
+            <TextView android:visibility="invisible"
+                    android:id="@+id/cust_add_below_head"
+                    style="@style/text_size_med"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Add New Customer"
+                    android:textColor="@color/text_color" />
+        </LinearLayout>
+
+
+        <LinearLayout android:visibility="invisible"
+                android:id="@+id/cust_add_prefix_cont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    style="@style/text_size_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prefix   "
+                    android:textColor="@color/text_color" />
+
+            <EditText
+                    android:id="@+id/cust_add_prefix"
+                    style="@style/text_size_small"
+                    android:layout_width="66dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:inputType="textCapCharacters"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="7dp">
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1">
 
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cust_sale_time"
-                    android:orientation="horizontal">
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Prefix :" />
-
-                <EditText
-                        android:id="@+id/cust_add_prefix"
-                        android:layout_width="70dp"
-                        android:inputType="textCapCharacters"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1" />
-
-            </LinearLayout>
-
-            <EditText
+            <EditText android:visibility="invisible"
                     android:id="@+id/cust_add_name"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Name" />
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:hint="Enter Name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color"
 
-            <EditText
+                    />
+
+            <EditText android:visibility="invisible"
                     android:id="@+id/cust_add_phone"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
                     android:hint="Enter Phone"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
 
 
-            <EditText
+            <EditText android:visibility="invisible"
                     android:id="@+id/cust_add_cr"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter CR Number" />
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:hint="Enter CR Number"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
 
-            <EditText
+            <EditText android:visibility="invisible"
                     android:id="@+id/cust_add_shop_name"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Shop Name" />
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:hint="Enter Shop Name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
 
-            <EditText
+            <EditText android:visibility="invisible"
                     android:id="@+id/cust_add_email"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
                     android:hint="Enter Email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
 
 
-            <EditText
-                    android:id="@+id/cust_add_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter Address" />
-
-            <EditText
+            <EditText android:visibility="invisible"
                     android:id="@+id/cust_add_telephone"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
                     android:hint="Enter Telephone"
-                    android:inputType="phone" />
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
 
-            <EditText
+            <EditText android:visibility="invisible"
                     android:id="@+id/cust_add_vat_no"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Vat Number" />
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/white"
+                    android:hint="Enter Vat Number"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
 
-
-            <LinearLayout
+            <EditText android:visibility="invisible"
+                    android:id="@+id/cust_add_address"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Pick the day" />
-
-                <Spinner
-                        android:id="@+id/cust_add_day_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:entries="@array/day_list" />
-
-            </LinearLayout>
-
-            <Button
-                    android:id="@+id/cust_add_save"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:text="Save" />
+                    android:background="@color/white"
+                    android:hint="Enter Address"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color" />
 
         </LinearLayout>
 
     </ScrollView>
 
+
+    <LinearLayout android:visibility="invisible"
+            android:id="@+id/cust_add_day_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+        <TextView
+                style="@style/text_size_med"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick the day"
+                android:textColor="@color/text_color" />
+
+        <Spinner
+                android:id="@+id/cust_add_day_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:entries="@array/day_list"
+                android:spinnerMode="dropdown" />
+
+    </LinearLayout>
+
+    <Button android:visibility="invisible"
+            android:id="@+id/cust_add_save"
+            style="@style/text_size_med"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@drawable/button_color_gradient"
+            android:text="Add Customer"
+            android:textColor="@color/pure_white" />
 
 </LinearLayout>

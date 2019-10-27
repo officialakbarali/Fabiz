@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.RecursiveTask;
 
 public final class CommonInformation {
     private static int PHONE_NUMBER_LENGTH = 6;
@@ -41,7 +42,7 @@ public final class CommonInformation {
         } else {
             df = new DecimalFormat("#0.000");
         }
-        return df.format(truncateValue);
+        return df.format(truncateValue) + " BD";
     }
 
     public static int GET_PHONE_NUMBER_LENGTH() {

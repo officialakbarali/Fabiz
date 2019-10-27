@@ -192,6 +192,11 @@ public class MainHome extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        super.onPause();
+        hideViews();
+    }
+
+    private void hideViews() {
         TextView head, belowHead;
         head = findViewById(R.id.home_cust_head);
 
@@ -218,11 +223,10 @@ public class MainHome extends AppCompatActivity {
 
         YoYo.with(Techniques.SlideOutUp).duration(600).repeat(0).playOn(settingsL);
         settingsL.setVisibility(View.INVISIBLE);
-
-        super.onPause();
     }
 
     private void setUpAnimation() {
+        hideViews();
         final TextView head, belowHead;
         head = findViewById(R.id.home_cust_head);
         belowHead = findViewById(R.id.home_cust_below_head);

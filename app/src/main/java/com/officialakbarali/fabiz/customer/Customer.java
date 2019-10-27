@@ -288,6 +288,11 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
     protected void onPause() {
         super.onPause();
 
+        hideViews();
+    }
+
+    private void hideViews() {
+
         LinearLayout custDayContainer, barcodeCont, viewallCont, manageCont, addCont;
 
         custDayContainer = findViewById(R.id.cust_day_cont);
@@ -306,6 +311,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
     }
 
     private void setUpAnimation() {
+        hideViews();
         final LinearLayout custDayContainer, barcodeCont, viewallCont, manageCont, addCont;
 
         custDayContainer = findViewById(R.id.cust_day_cont);

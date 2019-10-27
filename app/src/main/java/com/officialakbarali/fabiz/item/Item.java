@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,8 +19,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet;
+import com.officialakbarali.fabiz.bottomSheets.ItemFilterBottomSheet;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
@@ -29,17 +35,23 @@ import com.officialakbarali.fabiz.item.data.ItemDetail;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet.CUSTOMER_FILTER_TAG;
+import static com.officialakbarali.fabiz.bottomSheets.ItemFilterBottomSheet.ITEM_FILTER_TAG;
 import static com.officialakbarali.fabiz.customer.sale.Sales.cartItems;
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 
 
-public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOnClickListener {
+public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOnClickListener, ItemFilterBottomSheet.ItemFilterListener {
     RecyclerView recyclerView;
     ItemAdapter itemAdapter;
     Toast toast;
 
 
     private boolean FOR_SALE = false;
+
+    EditText searchEditText;
+
+    String filterSelection = FabizContract.Item.COLUMN_NAME + " LIKE ?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,22 +60,28 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
         FOR_SALE = getIntent().getBooleanExtra("fromSales", false);
 
-        Button searchButton = findViewById(R.id.search_item_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchEditText = findViewById(R.id.item_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                EditText editText = findViewById(R.id.item_search);
-                if (!editText.getText().toString().trim().matches("")) {
-                    Spinner filterSpinner = findViewById(R.id.item_filter);
-                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
-                    showItem(selection, new String[]{editText.getText().toString().trim() + "%"});
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!searchEditText.getText().toString().trim().matches("")) {
+                    showItem(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
                 } else {
                     showItem(null, null);
                 }
-
             }
         });
-
+        setUpDrawableEndEditext();
         recyclerView = findViewById(R.id.item_recycler);
         itemAdapter = new ItemAdapter(this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -76,7 +94,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
-        showItem(null, null);
+        setUpAnimation();
     }
 
     @Override
@@ -197,28 +215,10 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                     Double.parseDouble(iCursor.getString(iCursor.getColumnIndexOrThrow(FabizContract.Item.COLUMN_PRICE)))
             ));
         }
+        recyclerView.setVisibility(View.VISIBLE);
         itemAdapter.swapAdapter(itemList);
     }
 
-    private String getSelection(String filterFromForm) {
-        String caseSelection;
-
-        switch (filterFromForm) {
-            case "Id":
-                caseSelection = FabizContract.Item._ID;
-                break;
-            case "Brand":
-                caseSelection = FabizContract.Item.COLUMN_BRAND;
-                break;
-            case "Category":
-                caseSelection = FabizContract.Item.COLUMN_CATEGORY;
-                break;
-            default:
-                caseSelection = FabizContract.Item.COLUMN_NAME;
-        }
-
-        return caseSelection + " LIKE ?";
-    }
 
     private void showToast() {
         if (toast != null) {
@@ -243,5 +243,95 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 return false;
             }
         }
+    }
+
+    private void setUpDrawableEndEditext() {
+        searchEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (searchEditText.getRight() - searchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        ItemFilterBottomSheet itemFilterBottomSheet = ItemFilterBottomSheet.newInstance();
+                        itemFilterBottomSheet.show(getSupportFragmentManager(), ITEM_FILTER_TAG);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onFilterSelect(String filterItem) {
+        filterSelection = filterItem + " LIKE ?";
+        if (!searchEditText.getText().toString().trim().matches("")) {
+            showItem(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        recyclerView.setVisibility(View.INVISIBLE);
+        searchEditText.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        recyclerView.setVisibility(View.INVISIBLE);
+        searchEditText.setVisibility(View.INVISIBLE);
+
+        YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                searchEditText.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        showItem(null, null);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(400).repeat(0).playOn(searchEditText);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(500).repeat(0).playOn(searchEditText);
     }
 }

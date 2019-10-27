@@ -2,6 +2,7 @@ package com.officialakbarali.fabiz.customer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,9 +10,13 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.R;
@@ -31,9 +36,10 @@ import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
 
 
 public class AddCustomer extends AppCompatActivity {
-    EditText nameE, phoneE, emailE, addresssE, crE, shopNameE;
+    EditText nameE, phoneE, emailE, addresssE, crE, shopNameE, telephoneE, vatNoE;
     private Toast toast;
     FabizProvider fabizProvider;
+    Button saveCustomerB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +53,13 @@ public class AddCustomer extends AppCompatActivity {
         crE = findViewById(R.id.cust_add_cr);
         shopNameE = findViewById(R.id.cust_add_shop_name);
 
+        telephoneE = findViewById(R.id.cust_add_telephone);
+        vatNoE = findViewById(R.id.cust_add_vat_no);
+
         fabizProvider = new FabizProvider(this, true);
 
-        final Button saveCustomer = findViewById(R.id.cust_add_save);
-        saveCustomer.setOnClickListener(new View.OnClickListener() {
+        saveCustomerB = findViewById(R.id.cust_add_save);
+        saveCustomerB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = nameE.getText().toString().toUpperCase().trim();
@@ -60,10 +69,10 @@ public class AddCustomer extends AppCompatActivity {
                 String crNumber = crE.getText().toString().toUpperCase().trim();
                 String shopName = shopNameE.getText().toString().toUpperCase().trim();
 
-                EditText telephoneE = findViewById(R.id.cust_add_telephone);
+
                 String telephone = telephoneE.getText().toString().trim();
 
-                EditText vatNoE = findViewById(R.id.cust_add_vat_no);
+
                 String vatNo = vatNoE.getText().toString().trim();
 
                 Spinner filterSpinner = findViewById(R.id.cust_add_day_list);
@@ -244,5 +253,150 @@ public class AddCustomer extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
+        setUpAnimation();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideViews();
+    }
+
+    private void hideViews() {
+        TextView head, belowHead;
+        LinearLayout prefixContainer, dayContainer;
+
+        head = findViewById(R.id.cust_add_head);
+        belowHead = findViewById(R.id.cust_add_below_head);
+
+        prefixContainer = findViewById(R.id.cust_add_prefix_cont);
+        dayContainer = findViewById(R.id.cust_add_day_container);
+
+        head.setVisibility(View.INVISIBLE);
+        belowHead.setVisibility(View.INVISIBLE);
+        prefixContainer.setVisibility(View.INVISIBLE);
+        dayContainer.setVisibility(View.INVISIBLE);
+
+        nameE.setVisibility(View.INVISIBLE);
+        phoneE.setVisibility(View.INVISIBLE);
+        emailE.setVisibility(View.INVISIBLE);
+        addresssE.setVisibility(View.INVISIBLE);
+        vatNoE.setVisibility(View.INVISIBLE);
+        crE.setVisibility(View.INVISIBLE);
+        shopNameE.setVisibility(View.INVISIBLE);
+        telephoneE.setVisibility(View.INVISIBLE);
+        saveCustomerB.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        hideViews();
+        final TextView head, belowHead;
+        final LinearLayout prefixContainer, dayContainer;
+
+        head = findViewById(R.id.cust_add_head);
+        belowHead = findViewById(R.id.cust_add_below_head);
+
+        prefixContainer = findViewById(R.id.cust_add_prefix_cont);
+        dayContainer = findViewById(R.id.cust_add_day_container);
+
+
+        YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                head.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).duration(400).repeat(0).playOn(head);
+                prefixContainer.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInLeft).duration(500).repeat(0).playOn(prefixContainer);
+                belowHead.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        shopNameE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(300).repeat(0).playOn(shopNameE);
+
+                        emailE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(300).repeat(0).playOn(emailE);
+
+                        crE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(350).repeat(0).playOn(crE);
+
+                        telephoneE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(350).repeat(0).playOn(telephoneE);
+
+                        phoneE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(phoneE);
+
+                        vatNoE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(vatNoE);
+
+                        nameE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(450).repeat(0).playOn(nameE);
+
+                        addresssE.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                dayContainer.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.SlideInUp).duration(300).repeat(0).playOn(dayContainer);
+
+                                saveCustomerB.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.SlideInUp).duration(400).repeat(0).playOn(saveCustomerB);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(450).repeat(0).playOn(addresssE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(600).repeat(0).playOn(belowHead);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(dayContainer);
     }
 }

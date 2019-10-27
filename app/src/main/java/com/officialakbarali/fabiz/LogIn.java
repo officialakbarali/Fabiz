@@ -201,6 +201,10 @@ public class LogIn extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        hideViews();
+    }
+
+    private void hideViews() {
         TextView head, belowHead;
         EditText username, password;
 
@@ -224,6 +228,7 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void setUpStartAnimation() {
+        hideViews();
 
         final TextView head, belowHead;
         final EditText username, password;

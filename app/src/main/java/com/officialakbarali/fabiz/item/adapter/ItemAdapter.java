@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +40,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale_animation));
+
         ItemDetail itemDetail = itemDetailList.get(position);
 
         String id = "" + itemDetail.getId();
@@ -72,7 +78,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         if (price.length() > 20) {
             holder.itemPrice.setText("Price: " + price.substring(0, 16) + "...");
         } else {
-            holder.itemPrice.setText("Price: " + TruncateDecimal(price + ""));
+            holder.itemPrice.setText("Price: " + price);
         }
     }
 
@@ -97,6 +103,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView itemId, itemName, itemBrand, itemCategory, itemPrice;
+        LinearLayout mainParent;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -105,6 +112,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             itemBrand = itemView.findViewById(R.id.brand);
             itemCategory = itemView.findViewById(R.id.category);
             itemPrice = itemView.findViewById(R.id.price);
+
+            mainParent = itemView.findViewById(R.id.item_home_view);
 
             itemView.setOnClickListener(this);
         }
