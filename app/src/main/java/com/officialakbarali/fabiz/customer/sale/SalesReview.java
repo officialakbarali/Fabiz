@@ -42,7 +42,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         setContentView(R.layout.activity_sales_review);
 
         FROM_SALERS_RETURN = getIntent().getBooleanExtra("fromSalesReturn", false);
-        custId =getIntent().getStringExtra("id");
+        custId = getIntent().getStringExtra("id");
 
         RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
 
@@ -135,7 +135,8 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
                 new String[]{FabizContract.BillDetail.FULL_COLUMN_ID, FabizContract.BillDetail.FULL_COLUMN_DATE,
                         FabizContract.BillDetail.FULL_COLUMN_QTY, FabizContract.BillDetail.FULL_COLUMN_PRICE,
                         FabizContract.BillDetail.FULL_COLUMN_PAID, FabizContract.BillDetail.FULL_COLUMN_DUE,
-                        FabizContract.BillDetail.FULL_COLUMN_RETURNED_TOTAL, FabizContract.BillDetail.FULL_COLUMN_CURRENT_TOTAL},
+                        FabizContract.BillDetail.FULL_COLUMN_RETURNED_TOTAL, FabizContract.BillDetail.FULL_COLUMN_CURRENT_TOTAL
+                        , FabizContract.BillDetail.FULL_COLUMN_DISCOUNT},
                 selection, selectionArg, null, null, FabizContract.BillDetail.FULL_COLUMN_ID + " DESC", null);
 
         List<SalesReviewDetail> salesReviewList = new ArrayList<>();
@@ -148,7 +149,8 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PAID)),
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE)),
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL)),
-                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL))
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)),
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT))
             ));
         }
         salesReviewAdapter.swapAdapter(salesReviewList);

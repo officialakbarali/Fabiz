@@ -298,6 +298,8 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             return;
         }
 
+        idToInsertBill = prefix + idToInsertBill;
+
         ContentValues billValues = new ContentValues();
         billValues.put(FabizContract.BillDetail._ID, idToInsertBill);
         billValues.put(FabizContract.BillDetail.COLUMN_CUST_ID, custId);
@@ -308,6 +310,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         billValues.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, totAmountToSave);
         billValues.put(FabizContract.BillDetail.COLUMN_PAID, enteredAmntForUpdate);
         billValues.put(FabizContract.BillDetail.COLUMN_DUE, dueAmount);
+        billValues.put(FabizContract.BillDetail.COLUMN_DISCOUNT, "0");
 
         try {
             //********TRANSACTION STARTED
@@ -366,7 +369,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                     if (enteredAmntForUpdate != 0) {
 
                         String idToInsertPayment = provider.getIdForInsert(FabizContract.Payment.TABLE_NAME, "");
-                        if (idToInsertPayment .matches("-1")) {
+                        if (idToInsertPayment.matches("-1")) {
                             provider.finishTransaction();
                             showToast("Maximum limit of offline mode reached,please contact customer support");
                             return;
@@ -377,6 +380,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                         logTranscValues.put(FabizContract.Payment.COLUMN_BILL_ID, billId);
                         logTranscValues.put(FabizContract.Payment.COLUMN_DATE, currentTime);
                         logTranscValues.put(FabizContract.Payment.COLUMN_AMOUNT, enteredAmntForUpdate);
+                        logTranscValues.put(FabizContract.Payment.COLUMN_TYPE, "P");
                         insertIdPayment = provider.insert(FabizContract.Payment.TABLE_NAME, logTranscValues);
                         if (insertIdPayment > 0) {
                             syncLogList.add(new SyncLogDetail(idToInsertPayment + "", FabizContract.Payment.TABLE_NAME, OP_INSERT));

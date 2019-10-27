@@ -49,7 +49,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
     private Toast toast;
     private String custId, billId;
 
-    private TextView dateView, totQtyView, totalView, billIdView;
+    private TextView dateView, totQtyView, totalView, billIdView, discountView;
     FabizProvider fabizProvider;
 
     private SalesAdapter salesAdapter;
@@ -75,6 +75,8 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         FROM_SALES_RETURN = getIntent().getBooleanExtra("fromSalesReturn", false);
 
         fabizProvider = new FabizProvider(this, false);
+
+        discountView = findViewById(R.id.cust_sale_disc);
 
         billIdView = findViewById(R.id.cust_sale_billId);
         totQtyView = findViewById(R.id.cust_sale_tot_qty);
@@ -117,7 +119,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         Cursor billCursor = fabizProvider.query(FabizContract.BillDetail.TABLE_NAME,
                 new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_QTY,
-                        FabizContract.BillDetail.COLUMN_DATE, FabizContract.BillDetail.COLUMN_CURRENT_TOTAL}
+                        FabizContract.BillDetail.COLUMN_DATE, FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, FabizContract.BillDetail.COLUMN_DISCOUNT}
                 , FabizContract.BillDetail._ID + "=?", new String[]{billId + ""}
                 , null);
 
@@ -128,6 +130,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
             totQtyView.setText("Total Item :" + billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)));
             totalView.setText("Total :" + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)) + ""));
+            discountView.setText("Discount On Due :" + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT)) + ""));
         }
     }
 

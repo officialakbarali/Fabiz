@@ -83,6 +83,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.BillDetail.COLUMN_CURRENT_TOTAL + " REAL NOT NULL,"
                 + FabizContract.BillDetail.COLUMN_PAID + " REAL NOT NULL,"
                 + FabizContract.BillDetail.COLUMN_DUE + " REAL NOT NULL,"
+
+                + FabizContract.BillDetail.COLUMN_DISCOUNT + " REAL NOT NULL,"
+
                 + FabizContract.BillDetail.COLUMN_QTY + " INTEGER NOT NULL)";
         db.execSQL(SQL_CREATE_BILL_DETAIL_TABLE);
 
@@ -127,6 +130,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Payment._ID + " TEXT PRIMARY KEY , "
                 + FabizContract.Payment.COLUMN_BILL_ID + " TEXT NOT NULL, "
                 + FabizContract.Payment.COLUMN_DATE + " TEXT NOT NULL,"
+
+                + FabizContract.Payment.COLUMN_TYPE + " TEXT NOT NULL,"
+
                 + FabizContract.Payment.COLUMN_AMOUNT + " REAL NOT NULL)";
 
         db.execSQL(SQL_CREATE_PAYMENT);

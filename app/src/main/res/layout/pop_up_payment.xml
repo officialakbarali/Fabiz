@@ -79,6 +79,12 @@
     </LinearLayout>
 
 
+    <CheckBox
+            android:id="@+id/cust_payment_due_discount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Due Discount" />
+
     <Button
             android:id="@+id/cust_payment_pay_now"
             android:layout_width="match_parent"

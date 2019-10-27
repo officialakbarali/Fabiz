@@ -84,7 +84,7 @@ public class FabizProvider {
         if (prefixS.matches("")) {
             queryForIdSelection = "SELECT _id FROM " + tableName + ";";
         } else {
-            queryForIdSelection = "SELECT _id FROM " + tableName + " WHERE _id LIKE " + prefixS + "%;";
+            queryForIdSelection = "SELECT _id FROM " + tableName + " WHERE _id LIKE '" + prefixS + "%';";
         }
 
         Cursor cursor = databaseQ.rawQuery(queryForIdSelection, null);

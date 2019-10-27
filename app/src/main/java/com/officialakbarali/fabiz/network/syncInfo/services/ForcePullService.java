@@ -379,6 +379,7 @@ public class ForcePullService extends Service {
                 values.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, obj.getString(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL));
                 values.put(FabizContract.BillDetail.COLUMN_PAID, obj.getString(FabizContract.BillDetail.COLUMN_PAID));
                 values.put(FabizContract.BillDetail.COLUMN_DUE, obj.getString(FabizContract.BillDetail.COLUMN_DUE));
+                values.put(FabizContract.BillDetail.COLUMN_DISCOUNT, obj.getString(FabizContract.BillDetail.COLUMN_DISCOUNT));
                 provider.insert(FabizContract.BillDetail.TABLE_NAME, values);
 
             }
@@ -468,6 +469,7 @@ public class ForcePullService extends Service {
                 values.put(FabizContract.Payment.COLUMN_BILL_ID, obj.getString(FabizContract.Payment.COLUMN_BILL_ID));
                 values.put(FabizContract.Payment.COLUMN_DATE, obj.getString(FabizContract.Payment.COLUMN_DATE));
                 values.put(FabizContract.Payment.COLUMN_AMOUNT, obj.getString(FabizContract.Payment.COLUMN_AMOUNT));
+                values.put(FabizContract.Payment.COLUMN_TYPE, obj.getString(FabizContract.Payment.COLUMN_TYPE));
                 provider.insert(FabizContract.Payment.TABLE_NAME, values);
 
             }

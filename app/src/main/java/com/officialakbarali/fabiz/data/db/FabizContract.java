@@ -89,6 +89,9 @@ public class FabizContract {
         public static final String COLUMN_CURRENT_TOTAL = TABLE_NAME + "_" + "current_total";
 
         public static final String COLUMN_PAID = TABLE_NAME + "_" + "paid";
+
+        public static final String COLUMN_DISCOUNT = TABLE_NAME + "_" + "discount";
+
         public static final String COLUMN_DUE = TABLE_NAME + "_" + "due";
 
         //FULL COLUMN NAME
@@ -98,6 +101,10 @@ public class FabizContract {
         public static final String FULL_COLUMN_PRICE = TABLE_NAME + "." + COLUMN_PRICE;
         public static final String FULL_COLUMN_QTY = TABLE_NAME + "." + COLUMN_QTY;
         public static final String FULL_COLUMN_PAID = TABLE_NAME + "." + COLUMN_PAID;
+
+
+        public static final String FULL_COLUMN_DISCOUNT = TABLE_NAME + "." + COLUMN_DISCOUNT;
+
         public static final String FULL_COLUMN_DUE = TABLE_NAME + "." + COLUMN_DUE;
 
         public static final String FULL_COLUMN_RETURNED_TOTAL = TABLE_NAME + "." + COLUMN_RETURNED_TOTAL;
@@ -173,10 +180,14 @@ public class FabizContract {
         public static final String COLUMN_BILL_ID = TABLE_NAME + "_" + "billid";
         public static final String COLUMN_DATE = TABLE_NAME + "_" + "dateofreturn";
         public static final String COLUMN_AMOUNT = TABLE_NAME + "_" + "amount";
+
+        public static final String COLUMN_TYPE = TABLE_NAME + "_" + "type";
         //FULL COLUMN NAME
         public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
         public static final String FULL_COLUMN_BILL_ID = TABLE_NAME + "." + COLUMN_BILL_ID;
         public static final String FULL_COLUMN_DATE = TABLE_NAME + "." + COLUMN_DATE;
         public static final String FULL_COLUMN_AMOUNT = TABLE_NAME + "." + COLUMN_AMOUNT;
+
+        public static final String FULL_COLUMN_TYPE = TABLE_NAME + "." + COLUMN_TYPE;
     }
 }

@@ -119,7 +119,8 @@ public class HashMapHelper {
                 Cursor billCursor = provider.query(FabizContract.BillDetail.TABLE_NAME,
                         new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_CUST_ID, FabizContract.BillDetail.COLUMN_DATE
                                 , FabizContract.BillDetail.COLUMN_QTY, FabizContract.BillDetail.COLUMN_PRICE, FabizContract.BillDetail.COLUMN_RETURNED_TOTAL
-                                , FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, FabizContract.BillDetail.COLUMN_PAID, FabizContract.BillDetail.COLUMN_DUE},
+                                , FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, FabizContract.BillDetail.COLUMN_PAID, FabizContract.BillDetail.COLUMN_DUE
+                                , FabizContract.BillDetail.COLUMN_DISCOUNT},
                         FabizContract.BillDetail._ID + "=?",
                         new String[]{
                                 syncLogData.getRawId() + ""
@@ -135,13 +136,15 @@ public class HashMapHelper {
                     hashMap.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)) + "");
                     hashMap.put(FabizContract.BillDetail.COLUMN_PAID, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PAID)) + "");
                     hashMap.put(FabizContract.BillDetail.COLUMN_DUE, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE)) + "");
+
+                    hashMap.put(FabizContract.BillDetail.COLUMN_DISCOUNT, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT)) + "");
                 }
 
 
             } else if (syncLogData.getTableName().matches(FabizContract.Cart.TABLE_NAME)) {
 
                 Cursor cartCursor = provider.query(FabizContract.Cart.TABLE_NAME, new String[]{
-                        FabizContract.Cart._ID, FabizContract.Cart.COLUMN_BILL_ID, FabizContract.Cart.COLUMN_ITEM_ID, FabizContract.Cart.COLUMN_NAME,
+                        FabizContract.Cart._ID, FabizContract.Cart.COLUMN_BILL_ID, FabizContract.Cart.COLUMN_ITEM_ID, FabizContract.Cart.COLUMN_UNIT_ID, FabizContract.Cart.COLUMN_NAME,
                         FabizContract.Cart.COLUMN_BRAND, FabizContract.Cart.COLUMN_CATEGORY, FabizContract.Cart.COLUMN_PRICE,
                         FabizContract.Cart.COLUMN_QTY, FabizContract.Cart.COLUMN_TOTAL, FabizContract.Cart.COLUMN_RETURN_QTY,
                 }, FabizContract.Cart._ID + "=?", new String[]{syncLogData.getRawId() + ""}, null);
@@ -163,7 +166,7 @@ public class HashMapHelper {
             } else if (syncLogData.getTableName().matches(FabizContract.Payment.TABLE_NAME)) {
 
                 Cursor payCursor = provider.query(FabizContract.Payment.TABLE_NAME, new String[]{FabizContract.Payment._ID
-                                , FabizContract.Payment.COLUMN_BILL_ID, FabizContract.Payment.COLUMN_DATE, FabizContract.Payment.COLUMN_AMOUNT
+                                , FabizContract.Payment.COLUMN_BILL_ID, FabizContract.Payment.COLUMN_DATE, FabizContract.Payment.COLUMN_AMOUNT,FabizContract.Payment.COLUMN_TYPE
                         },
                         FabizContract.Payment._ID + "=?", new String[]{syncLogData.getRawId() + ""},
                         null);
@@ -174,6 +177,7 @@ public class HashMapHelper {
                     hashMap.put(FabizContract.Payment.COLUMN_BILL_ID, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_BILL_ID)) + "");
                     hashMap.put(FabizContract.Payment.COLUMN_DATE, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_DATE)));
                     hashMap.put(FabizContract.Payment.COLUMN_AMOUNT, payCursor.getDouble(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_AMOUNT)) + "");
+                    hashMap.put(FabizContract.Payment.COLUMN_TYPE, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_TYPE)));
                 }
 
                 paymentLength++;
@@ -190,7 +194,7 @@ public class HashMapHelper {
             SyncLogData syncLogData = list.get(i);
             if (syncLogData.getTableName().matches(FabizContract.BillDetail.TABLE_NAME)) {
                 Cursor billCursor = provider.query(FabizContract.BillDetail.TABLE_NAME,
-                        new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_PAID, FabizContract.BillDetail.COLUMN_DUE},
+                        new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_PAID, FabizContract.BillDetail.COLUMN_DUE, FabizContract.BillDetail.COLUMN_DISCOUNT},
                         FabizContract.BillDetail._ID + "=?",
                         new String[]{
                                 syncLogData.getRawId() + ""
@@ -199,11 +203,12 @@ public class HashMapHelper {
                     hashMap.put(FabizContract.BillDetail.TABLE_NAME + FabizContract.BillDetail._ID, billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail._ID)) + "");
                     hashMap.put(FabizContract.BillDetail.COLUMN_PAID, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PAID)) + "");
                     hashMap.put(FabizContract.BillDetail.COLUMN_DUE, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE)) + "");
+                    hashMap.put(FabizContract.BillDetail.COLUMN_DISCOUNT, billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT)) + "");
                 }
 
             } else if (syncLogData.getTableName().matches(FabizContract.Payment.TABLE_NAME)) {
                 Cursor payCursor = provider.query(FabizContract.Payment.TABLE_NAME, new String[]{FabizContract.Payment._ID
-                                , FabizContract.Payment.COLUMN_BILL_ID, FabizContract.Payment.COLUMN_DATE, FabizContract.Payment.COLUMN_AMOUNT
+                                , FabizContract.Payment.COLUMN_BILL_ID, FabizContract.Payment.COLUMN_DATE, FabizContract.Payment.COLUMN_AMOUNT, FabizContract.Payment.COLUMN_TYPE
                         },
                         FabizContract.Payment._ID + "=?", new String[]{syncLogData.getRawId() + ""},
                         null);
@@ -212,6 +217,7 @@ public class HashMapHelper {
                     hashMap.put(FabizContract.Payment.COLUMN_BILL_ID, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_BILL_ID)) + "");
                     hashMap.put(FabizContract.Payment.COLUMN_DATE, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_DATE)));
                     hashMap.put(FabizContract.Payment.COLUMN_AMOUNT, payCursor.getDouble(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_AMOUNT)) + "");
+                    hashMap.put(FabizContract.Payment.COLUMN_TYPE, payCursor.getString(payCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_TYPE)) );
                 }
             }
         }

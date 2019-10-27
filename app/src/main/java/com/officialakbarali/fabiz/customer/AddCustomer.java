@@ -83,8 +83,8 @@ public class AddCustomer extends AppCompatActivity {
 
 
                 ContentValues values = new ContentValues();
-                String idOfCuustomerToInsert = fabizProvider.getIdForInsert(FabizContract.Customer.TABLE_NAME,prefix);
-
+                String idOfCuustomerToInsert = fabizProvider.getIdForInsert(FabizContract.Customer.TABLE_NAME, prefix);
+                idOfCuustomerToInsert = prefix + idOfCuustomerToInsert;
 
                 values.put(FabizContract.Customer._ID, idOfCuustomerToInsert);
                 values.put(FabizContract.Customer.COLUMN_BARCODE, idOfCuustomerToInsert);
@@ -135,7 +135,7 @@ public class AddCustomer extends AppCompatActivity {
             }
         });
 
-        EditText prefixE = findViewById(R.id.cust_sale_prefix);
+        EditText prefixE = findViewById(R.id.cust_add_prefix);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String salesPrefix = sharedPreferences.getString("cust_add_prefix", "A");
         prefixE.setText(salesPrefix);

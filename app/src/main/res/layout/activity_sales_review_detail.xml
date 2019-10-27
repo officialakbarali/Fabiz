@@ -113,21 +113,43 @@
                 android:layout_height="1dp"
                 android:background="@color/colorPrimaryDark" />
 
-        <TextView
-                android:id="@+id/cust_sale_tot_qty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="5dp"
-                tools:text="Total Item :8" />
 
-        <TextView
-                android:id="@+id/cust_sale_total"
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginTop="5dp"
-                tools:text="Total :800" />
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <TextView
+
+                        android:id="@+id/cust_sale_tot_qty"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        tools:text="Total Item :8" />
+
+                <TextView
+                        android:id="@+id/cust_sale_total"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        tools:text="Total :800" />
+            </LinearLayout>
+
+
+            <TextView
+                    android:id="@+id/cust_sale_disc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Discount On Due :800" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -59,6 +60,8 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
 
     SalesReviewDetail mSalesReviewDetail;
     Dialog paymentDialog;
+
+    boolean dueDiscount = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +136,8 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
                 new String[]{FabizContract.BillDetail.FULL_COLUMN_ID, FabizContract.BillDetail.FULL_COLUMN_DATE,
                         FabizContract.BillDetail.FULL_COLUMN_QTY, FabizContract.BillDetail.FULL_COLUMN_PRICE,
                         FabizContract.BillDetail.FULL_COLUMN_PAID, FabizContract.BillDetail.FULL_COLUMN_DUE,
-                        FabizContract.BillDetail.FULL_COLUMN_RETURNED_TOTAL, FabizContract.BillDetail.FULL_COLUMN_CURRENT_TOTAL},
+                        FabizContract.BillDetail.FULL_COLUMN_RETURNED_TOTAL, FabizContract.BillDetail.FULL_COLUMN_CURRENT_TOTAL,
+                        FabizContract.BillDetail.FULL_COLUMN_DISCOUNT},
                 selection, selectionArg, null, null, FabizContract.BillDetail.FULL_COLUMN_ID + " DESC", null);
 
         List<SalesReviewDetail> salesReviewList = new ArrayList<>();
@@ -145,7 +149,8 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PAID)),
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE)),
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL)),
-                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL))
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)),
+                    cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT))
             ));
         }
 
@@ -238,9 +243,14 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
         payNowB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CheckBox dueDiscCheckBox = paymentDialog.findViewById(R.id.cust_payment_due_discount);
+
+                dueDiscount = dueDiscCheckBox.isChecked();
+
                 setUpPaymentAccount(paidAmountV.getText().toString());
             }
         });
+
 
         paymentDialog.show();
     }
@@ -305,14 +315,30 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
     }
 
     private void setPaymentToSql(double enteredAmount) {
+
+
         FabizProvider provider = new FabizProvider(this, true);
 
+        double discountAmountToUpdate = mSalesReviewDetail.getDiscount();
+        double paidAmountToUpdate = mSalesReviewDetail.getPaid();
 
-        double paidAmountToUpdate = mSalesReviewDetail.getPaid() + enteredAmount;
+
+        if (dueDiscount) {
+            discountAmountToUpdate += enteredAmount;
+        } else {
+            paidAmountToUpdate += enteredAmount;
+        }
+
         double dueAmountToUpdate = mSalesReviewDetail.getDue() - enteredAmount;
 
+
         ContentValues accUpValues = new ContentValues();
-        accUpValues.put(FabizContract.BillDetail.COLUMN_PAID, paidAmountToUpdate);
+
+        if (dueDiscount) {
+            accUpValues.put(FabizContract.BillDetail.COLUMN_DISCOUNT, discountAmountToUpdate);
+        } else {
+            accUpValues.put(FabizContract.BillDetail.COLUMN_PAID, paidAmountToUpdate);
+        }
         accUpValues.put(FabizContract.BillDetail.COLUMN_DUE, dueAmountToUpdate);
 
         //********TRANSACTION STARTED
@@ -326,8 +352,8 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
             List<SyncLogDetail> syncLogList = new ArrayList<>();
             syncLogList.add(new SyncLogDetail(mSalesReviewDetail.getId(), FabizContract.BillDetail.TABLE_NAME, OP_UPDATE));
 
-            String  idToInsertPayment = provider.getIdForInsert(FabizContract.Payment.TABLE_NAME,"");
-            if (idToInsertPayment .matches("-1")) {
+            String idToInsertPayment = provider.getIdForInsert(FabizContract.Payment.TABLE_NAME, "");
+            if (idToInsertPayment.matches("-1")) {
                 provider.finishTransaction();
                 showToast("Maximum limit of offline mode reached,please contact customer support");
                 return;
@@ -337,6 +363,13 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
             logTranscValues.put(FabizContract.Payment.COLUMN_BILL_ID, mSalesReviewDetail.getId());
             logTranscValues.put(FabizContract.Payment.COLUMN_DATE, currentTime);
             logTranscValues.put(FabizContract.Payment.COLUMN_AMOUNT, enteredAmount);
+
+            if (dueDiscount) {
+                logTranscValues.put(FabizContract.Payment.COLUMN_TYPE, "D");
+            } else {
+                logTranscValues.put(FabizContract.Payment.COLUMN_TYPE, "P");
+            }
+
             long insertIdPayment = provider.insert(FabizContract.Payment.TABLE_NAME, logTranscValues);
 
             if (insertIdPayment > 0) {

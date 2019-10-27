@@ -43,7 +43,7 @@ public class MainHome extends AppCompatActivity {
 
         fullName = convertToCamelCase(fullName);
 
-        fullName = fullName.split(" ",2);
+        fullName = fullName.split(" ")[0];
 
         nameS += fullName + "!";
         nameText.setText(nameS);
@@ -192,7 +192,6 @@ public class MainHome extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         TextView head, belowHead;
         head = findViewById(R.id.home_cust_head);
 
@@ -219,6 +218,8 @@ public class MainHome extends AppCompatActivity {
 
         YoYo.with(Techniques.SlideOutUp).duration(600).repeat(0).playOn(settingsL);
         settingsL.setVisibility(View.INVISIBLE);
+
+        super.onPause();
     }
 
     private void setUpAnimation() {
