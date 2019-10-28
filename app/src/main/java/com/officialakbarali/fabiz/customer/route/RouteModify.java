@@ -4,17 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet;
 import com.officialakbarali.fabiz.customer.adapter.CustomerAdapter;
 import com.officialakbarali.fabiz.customer.data.CustomerDetail;
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -23,12 +28,16 @@ import com.officialakbarali.fabiz.data.db.FabizProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet.CUSTOMER_FILTER_TAG;
 import static com.officialakbarali.fabiz.data.CommonInformation.getDayNameFromNumber;
 
-public class RouteModify extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener {
+public class RouteModify extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener, CustomerFilterBottomSheet.CustomerFilterListener {
     private String TODAY;
 
     CustomerAdapter adapter;
+    RecyclerView recyclerView;
+    EditText searchEditText;
+    String filterSelection = "Name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,38 +46,45 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
 
         TODAY = getIntent().getStringExtra("today");
 
-        TextView labelText = findViewById(R.id.cust_route_label);
+        TextView labelText = findViewById(R.id.route_day);
         labelText.setText(getDayNameFromNumber(TODAY));
 
-        Button searchButton = findViewById(R.id.search_cust_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchEditText = findViewById(R.id.cust_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                EditText editText = findViewById(R.id.cust_search);
-                if (!editText.getText().toString().trim().matches("")) {
-                    Spinner filterSpinner = findViewById(R.id.cust_filter);
-                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
-                    showCustomer(selection, new String[]{editText.getText().toString().trim() + "%"});
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!searchEditText.getText().toString().trim().matches("")) {
+                    showCustomer(getSelection(filterSelection), new String[]{searchEditText.getText().toString().trim() + "%"});
                 } else {
                     showCustomer(null, null);
                 }
-
             }
         });
+        setUpDrawableEndEditext();
 
-        RecyclerView recyclerView = findViewById(R.id.cust_route_recycler);
+        recyclerView = findViewById(R.id.cust_route_recycler);
         adapter = new CustomerAdapter(this, this, TODAY);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        showCustomer(null, null);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
+        setUpAnimation();
     }
 
     @Override
@@ -82,6 +98,27 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
                 toggleCurrentDay(customer.getId(), true);
             }
         }
+    }
+
+    private void setUpDrawableEndEditext() {
+        searchEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (searchEditText.getRight() - searchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        CustomerFilterBottomSheet customerFilterBottomSheet = CustomerFilterBottomSheet.newInstance();
+                        customerFilterBottomSheet.show(getSupportFragmentManager(), CUSTOMER_FILTER_TAG);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void toggleCurrentDay(String idToOperate, boolean add) {
@@ -104,7 +141,6 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         provider.finishTransaction();
     }
 
-
     private void showCustomer(String selection, String[] selectionArg) {
         FabizProvider provider = new FabizProvider(this, false);
         String[] projection = {FabizContract.Customer._ID, FabizContract.Customer.COLUMN_NAME, FabizContract.Customer.COLUMN_PHONE,
@@ -124,6 +160,7 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
                     custCursor.getString(custCursor.getColumnIndexOrThrow(FabizContract.Customer.COLUMN_DAY))
             ));
         }
+        recyclerView.setVisibility(View.VISIBLE);
         adapter.swapAdapter(customerList);
     }
 
@@ -150,4 +187,100 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         return caseSelection + " LIKE ?";
     }
 
+    @Override
+    public void onFilterSelect(String filterItem) {
+        filterSelection = filterItem;
+        if (!searchEditText.getText().toString().trim().matches("")) {
+            showCustomer(getSelection(filterItem), new String[]{searchEditText.getText().toString().trim() + "%"});
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideAllViews();
+    }
+
+    private void hideAllViews() {
+        TextView head = findViewById(R.id.route_day);
+        head.setVisibility(View.INVISIBLE);
+        searchEditText.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        hideAllViews();
+        final TextView head = findViewById(R.id.route_day);
+
+        YoYo.with(Techniques.SlideInRight).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                head.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        searchEditText.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                showCustomer(null, null);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(400).repeat(0).playOn(searchEditText);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(400).repeat(0).playOn(head);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
+    }
 }

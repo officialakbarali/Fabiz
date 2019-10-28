@@ -3,61 +3,48 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/app_background"
         android:orientation="vertical"
+        android:padding="18dp"
         tools:context=".customer.route.RouteModify">
 
+
     <TextView
-            android:id="@+id/cust_route_label"
+
+            android:id="@+id/route_day"
+            style="@style/text_size_large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            tools:text="Monday"
-            android:textSize="22sp" />
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:visibility="invisible"
+            tools:text="Manage Routes" />
 
 
-    <LinearLayout
+    <EditText
+            android:id="@+id/cust_search"
+            style="@style/text_size_med"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Filter" />
-
-        <Spinner
-                android:id="@+id/cust_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/customer_search_list" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <EditText
-                android:id="@+id/cust_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3" />
-
-        <Button
-                android:id="@+id/search_cust_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Search" />
-
-    </LinearLayout>
-
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_search"
+            android:drawableEnd="@drawable/ic_filter"
+            android:drawablePadding="10dp"
+            android:hint="Search here"
+            android:maxLines="1"
+            android:paddingStart="18dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="20dp"
+            android:textColor="@color/text_color"
+            android:visibility="invisible" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cust_route_recycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
 </LinearLayout>
