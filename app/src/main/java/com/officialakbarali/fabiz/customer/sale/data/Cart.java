@@ -5,6 +5,7 @@ public class Cart {
     private String billid;
     private String itemId;
     private String unitId;
+    private String unitName;
     private String name;
     private String brand;
     private String category;
@@ -13,12 +14,13 @@ public class Cart {
     private double total;
     private int returnQty;
 
-    public Cart(String id, String billid, String itemId, String unitId, String name, String brand, String category, double price, int qty, double total, int returnQty) {
+    public Cart(String id, String billid, String itemId, String unitId, String unitName, String name, String brand, String category, double price, int qty, double total, int returnQty) {
         this.id = id;
         this.billid = billid;
         this.itemId = itemId;
 
         this.unitId = unitId;
+        this.unitName = unitName;
 
         this.name = name;
         this.brand = brand;
@@ -73,5 +75,8 @@ public class Cart {
         return unitId;
     }
 
+    public String getUnitName() {
+        return unitName;
+    }
 }
 

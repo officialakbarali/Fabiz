@@ -15,6 +15,21 @@ public class FabizContract {
         public static final String COLUMN_TIMESTAMP = TABLE_NAME + "_" + "time_stamp";
     }
 
+    //2 TABLE ITEM UNIT
+    public static final class ItemUnit implements BaseColumns {
+        public static final String TABLE_NAME = "tb_item_unit";
+
+        public static final String COLUMN_UNIT_NAME = TABLE_NAME + "_" + "unit_name";
+        public static final String COLUMN_QTY = TABLE_NAME + "_" + "qty";
+
+        //FULL COLUMN NAME
+        public static final String FULL_COLUMN_ID = TABLE_NAME + "." + _ID;
+
+        public static final String FULL_COLUMN_UNIT_NAME = TABLE_NAME + "." + COLUMN_UNIT_NAME;
+
+        public static final String FULL_COLUMN_QTY = TABLE_NAME + "." + COLUMN_QTY;
+    }
+
 
     //3 TABLE ITEM
     public static final class Item implements BaseColumns {

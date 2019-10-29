@@ -136,6 +136,16 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Payment.COLUMN_AMOUNT + " REAL NOT NULL)";
 
         db.execSQL(SQL_CREATE_PAYMENT);
+
+        //CREATING ITEM UNIT
+        String SQL_CREATE_ITEM_UNIT = "CREATE TABLE "
+                + FabizContract.ItemUnit.TABLE_NAME
+                + " ("
+                + FabizContract.ItemUnit._ID + " TEXT PRIMARY KEY , "
+                + FabizContract.ItemUnit.COLUMN_UNIT_NAME + " TEXT NOT NULL, "
+                + FabizContract.ItemUnit.COLUMN_QTY + " INTEGER NOT NULL)";
+
+        db.execSQL(SQL_CREATE_ITEM_UNIT);
     }
 
     @Override
@@ -160,6 +170,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
 
         //DELETING OLD PAYMENT TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.Payment.TABLE_NAME);
+
+        //DELETING OLD ITEM_UNIT TABLE
+        db.execSQL("DROP TABLE IF EXISTS " + FabizContract.ItemUnit.TABLE_NAME);
 
         //RE-CREATING EVERY TABLES
         onCreate(db);

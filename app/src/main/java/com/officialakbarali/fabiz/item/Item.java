@@ -12,6 +12,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,19 +25,18 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet;
 import com.officialakbarali.fabiz.bottomSheets.ItemFilterBottomSheet;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.item.adapter.ItemAdapter;
 import com.officialakbarali.fabiz.item.data.ItemDetail;
+import com.officialakbarali.fabiz.item.data.UnitData;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet.CUSTOMER_FILTER_TAG;
 import static com.officialakbarali.fabiz.bottomSheets.ItemFilterBottomSheet.ITEM_FILTER_TAG;
 import static com.officialakbarali.fabiz.customer.sale.Sales.cartItems;
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
@@ -53,10 +54,16 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
     String filterSelection = FabizContract.Item.COLUMN_NAME + " LIKE ?";
 
+    List<UnitData> unitData;
+
+    UnitData myUnitData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
+
+        fillUnitData();
 
         FOR_SALE = getIntent().getBooleanExtra("fromSales", false);
 
@@ -104,16 +111,33 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         }
     }
 
+    private void fillUnitData() {
+        FabizProvider provider = new FabizProvider(this, false);
+        Cursor cursor = provider.query(FabizContract.ItemUnit.TABLE_NAME, new String[]{FabizContract.ItemUnit.FULL_COLUMN_ID, FabizContract.ItemUnit.COLUMN_UNIT_NAME,
+                FabizContract.ItemUnit.COLUMN_QTY}, null, null, null);
+        unitData = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            unitData.add(new UnitData(cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit._ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_UNIT_NAME)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_QTY))));
+        }
+        myUnitData = unitData.get(0);
+    }
+
 
     private void enterQtyDialogue(final ItemDetail itemDetail) {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.pop_up_customer_sale_item_qty);
 
+
         final TextView labelText = dialog.findViewById(R.id.cust_sale_add_item_label_pop);
         labelText.setText(String.format("%s / %s / %s", itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory()));
 
         final EditText priceText = dialog.findViewById(R.id.cust_sale_add_item_price);
-        priceText.setText(TruncateDecimal(itemDetail.getPrice() + ""));
+        double iPrice = itemDetail.getPrice() * myUnitData.getQty();
+        priceText.setText(TruncateDecimal(iPrice + ""));
+
+
         final EditText quantityText = dialog.findViewById(R.id.cust_sale_add_item_qty);
         quantityText.setText("1");
         final TextView totalText = dialog.findViewById(R.id.cust_sale_add_item_total);
@@ -177,7 +201,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
-                    cartItems.add(new Cart("", "", itemDetail.getId(), itemDetail.getUnitId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
+                    cartItems.add(new Cart("", "", itemDetail.getId(), myUnitData.getId(), myUnitData.getUnitName(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {
@@ -194,6 +218,38 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 dialog.dismiss();
             }
         });
+
+
+
+
+//**************************************SETTING UP SPINNER
+        List<String> spinnerData = new ArrayList<>();
+        for (int i = 0; i < unitData.size(); i++) {
+            UnitData temp = unitData.get(i);
+            spinnerData.add(temp.getUnitName());
+        }
+
+
+        final Spinner unitS = dialog.findViewById(R.id.spinner_unit);
+        unitS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                myUnitData = unitData.get(position);
+                double iPrice = itemDetail.getPrice() * myUnitData.getQty();
+                priceText.setText(TruncateDecimal(iPrice + ""));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, spinnerData);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitS.setAdapter(spinnerAdapter);
+
         dialog.show();
     }
 

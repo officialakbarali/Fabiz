@@ -137,10 +137,16 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
     private void setUpBillItems() {
         List<Cart> cartItems = new ArrayList<>();
 
-        Cursor billItemsCursor = fabizProvider.query(FabizContract.Cart.TABLE_NAME, new String[]{
-                        FabizContract.Cart._ID, FabizContract.Cart.COLUMN_BILL_ID, FabizContract.Cart.COLUMN_ITEM_ID, FabizContract.Cart.COLUMN_UNIT_ID, FabizContract.Cart.COLUMN_NAME, FabizContract.Cart.COLUMN_BRAND, FabizContract.Cart.COLUMN_CATEGORY,
-                        FabizContract.Cart.COLUMN_PRICE, FabizContract.Cart.COLUMN_QTY, FabizContract.Cart.COLUMN_TOTAL, FabizContract.Cart.COLUMN_RETURN_QTY
-                }, FabizContract.Cart.COLUMN_BILL_ID + "=?",
+        Cursor billItemsCursor = fabizProvider.query(FabizContract.Cart.TABLE_NAME
+                        + " INNER JOIN " + FabizContract.ItemUnit.TABLE_NAME + " ON " + FabizContract.Cart.FULL_COLUMN_UNIT_ID +
+                        " = " + FabizContract.ItemUnit.FULL_COLUMN_ID
+                , new String[]{
+                        FabizContract.Cart.FULL_COLUMN_ID, FabizContract.Cart.FULL_COLUMN_BILL_ID, FabizContract.Cart.FULL_COLUMN_ITEM_ID,
+                        FabizContract.Cart.FULL_COLUMN_UNIT_ID, FabizContract.Cart.FULL_COLUMN_NAME, FabizContract.Cart.FULL_COLUMN_BRAND,
+                        FabizContract.Cart.FULL_COLUMN_CATAGORY,
+                        FabizContract.Cart.FULL_COLUMN_PRICE, FabizContract.Cart.FULL_COLUMN_QTY,
+                        FabizContract.ItemUnit.FULL_COLUMN_UNIT_NAME, FabizContract.Cart.FULL_COLUMN_TOTAL, FabizContract.Cart.FULL_COLUMN_RETURN_QTY
+                }, FabizContract.Cart.FULL_COLUMN_BILL_ID + "=?",
                 new String[]{billId + ""}, null);
 
         while (billItemsCursor.moveToNext()) {
@@ -149,6 +155,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BILL_ID)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_ITEM_ID)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_UNIT_ID)),
+                    billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_UNIT_NAME)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_NAME)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_BRAND)),
                     billItemsCursor.getString(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_CATEGORY)),

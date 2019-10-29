@@ -200,8 +200,10 @@ public class ForcePullService extends Service {
                         if (insertCart(jsonObject)) {
                             if (insertSalesReturn(jsonObject)) {
                                 if (insertPayment(jsonObject)) {
-                                    sendConfirmRequest();
-                                    return;
+                                    if (insertUnitId(jsonObject)) {
+                                        sendConfirmRequest();
+                                        return;
+                                    }
                                 }
                             }
                         }
@@ -471,9 +473,33 @@ public class ForcePullService extends Service {
                 values.put(FabizContract.Payment.COLUMN_AMOUNT, obj.getString(FabizContract.Payment.COLUMN_AMOUNT));
                 values.put(FabizContract.Payment.COLUMN_TYPE, obj.getString(FabizContract.Payment.COLUMN_TYPE));
                 provider.insert(FabizContract.Payment.TABLE_NAME, values);
-
             }
         }
+        return thisSuccess;
+    }
+
+    private boolean insertUnitId(JSONObject jsonObject) throws JSONException {
+        boolean thisSuccess = true;
+        if (jsonObject.getBoolean(FabizContract.ItemUnit.TABLE_NAME + "status")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(FabizContract.ItemUnit.TABLE_NAME);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                ContentValues values = new ContentValues();
+
+                try {
+                    values.put(FabizContract.ItemUnit._ID, obj.getInt(FabizContract.ItemUnit.TABLE_NAME + FabizContract.ItemUnit._ID));
+                } catch (NumberFormatException | JSONException | NullPointerException nfe) {
+                    values.put(FabizContract.ItemUnit._ID, obj.getString(FabizContract.ItemUnit.TABLE_NAME + FabizContract.ItemUnit._ID));
+                }
+                values.put(FabizContract.ItemUnit.COLUMN_UNIT_NAME, obj.getString(FabizContract.ItemUnit.COLUMN_UNIT_NAME));
+                values.put(FabizContract.ItemUnit.COLUMN_QTY, obj.getInt(FabizContract.ItemUnit.COLUMN_QTY));
+
+                provider.insert(FabizContract.ItemUnit.TABLE_NAME, values);
+            }
+        }
+
+
         return thisSuccess;
     }
 }

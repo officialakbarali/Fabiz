@@ -3,16 +3,35 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="17dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="17dp">
 
     <TextView
             android:id="@+id/cust_sale_add_item_label_pop"
-            android:text="Enter Quantity"
-            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Enter Quantity" />
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unit" />
+
+        <Spinner
+                android:id="@+id/spinner_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -76,26 +95,26 @@
 
     </LinearLayout>
 
-<LinearLayout
-        android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-    <Button
-            android:id="@+id/cust_sale_add_item_add"
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
-            android:textAllCaps="false" />
+            android:orientation="horizontal">
 
-    <Button
-            android:id="@+id/cust_sale_add_item_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:textAllCaps="false" />
+        <Button
+                android:id="@+id/cust_sale_add_item_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:textAllCaps="false" />
 
-</LinearLayout>
+        <Button
+                android:id="@+id/cust_sale_add_item_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:textAllCaps="false" />
 
+    </LinearLayout>
 
 
 </LinearLayout>

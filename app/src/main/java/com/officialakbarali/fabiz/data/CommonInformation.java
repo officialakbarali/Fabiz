@@ -42,7 +42,7 @@ public final class CommonInformation {
         } else {
             df = new DecimalFormat("#0.000");
         }
-        return df.format(truncateValue) + " BD";
+        return df.format(truncateValue) ;
     }
 
     public static int GET_PHONE_NUMBER_LENGTH() {

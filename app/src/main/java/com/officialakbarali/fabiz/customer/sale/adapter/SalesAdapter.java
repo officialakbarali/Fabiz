@@ -29,7 +29,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
         void onClick(int indexToBeRemoved, Cart cartITemList);
     }
 
-    public SalesAdapter(Context context, SalesAdapterOnClickListener salesAdapterOnClickListener, boolean setVisibilityOfReview,boolean setVisibilityOfReturn) {
+    public SalesAdapter(Context context, SalesAdapterOnClickListener salesAdapterOnClickListener, boolean setVisibilityOfReview, boolean setVisibilityOfReturn) {
         this.mContext = context;
         this.mClickHandler = salesAdapterOnClickListener;
         this.SET_SALES_REVIEW_VISIBILITY = setVisibilityOfReview;
@@ -78,11 +78,13 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
             holder.itemTotal.setText(total);
         }
 
+        holder.itemUnit.setText(cart.getUnitName());
+
         if (SET_SALES_REVIEW_VISIBILITY) {
             if (SET_SALES_RETURN_VISIBILITY) {
                 holder.removeBtn.setVisibility(View.VISIBLE);
                 holder.removeBtn.setText("Return this Item");
-            }else {
+            } else {
                 holder.removeBtn.setVisibility(View.GONE);
             }
 
@@ -115,7 +117,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
     }
 
     class SalesViewHolder extends RecyclerView.ViewHolder {
-        TextView itemDetail, itemPrice, itemQty, itemTotal, itemReturn;
+        TextView itemDetail, itemPrice, itemQty, itemTotal, itemReturn, itemUnit;
         Button removeBtn;
 
         public SalesViewHolder(@NonNull View itemView) {
@@ -128,6 +130,8 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
                     mClickHandler.onClick(getAdapterPosition(), cartList.get(getAdapterPosition()));
                 }
             });
+
+            itemUnit = itemView.findViewById(R.id.cust_sale_view_unit);
 
             itemDetail = itemView.findViewById(R.id.cust_sale_view_detail);
             itemPrice = itemView.findViewById(R.id.cust_sale_view_price);

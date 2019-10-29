@@ -11,8 +11,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,11 +27,15 @@ import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 import com.officialakbarali.fabiz.item.data.ItemDetail;
+import com.officialakbarali.fabiz.item.data.UnitData;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -46,6 +53,10 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
     private ZXingScannerView scannerView;
     private Toast toast;
     Intent showCustIntent = null;
+
+    List<UnitData> unitData;
+
+    UnitData myUnitData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +203,8 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
     }
 
     private void enterQtyDialogue(final ItemDetail itemDetail) {
+        fillUnitData();
+
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.pop_up_customer_sale_item_qty);
 
@@ -260,7 +273,7 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
-                    cartItems.add(new Cart("0", "0", itemDetail.getId(),itemDetail.getUnitId(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
+                    cartItems.add(new Cart("0", "0", itemDetail.getId(), myUnitData.getId(), myUnitData.getUnitName(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {
@@ -277,7 +290,49 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
                 dialog.dismiss();
             }
         });
+
+
+        //**************************************SETTING UP SPINNER
+        List<String> spinnerData = new ArrayList<>();
+        for (int i = 0; i < unitData.size(); i++) {
+            UnitData temp = unitData.get(i);
+            spinnerData.add(temp.getUnitName());
+        }
+
+        final Spinner unitS = dialog.findViewById(R.id.spinner_unit);
+        unitS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                myUnitData = unitData.get(position);
+                double iPrice = itemDetail.getPrice() * myUnitData.getQty();
+                priceText.setText(TruncateDecimal(iPrice + ""));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, spinnerData);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitS.setAdapter(spinnerAdapter);
+
         dialog.show();
+    }
+
+    private void fillUnitData() {
+        FabizProvider provider = new FabizProvider(this, false);
+        Cursor cursor = provider.query(FabizContract.ItemUnit.TABLE_NAME, new String[]{FabizContract.ItemUnit.FULL_COLUMN_ID, FabizContract.ItemUnit.COLUMN_UNIT_NAME,
+                FabizContract.ItemUnit.COLUMN_QTY}, null, null, null);
+        unitData = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            unitData.add(new UnitData(cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit._ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_UNIT_NAME)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_QTY))));
+        }
+        myUnitData = unitData.get(0);
     }
 
     private boolean conditionsForDialogue(String s1, String s2, String s3) {
