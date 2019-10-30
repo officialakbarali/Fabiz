@@ -267,16 +267,21 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                     showToast("Unsupported unit");
                 }
                 double totalBaseQty = myUnitData.getQty() * cartITemList.getQty();
+
                 double basePrice = cartITemList.getPrice() / myUnitData.getQty();
 
 
                 double totalCurrentQty = totalBaseQty / currentUnitData.getQty();
 
+
                 double totalReturnBaseQty = myUnitData.getQty() * cartITemList.getReturnQty();
+
                 double totalReturnCurrentQty = totalReturnBaseQty / currentUnitData.getQty();
 
+
                 currentMaxLimit = totalCurrentQty - totalReturnCurrentQty;
-                maxQtyP.setText("Enter QTY to Return\n(Maximum " + currentMaxLimit + ")");
+
+                maxQtyP.setText("Enter QTY to Return\n(Maximum " + TruncateDecimal(currentMaxLimit + "") + ")");
 
 
                 double currentPrice = currentUnitData.getQty() * basePrice;
