@@ -160,7 +160,7 @@ public class HashMapHelper {
                     hashMap.put(FabizContract.Cart.COLUMN_PRICE + cartRowIndex, cartCursor.getDouble(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_PRICE)) + "");
                     hashMap.put(FabizContract.Cart.COLUMN_QTY + cartRowIndex, cartCursor.getInt(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_QTY)) + "");
                     hashMap.put(FabizContract.Cart.COLUMN_TOTAL + cartRowIndex, cartCursor.getDouble(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_TOTAL)) + "");
-                    hashMap.put(FabizContract.Cart.COLUMN_RETURN_QTY + cartRowIndex, cartCursor.getInt(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY)) + "");
+                    hashMap.put(FabizContract.Cart.COLUMN_RETURN_QTY + cartRowIndex, cartCursor.getDouble(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY)) + "");
                 }
                 cartRowIndex++;
             } else if (syncLogData.getTableName().matches(FabizContract.Payment.TABLE_NAME)) {
@@ -252,7 +252,7 @@ public class HashMapHelper {
 
                 if (cartCursor.moveToNext()) {
                     hashMap.put(FabizContract.Cart.TABLE_NAME + FabizContract.Cart._ID, cartCursor.getString(cartCursor.getColumnIndexOrThrow(FabizContract.Cart._ID)) + "");
-                    hashMap.put(FabizContract.Cart.COLUMN_RETURN_QTY, cartCursor.getInt(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY)) + "");
+                    hashMap.put(FabizContract.Cart.COLUMN_RETURN_QTY, cartCursor.getDouble(cartCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY)) + "");
                 }
             } else if (syncLogData.getTableName().matches(FabizContract.SalesReturn.TABLE_NAME)) {
 

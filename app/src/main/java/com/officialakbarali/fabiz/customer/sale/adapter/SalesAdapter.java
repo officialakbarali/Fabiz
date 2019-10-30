@@ -90,7 +90,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
 
             holder.itemReturn.setVisibility(View.VISIBLE);
 
-            String returnI = cart.getReturnQty() + "";
+            String returnI = TruncateDecimal(cart.getReturnQty() + "");
             if (returnI.length() > 30) {
                 holder.itemReturn.setText(returnI.substring(0, 26) + "...");
             } else {

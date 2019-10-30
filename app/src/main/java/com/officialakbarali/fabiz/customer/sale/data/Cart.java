@@ -12,9 +12,9 @@ public class Cart {
     private double price;
     private int qty;
     private double total;
-    private int returnQty;
+    private double returnQty;
 
-    public Cart(String id, String billid, String itemId, String unitId, String unitName, String name, String brand, String category, double price, int qty, double total, int returnQty) {
+    public Cart(String id, String billid, String itemId, String unitId, String unitName, String name, String brand, String category, double price, int qty, double total, double returnQty) {
         this.id = id;
         this.billid = billid;
         this.itemId = itemId;
@@ -67,7 +67,7 @@ public class Cart {
         return total;
     }
 
-    public int getReturnQty() {
+    public double getReturnQty() {
         return returnQty;
     }
 

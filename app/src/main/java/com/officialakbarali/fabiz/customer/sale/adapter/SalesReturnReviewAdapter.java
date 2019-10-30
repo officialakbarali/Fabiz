@@ -89,6 +89,8 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
             holder.totalT.setText("Total :" + totalS);
         }
 
+        holder.unitT.setText("Unit :" + salesReturnReviewItem.getUnitName());
+
     }
 
     @Override
@@ -105,7 +107,7 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
     }
 
     class SalesReturnReviewViewHolder extends RecyclerView.ViewHolder {
-        TextView billIdT, dateT, itemNameT, priceT, qtyT, totalT, returnIdT;
+        TextView billIdT, dateT, itemNameT, priceT, qtyT, totalT, returnIdT, unitT;
 
         public SalesReturnReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -117,6 +119,7 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
             qtyT = itemView.findViewById(R.id.sales_return_review_item_qty);
             totalT = itemView.findViewById(R.id.sales_return_review_item_tot);
             returnIdT = itemView.findViewById(R.id.sales_return_review_item_return_id);
+            unitT = itemView.findViewById(R.id.sales_return_review_item_qty_unit);
         }
     }
 }

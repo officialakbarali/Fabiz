@@ -11,8 +11,9 @@ public class SalesReturnReviewItem {
     private double price;
     private int qty;
     private double total;
+    private String unitName;
 
-    public SalesReturnReviewItem(String id, String billId, String date, String itemId, String name, String brand, String catagory, double price, int qty, double total) {
+    public SalesReturnReviewItem(String id, String billId, String date, String itemId, String name, String brand, String catagory, double price, int qty, double total, String unitName) {
         this.id = id;
         this.billId = billId;
         this.date = date;
@@ -23,6 +24,7 @@ public class SalesReturnReviewItem {
         this.price = price;
         this.qty = qty;
         this.total = total;
+        this.unitName = unitName;
     }
 
     public String getId() {
@@ -64,4 +66,9 @@ public class SalesReturnReviewItem {
     public double getTotal() {
         return total;
     }
+
+    public String getUnitName() {
+        return unitName;
+    }
 }
+

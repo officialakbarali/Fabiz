@@ -103,7 +103,7 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.Cart.COLUMN_PRICE + " REAL NOT NULL,"
                 + FabizContract.Cart.COLUMN_QTY + " INTEGER NOT NULL,"
                 + FabizContract.Cart.COLUMN_TOTAL + " REAL NOT NULL,"
-                + FabizContract.Cart.COLUMN_RETURN_QTY + " INTEGER NOT NULL)";
+                + FabizContract.Cart.COLUMN_RETURN_QTY + " REAL NOT NULL)";
         db.execSQL(SQL_CREATE_CART_TABLE);
 
         //CREATING SALES RETURN

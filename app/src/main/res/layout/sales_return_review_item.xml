@@ -14,10 +14,10 @@
             tools:text="Bill Id :17" />
 
     <TextView
-            android:layout_below="@+id/sales_return_review_item_date"
             android:id="@+id/sales_return_review_item_return_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/sales_return_review_item_date"
             android:layout_centerHorizontal="true"
             tools:text="Bill Id :17" />
 
@@ -44,6 +44,15 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
             tools:text="Price :12" />
+
+    <TextView
+            android:id="@+id/sales_return_review_item_qty_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sales_return_review_item_qty"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            tools:text="Unit" />
 
     <TextView
             android:id="@+id/sales_return_review_item_qty"

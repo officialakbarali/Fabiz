@@ -15,9 +15,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -28,6 +31,7 @@ import com.officialakbarali.fabiz.customer.sale.adapter.SalesAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.Cart;
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
+import com.officialakbarali.fabiz.item.data.UnitData;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
 
@@ -66,11 +70,19 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
     private Dialog paymentDialog;
 
+    List<UnitData> unitData;
+
+    UnitData myUnitData, currentUnitData;
+    int indexOfdCurrentUnit;
+    double currentMaxLimit;
+
     //******************************************************************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_review_detail);
+
+        fillUnitData();
 
         FROM_SALES_RETURN = getIntent().getBooleanExtra("fromSalesReturn", false);
 
@@ -162,7 +174,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                     billItemsCursor.getDouble(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_PRICE)),
                     billItemsCursor.getInt(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_QTY)),
                     billItemsCursor.getDouble(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_TOTAL)),
-                    billItemsCursor.getInt(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY))
+                    billItemsCursor.getDouble(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY))
             ));
         }
         salesAdapter.swapAdapter(cartItems);
@@ -172,6 +184,30 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
     public void onClick(int indexToBeRemoved, Cart cartITemList) {
         if (FROM_SALES_RETURN) {
             setUpReturnPop(cartITemList);
+        }
+    }
+
+    private void fillUnitData() {
+        FabizProvider provider = new FabizProvider(this, false);
+        Cursor cursor = provider.query(FabizContract.ItemUnit.TABLE_NAME, new String[]{FabizContract.ItemUnit.FULL_COLUMN_ID, FabizContract.ItemUnit.COLUMN_UNIT_NAME,
+                FabizContract.ItemUnit.COLUMN_QTY}, null, null, null);
+        unitData = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            unitData.add(new UnitData(cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit._ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_UNIT_NAME)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_QTY))));
+        }
+        myUnitData = unitData.get(0);
+    }
+
+    private void setmyUnitData(String unitIdCart) {
+        for (int i = 0; i < unitData.size(); i++) {
+            if (unitData.get(i).getId().matches(unitIdCart)) {
+                myUnitData = unitData.get(i);
+                currentUnitData = myUnitData;
+                indexOfdCurrentUnit = i;
+                break;
+            }
         }
     }
 
@@ -199,7 +235,9 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         nameTextP.setText(cartITemList.getName());
 
-        final int maxLimitOfReturn = cartITemList.getQty() - cartITemList.getReturnQty();
+        final double maxLimitOfReturn = cartITemList.getQty() - cartITemList.getReturnQty();
+        currentMaxLimit = maxLimitOfReturn;
+
         maxQtyP.setText("Enter QTY to Return\n(Maximum " + maxLimitOfReturn + ")");
 
         priceTextP.setText(TruncateDecimal(cartITemList.getPrice() + ""));
@@ -208,6 +246,60 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         totAmountP.setText(TruncateDecimal("" + cartITemList.getPrice()));
 
+        //*****************SETTING SPINNER (UNIT)
+
+        setmyUnitData(cartITemList.getUnitId());
+        List<String> spinnerData = new ArrayList<>();
+        for (int i = 0; i < unitData.size(); i++) {
+            UnitData temp = unitData.get(i);
+            spinnerData.add(temp.getUnitName());
+        }
+
+        final Spinner unitS = paymentDialog.findViewById(R.id.spinner_unit);
+        unitS.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (unitData.get(position).getQty() <= myUnitData.getQty()) {
+                    currentUnitData = unitData.get(position);
+                } else {
+                    unitS.setSelection(indexOfdCurrentUnit);
+                    currentUnitData = myUnitData;
+                    showToast("Unsupported unit");
+                }
+                double totalBaseQty = myUnitData.getQty() * cartITemList.getQty();
+                double basePrice = cartITemList.getPrice() / myUnitData.getQty();
+
+
+                double totalCurrentQty = totalBaseQty / currentUnitData.getQty();
+
+                double totalReturnBaseQty = myUnitData.getQty() * cartITemList.getReturnQty();
+                double totalReturnCurrentQty = totalReturnBaseQty / currentUnitData.getQty();
+
+                currentMaxLimit = totalCurrentQty - totalReturnCurrentQty;
+                maxQtyP.setText("Enter QTY to Return\n(Maximum " + currentMaxLimit + ")");
+
+
+                double currentPrice = currentUnitData.getQty() * basePrice;
+                priceTextP.setText(TruncateDecimal(currentPrice + ""));
+
+                qtyTextP.setText("1");
+
+                totAmountP.setText(TruncateDecimal("" + currentPrice));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, spinnerData);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitS.setAdapter(spinnerAdapter);
+        unitS.setSelection(indexOfdCurrentUnit);
+        //*****************END
 
         qtyTextP.addTextChangedListener(new TextWatcher() {
             @Override
@@ -224,7 +316,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                 String qtyS = qtyTextP.getText().toString().trim();
                 String totS = totAmountP.getText().toString().trim();
 
-                if (conditionsForDialogue(priceS, qtyS, totS, maxLimitOfReturn)) {
+                if (conditionsForDialogue(priceS, qtyS, totS, currentMaxLimit)) {
                     double priceToCart = Double.parseDouble(priceS);
                     int quantityToCart = Integer.parseInt(qtyS);
                     double totalToCart = priceToCart * quantityToCart;
@@ -248,7 +340,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                 String qtyS = qtyTextP.getText().toString().trim();
                 String totS = totAmountP.getText().toString().trim();
 
-                if (conditionsForDialogue(priceS, qtyS, totS, maxLimitOfReturn)) {
+                if (conditionsForDialogue(priceS, qtyS, totS, currentMaxLimit)) {
                     double priceToCart = Double.parseDouble(priceS);
                     int quantityToCart = Integer.parseInt(qtyS);
                     double totalToCart = priceToCart * quantityToCart;
@@ -283,22 +375,22 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         returnB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ContentValues values = validateAndReturnContentValues(DcurrentTime, cartITemList.getItemId(), cartITemList.getUnitId(), qtyTextP.getText().toString(), priceTextP.getText().toString(),
-                        totAmountP.getText().toString(), maxLimitOfReturn);
+                ContentValues values = validateAndReturnContentValues(DcurrentTime, cartITemList.getItemId(), currentUnitData.getId(), qtyTextP.getText().toString(), priceTextP.getText().toString(),
+                        totAmountP.getText().toString(), currentMaxLimit);
                 if (values != null) {
                     saveThisReturnedItem(values);
                 }
             }
         });
 
-        if (maxLimitOfReturn < 1) {
+        if (maxLimitOfReturn <= 0) {
             showToast("This is completely Returned");
         } else {
             paymentDialog.show();
         }
     }
 
-    private ContentValues validateAndReturnContentValues(String dateR, String itemIdR, String unitIdR, String qtyR, String priceR, String totalR, int maxLimitOfReturn) {
+    private ContentValues validateAndReturnContentValues(String dateR, String itemIdR, String unitIdR, String qtyR, String priceR, String totalR, double maxLimitOfReturn) {
         if (conditionsForDialogue(priceR, qtyR, totalR, maxLimitOfReturn)) {
             String idForInsert = fabizProvider.getIdForInsert(FabizContract.SalesReturn.TABLE_NAME, "");
 
@@ -374,7 +466,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         toast.show();
     }
 
-    private boolean conditionsForDialogue(String s1, String s2, String s3, int maxLimitOfReturn) {
+    private boolean conditionsForDialogue(String s1, String s2, String s3, double maxLimitOfReturn) {
         if (s1.matches("") || s2.matches("") ||
                 s3.matches("")) {
             showToast("Some fields are empty");
@@ -382,7 +474,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         } else {
             try {
                 double priceToCart = Double.parseDouble(s1);
-                int quantityToCart = Integer.parseInt(s2);
+                double quantityToCart = Double.parseDouble(s2);
                 double totalToCart = Double.parseDouble(s3);
 
 
@@ -438,7 +530,6 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                         NEGATIVE_DUE = true;
                     }
 
-
                     ContentValues accUpValues = new ContentValues();
                     accUpValues.put(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, totCurrentUpdate);
                     accUpValues.put(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL, totReturnedUpdate);
@@ -457,13 +548,16 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
                         if (returnUpdateToBillCursor.moveToNext()) {
 
-                            int retQtyUpdate = returnUpdateToBillCursor.getInt(
+                            double retQtyUpdate = returnUpdateToBillCursor.getDouble(
                                     returnUpdateToBillCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY));
 
                             String idOfRowReturn = returnUpdateToBillCursor.getString(
                                     returnUpdateToBillCursor.getColumnIndexOrThrow(FabizContract.Cart._ID));
 
-                            retQtyUpdate += values.getAsInteger(FabizContract.SalesReturn.COLUMN_QTY);
+                            double baseReturnQty = values.getAsDouble(FabizContract.SalesReturn.COLUMN_QTY) * currentUnitData.getQty();
+                            double currentBillUnitFormatQty = baseReturnQty / myUnitData.getQty();
+
+                            retQtyUpdate += currentBillUnitFormatQty;
 
                             ContentValues billReturnUpValues = new ContentValues();
                             billReturnUpValues.put(FabizContract.Cart.COLUMN_RETURN_QTY, retQtyUpdate);
