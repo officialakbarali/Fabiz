@@ -203,25 +203,25 @@ public class MainHome extends AppCompatActivity {
         belowHead = findViewById(R.id.home_cust_below_head);
 
 
-        YoYo.with(Techniques.FadeOutDown).duration(600).repeat(0).playOn(head);
+
         head.setVisibility(View.INVISIBLE);
 
-        YoYo.with(Techniques.FadeOutUp).duration(600).repeat(0).playOn(belowHead);
+
         belowHead.setVisibility(View.INVISIBLE);
 
-        YoYo.with(Techniques.SlideOutLeft).duration(600).repeat(0).playOn(customerL);
+
         customerL.setVisibility(View.INVISIBLE);
 
-        YoYo.with(Techniques.SlideOutRight).duration(600).repeat(0).playOn(stockL);
+
         stockL.setVisibility(View.INVISIBLE);
 
-        YoYo.with(Techniques.SlideOutLeft).duration(600).repeat(0).playOn(requestL);
+
         requestL.setVisibility(View.INVISIBLE);
 
-        YoYo.with(Techniques.SlideOutRight).duration(600).repeat(0).playOn(syncL);
+
         syncL.setVisibility(View.INVISIBLE);
 
-        YoYo.with(Techniques.SlideOutUp).duration(600).repeat(0).playOn(settingsL);
+
         settingsL.setVisibility(View.INVISIBLE);
     }
 
@@ -264,13 +264,13 @@ public class MainHome extends AppCompatActivity {
                                 syncL.setVisibility(View.VISIBLE);
                                 settingsL.setVisibility(View.VISIBLE);
 
-                                YoYo.with(Techniques.SlideInLeft).duration(600).repeat(0).playOn(customerL);
-                                YoYo.with(Techniques.SlideInRight).duration(600).repeat(0).playOn(stockL);
+                                YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(customerL);
+                                YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(stockL);
 
-                                YoYo.with(Techniques.SlideInLeft).duration(600).repeat(0).playOn(requestL);
-                                YoYo.with(Techniques.SlideInRight).duration(600).repeat(0).playOn(syncL);
+                                YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(requestL);
+                                YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(syncL);
 
-                                YoYo.with(Techniques.SlideInUp).duration(600).repeat(0).playOn(settingsL);
+                                YoYo.with(Techniques.SlideInUp).duration(400).repeat(0).playOn(settingsL);
                             }
 
                             @Override
@@ -282,7 +282,7 @@ public class MainHome extends AppCompatActivity {
                             public void onAnimationRepeat(Animator animation) {
 
                             }
-                        }).duration(500).repeat(0).playOn(belowHead);
+                        }).duration(400).repeat(0).playOn(belowHead);
                     }
 
                     @Override
@@ -294,7 +294,7 @@ public class MainHome extends AppCompatActivity {
                     public void onAnimationRepeat(Animator animation) {
 
                     }
-                }).duration(600).repeat(0).playOn(head);
+                }).duration(400).repeat(0).playOn(head);
             }
 
             @Override

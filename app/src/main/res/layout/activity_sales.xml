@@ -1,157 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white_3"
+        android:orientation="vertical"
         tools:context=".customer.sale.Sales">
+
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_blue_bottom">
+
+        <LinearLayout
+                android:id="@+id/prefix_cont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal"
+                android:paddingStart="18dp">
+
+            <TextView
+
+                    style="@style/text_size_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Prefix    "
+                    android:textColor="@color/pure_white" />
+
+            <EditText
+                    android:id="@+id/cust_sale_prefix"
+                    style="@style/text_size_small"
+                    android:layout_width="66dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:inputType="textCapCharacters"
+                    android:maxLines="1"
+                    android:padding="15dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color" />
+
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/cust_sale_time"
+                style="@style/text_size_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingEnd="18dp"
+                android:textColor="@color/pure_white" />
+    </RelativeLayout>
+
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/bottom_price_container"
-            android:layout_alignParentTop="true"
+            android:background="@color/app_background"
             android:orientation="vertical">
 
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/cust_sale_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    tools:text="Time :" />
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cust_sale_time"
-                    android:orientation="horizontal">
-
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Prefix :" />
-
-                <EditText
-                        android:id="@+id/cust_sale_prefix"
-                        android:layout_width="70dp"
-                        android:inputType="textCapCharacters"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1" />
-
-            </LinearLayout>
-
-
-            <Button
-                    android:id="@+id/cust_sale_barcode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Barcode" />
-
-            <Button
-                    android:id="@+id/cust_sale_add_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/cust_sale_barcode"
-                    android:text="Add Item" />
-
-            <Button
-                    android:id="@+id/cust_sale_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="Save" />
-
-        </RelativeLayout>
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark" />
-
         <LinearLayout
+                android:id="@+id/column_name_cont"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:background="@drawable/rounded_white_bottom"
+                android:orientation="horizontal"
+                android:padding="18dp">
 
             <TextView
+                    style="@style/text_size_med"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="Name"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold" />
 
             <TextView
+                    style="@style/text_size_med"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="Price"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold" />
 
             <TextView
+                    style="@style/text_size_med"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="QTY"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold" />
 
             <TextView
+                    style="@style/text_size_med"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="Unit"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold" />
 
             <TextView
+                    style="@style/text_size_med"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="Total"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold" />
+
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/button_customer"
+                    android:src="@drawable/ic_remove_blue"
+                    android:visibility="invisible" />
 
         </LinearLayout>
 
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/colorAccent" />
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cust_sale_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-
-    <RelativeLayout
-            android:id="@+id/bottom_price_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="10dp">
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
+                android:background="@drawable/rounded_white3_top"
+                android:orientation="vertical"
+                android:padding="18dp">
 
 
             <LinearLayout
@@ -161,65 +154,162 @@
 
                 <TextView
                         android:id="@+id/cust_sale_tot_qty"
+                        style="@style/text_size_med"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="@color/text_color"
                         android:textStyle="bold"
-                        tools:text="Total Item :8" />
+                        tools:text="Total Item : 8" />
 
                 <TextView
                         android:id="@+id/cust_sale_total"
+                        style="@style/text_size_med"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
+                        android:textColor="@color/text_color"
                         android:textStyle="bold"
-                        tools:text="Total :800" />
+                        tools:text="Total : 800" />
+
             </LinearLayout>
 
 
             <TextView
                     android:id="@+id/cust_sale_curr_due"
+                    style="@style/text_size_med"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="end"
+                    android:textColor="@color/text_color"
                     android:textStyle="bold"
-                    tools:text="Previous Due Amount :300" />
+                    tools:text="Total : 800" />
+
+            <EditText
+                    android:id="@+id/cust_sale_amnt"
+                    style="@style/text_size_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:hint="Enter Paying Amount*"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:padding="20dp"
+                    android:text=""
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
+
+            <TextView
+                    android:id="@+id/cust_sale_tot_due"
+                    style="@style/text_size_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="end"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    tools:text="Total : 800" />
 
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:orientation="horizontal">
 
-                <TextView
+                <LinearLayout
+                        android:id="@+id/add_cont"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
                         android:layout_weight="1"
-                        android:text="Enter the amount" />
+                        android:orientation="vertical">
 
-                <EditText
-                        android:id="@+id/cust_sale_amnt"
+                    <ImageButton
+                            android:id="@+id/cust_sale_add_item"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_color_gradient"
+                            android:src="@drawable/ic_add_white" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Add Item"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/barcode_cont"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:inputType="numberDecimal"
-                        android:textStyle="bold" />
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_sale_barcode"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_color_gradient"
+                            android:src="@drawable/ic_barcode_white" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Use Barcode"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/saveCont"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_sale_save"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_color_gradient"
+                            android:src="@drawable/ic_save_white" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Save"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
-
-
-            <TextView
-                    android:id="@+id/cust_sale_tot_due"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    tools:text="Total Due Amount :1100" />
 
         </LinearLayout>
 
-    </RelativeLayout>
-
-
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

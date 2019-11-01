@@ -170,11 +170,11 @@ public class ManageRoute extends AppCompatActivity {
                                     @Override
                                     public void onAnimationEnd(Animator animation) {
                                         tue.setVisibility(View.VISIBLE);
-                                        YoYo.with(Techniques.FadeInUp).duration(400).repeat(0).playOn(tue);
+                                        YoYo.with(Techniques.FadeInUp).duration(350).repeat(0).playOn(tue);
                                         fri.setVisibility(View.VISIBLE);
-                                        YoYo.with(Techniques.FadeInUp).duration(450).repeat(0).playOn(fri);
+                                        YoYo.with(Techniques.FadeInUp).duration(400).repeat(0).playOn(fri);
                                         sun.setVisibility(View.VISIBLE);
-                                        YoYo.with(Techniques.FadeInUp).duration(500).repeat(0).playOn(sun);
+                                        YoYo.with(Techniques.FadeInUp).duration(450).repeat(0).playOn(sun);
                                     }
 
                                     @Override
@@ -223,6 +223,6 @@ public class ManageRoute extends AppCompatActivity {
             public void onAnimationRepeat(Animator animation) {
 
             }
-        }).duration(500).repeat(0).playOn(belowHead);
+        }).duration(400).repeat(0).playOn(belowHead);
     }
 }

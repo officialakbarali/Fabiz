@@ -1,245 +1,369 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/text_color"
+        android:orientation="vertical"
         tools:context=".customer.Home">
+
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom_payment_detail_container"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="3dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="18dp">
 
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-            <TextView
-
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="Home"
-                    android:textSize="22sp" />
+        <TextView
+                android:id="@+id/cust_home_name"
+                style="@style/text_size_large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/pure_white" />
 
 
-            <TextView
-                    android:id="@+id/cust_home_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="7dp"
-                    android:layout_marginEnd="3dp"
-                    android:textSize="16sp"
-                    tools:text="Cust Id :123456789" />
+        <TextView
+                android:id="@+id/cust_home_id"
+                style="@style/text_size_med"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/pure_white" />
 
-        </RelativeLayout>
+
+        <TextView
+                android:id="@+id/cust_home_shop_name"
+                style="@style/text_size_med"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/pure_white" />
 
 
         <LinearLayout
+                android:id="@+id/vat_cr_cont"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/cust_home_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="Name :38" />
-
-            <TextView
-                    android:id="@+id/cust_home_phone"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="Phone :19" />
-
-        </LinearLayout>
-
-
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/cust_home_telephone"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="CR_No :38" />
-
-            <TextView
-                    android:id="@+id/cust_home_vat_no"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="Shop Name :38" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/cust_home_cr"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="CR_No :38" />
-
-            <TextView
-                    android:id="@+id/cust_home_shop_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="Shop Name :38" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:orientation="horizontal">
-
-            <TextView
-                    android:id="@+id/cust_home_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="Address :38" />
-
-            <TextView
-                    android:id="@+id/cust_home_email"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="3dp"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    tools:text="Email :38" />
-
-        </LinearLayout>
-
-
-        <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark" />
-
-        <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_border_grey_left">
 
-                <Button
-                        android:id="@+id/cust_home_sale"
+                <TextView
+                        android:id="@+id/cust_home_vat_no"
+                        style="@style/text_size_small"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Sales"
-                        android:textAllCaps="false" />
-
-                <Button
-                        android:id="@+id/cust_home_sales_paydue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Pay Due"
-                        android:textAllCaps="false" />
-
-                <Button
-                        android:id="@+id/cust_home_sales_return"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Sales Return"
-                        android:textAllCaps="false" />
-
-                <Button
-                        android:id="@+id/cust_home_sales_payment_review"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Transaction Review"
-                        android:textAllCaps="false" />
-
-                <Button
-                        android:id="@+id/cust_home_sale_review"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Sales Review"
-                        android:textAllCaps="false" />
-
-                <Button
-                        android:id="@+id/cust_home_sales_return_review"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:text="Sales Return Review"
-                        android:textAllCaps="false" />
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="0.5dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/rounded_border_blue_left"
+                        android:gravity="center"
+                        android:textColor="@color/pure_white" />
 
             </LinearLayout>
 
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_border_grey_right">
 
-        </ScrollView>
+                <TextView
+                        android:id="@+id/cust_home_cr"
+                        style="@style/text_size_small"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="0.5dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/rounded_border_blue_right"
+                        android:gravity="center"
+                        android:textColor="@color/pure_white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/cust_home_phone"
+                    style="@style/text_size_med"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_phone_"
+                    android:drawablePadding="7dp"
+                    android:textColor="@color/pure_white" />
+
+            <TextView
+                    android:id="@+id/cust_home_telephone"
+                    style="@style/text_size_med"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableStart="@drawable/ic_telephone"
+                    android:drawablePadding="7dp"
+                    android:textColor="@color/pure_white" />
+
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/cust_home_email"
+                style="@style/text_size_med"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableStart="@drawable/ic_mail"
+                android:drawablePadding="7dp"
+                android:textColor="@color/pure_white" />
+
+        <TextView
+                android:id="@+id/cust_home_address"
+                style="@style/text_size_med"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:drawableStart="@drawable/ic_address"
+                android:drawablePadding="7dp"
+                android:gravity="center"
+                android:textColor="@color/pure_white" />
 
     </LinearLayout>
 
 
     <LinearLayout
-            android:id="@+id/bottom_payment_detail_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="4dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@drawable/rounded_top_frame_home_white"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="33dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="33dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+
+                <LinearLayout
+                        android:id="@+id/sale_cont"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_home_sale"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_customer"
+                            android:src="@drawable/ic_sales" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Sales"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/pay_cont"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_home_sales_paydue"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_customer"
+                            android:src="@drawable/ic_pay" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Pay Due"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/sales_return_cont"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_home_sales_return"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_customer"
+                            android:src="@drawable/ic_sales_return" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Sales Return"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginStart="33dp"
+                    android:layout_marginEnd="33dp"
+                    android:layout_marginBottom="25dp"
+                    android:orientation="horizontal">
+
+                <LinearLayout
+                        android:id="@+id/pay_review_cont"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_home_sales_payment_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_customer"
+                            android:src="@drawable/ic_pay_review" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Payment Review"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/sales_review_cont"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_home_sale_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_customer"
+                            android:src="@drawable/ic_sales_review" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Sales Review"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/sales_return_review_cont"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="18dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    <ImageButton
+                            android:id="@+id/cust_home_sales_return_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/button_customer"
+                            android:src="@drawable/ic_sales_return_review" />
+
+                    <TextView
+                            style="@style/text_size_small"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Sales Return Review"
+                            android:textColor="@color/text_color" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
 
 
         <TextView
                 android:id="@+id/cust_home_due"
+                style="@style/text_size_med"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/button_color_main_home_icon"
                 android:gravity="center"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                tools:text="Due Amount :30" />
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
     </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>

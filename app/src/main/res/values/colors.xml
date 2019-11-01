@@ -14,9 +14,13 @@
 
     <color name="white_2">#FAFAFA</color>
 
+    <color name="white_3">#F8F8F8</color>
+
     <color name="pure_white">#FFFFFF</color>
 
     <color name="white_fade">#DEDEDE</color>
+
+    <color name="grey_border_color">#D2D2D2</color>
 
     <color name="gray_start_color">#008577</color>
     <color name="gray_end_color">#00574B</color>

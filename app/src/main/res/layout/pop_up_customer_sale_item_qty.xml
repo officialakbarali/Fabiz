@@ -3,32 +3,44 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_dialogue_frame_white"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="17dp">
+        android:padding="20dp">
 
     <TextView
             android:id="@+id/cust_sale_add_item_label_pop"
+            style="@style/text_size_mid_l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Enter Quantity" />
+            android:text="Enter Quantity"
+            android:textColor="@color/text_color"
+            android:textStyle="bold" />
 
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
-                android:layout_width="wrap_content"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Unit" />
+                android:layout_weight="1"
+                android:text="Unit"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <Spinner
+                android:backgroundTint="@color/text_color"
                 android:id="@+id/spinner_unit"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:spinnerMode="dropdown" />
 
     </LinearLayout>
@@ -36,83 +48,126 @@
 
     <LinearLayout
             android:id="@+id/cust_sale_add_item_cont_price_pop"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
-                android:layout_width="130dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Price" />
+                android:layout_weight="1"
+                android:text="Price"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <EditText
                 android:id="@+id/cust_sale_add_item_price"
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/app_background"
                 android:inputType="numberDecimal"
+                android:padding="20dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
                 tools:text="250" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
-                android:layout_width="130dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Enter Quantity" />
+                android:layout_weight="1"
+                android:text="Enter Quantity"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <EditText
                 android:id="@+id/cust_sale_add_item_qty"
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/app_background"
                 android:inputType="number"
+                android:padding="20dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
                 tools:text="2" />
 
     </LinearLayout>
 
     <LinearLayout
             android:id="@+id/cust_sale_add_item_cont_total_pop"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
-                android:layout_width="130dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Total" />
+                android:layout_weight="1"
+                android:text="Total"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <TextView
                 android:id="@+id/cust_sale_add_item_total"
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/app_background"
+                android:padding="20dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
                 tools:text="500" />
 
     </LinearLayout>
 
+
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
         <Button
                 android:id="@+id/cust_sale_add_item_add"
-                android:layout_width="wrap_content"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_color_gradient"
                 android:text="Add"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/pure_white" />
 
         <Button
                 android:id="@+id/cust_sale_add_item_cancel"
-                android:layout_width="wrap_content"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_color_gradient"
                 android:text="Cancel"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/pure_white"
+                android:visibility="visible" />
 
     </LinearLayout>
 

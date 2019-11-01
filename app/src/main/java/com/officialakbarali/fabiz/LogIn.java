@@ -275,33 +275,13 @@ public class LogIn extends AppCompatActivity {
                                 username.setVisibility(View.VISIBLE);
                                 password.setVisibility(View.VISIBLE);
                                 logIn.setVisibility(View.VISIBLE);
-                                YoYo.with(Techniques.FadeInDown).duration(600).repeat(0).playOn(username);
-                                YoYo.with(Techniques.SlideInUp).duration(600).repeat(0).playOn(password);
-                                YoYo.with(Techniques.SlideInUp).withListener(new Animator.AnimatorListener() {
-                                    @Override
-                                    public void onAnimationStart(Animator animation) {
-
-                                    }
-
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
-                                        remember.setVisibility(View.VISIBLE);
-                                        forgot.setVisibility(View.VISIBLE);
-
-                                        YoYo.with(Techniques.SlideInLeft).duration(600).repeat(0).playOn(remember);
-                                        YoYo.with(Techniques.SlideInRight).duration(600).repeat(0).playOn(forgot);
-                                    }
-
-                                    @Override
-                                    public void onAnimationCancel(Animator animation) {
-
-                                    }
-
-                                    @Override
-                                    public void onAnimationRepeat(Animator animation) {
-
-                                    }
-                                }).duration(600).repeat(0).playOn(logIn);
+                                YoYo.with(Techniques.FadeInDown).duration(400).repeat(0).playOn(username);
+                                YoYo.with(Techniques.SlideInUp).duration(400).repeat(0).playOn(password);
+                                YoYo.with(Techniques.SlideInUp).duration(400).repeat(0).playOn(logIn);
+                                remember.setVisibility(View.VISIBLE);
+                                forgot.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.SlideInLeft).duration(450).repeat(0).playOn(remember);
+                                YoYo.with(Techniques.SlideInRight).duration(450).repeat(0).playOn(forgot);
                             }
 
                             @Override
@@ -313,7 +293,7 @@ public class LogIn extends AppCompatActivity {
                             public void onAnimationRepeat(Animator animation) {
 
                             }
-                        }).duration(600).repeat(0).playOn(belowHead);
+                        }).duration(400).repeat(0).playOn(belowHead);
                     }
 
                     @Override
@@ -325,7 +305,7 @@ public class LogIn extends AppCompatActivity {
                     public void onAnimationRepeat(Animator animation) {
 
                     }
-                }).duration(500).repeat(0).playOn(head);
+                }).duration(400).repeat(0).playOn(head);
             }
 
             @Override

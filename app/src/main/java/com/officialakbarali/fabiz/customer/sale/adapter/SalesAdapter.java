@@ -4,7 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,6 +51,8 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
 
     @Override
     public void onBindViewHolder(@NonNull SalesViewHolder holder, int position) {
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale_animation));
+
         Cart cart = cartList.get(position);
 
         String name = cart.getItemId() + " / " + cart.getName() + " / " + cart.getBrand() + " / " + cart.getCategory();
@@ -83,7 +88,7 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
         if (SET_SALES_REVIEW_VISIBILITY) {
             if (SET_SALES_RETURN_VISIBILITY) {
                 holder.removeBtn.setVisibility(View.VISIBLE);
-                holder.removeBtn.setText("Return this Item");
+                // holder.removeBtn.setText("Return this Item");
             } else {
                 holder.removeBtn.setVisibility(View.GONE);
             }
@@ -118,10 +123,13 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
 
     class SalesViewHolder extends RecyclerView.ViewHolder {
         TextView itemDetail, itemPrice, itemQty, itemTotal, itemReturn, itemUnit;
-        Button removeBtn;
+        ImageButton removeBtn;
+        RelativeLayout mainParent;
 
         public SalesViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            mainParent = itemView.findViewById(R.id.main_parent);
 
             removeBtn = itemView.findViewById(R.id.cust_sale_view_rmv_btn);
             removeBtn.setOnClickListener(new View.OnClickListener() {

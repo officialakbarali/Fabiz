@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -11,20 +12,30 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.customer.payment.AddPayment;
 import com.officialakbarali.fabiz.data.barcode.FabizBarcode;
@@ -75,11 +86,23 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     EditText amtEditText;
 
     Intent addPaymentIntent = null;
+    RecyclerView recyclerView;
+
+    ImageButton addItemButton, showBarCoder, saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getResources().getColor(R.color.text_color));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                getWindow().getDecorView().setSystemUiVisibility(0);
+            }
+        }
 
         custId = getIntent().getStringExtra("id");
         dueAmtPassed = Double.parseDouble(getIntent().getStringExtra("custDueAmt"));
@@ -119,7 +142,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             e.printStackTrace();
         }
 
-        Button addItemButton = findViewById(R.id.cust_sale_add_item);
+        addItemButton = findViewById(R.id.cust_sale_add_item);
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +152,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             }
         });
 
-        Button showBarCoder = findViewById(R.id.cust_sale_barcode);
+        showBarCoder = findViewById(R.id.cust_sale_barcode);
         showBarCoder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +162,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             }
         });
 
-        Button saveButton = findViewById(R.id.cust_sale_save);
+        saveButton = findViewById(R.id.cust_sale_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +191,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.cust_sale_recycler);
+        recyclerView = findViewById(R.id.cust_sale_recycler);
         salesAdapter = new SalesAdapter(this, this, false, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -185,8 +208,8 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
-        salesAdapter.swapAdapter(cartItems);
         setTotalAndTotalQuantity();
+        setUpAnimation();
     }
 
 
@@ -263,7 +286,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
 
         totalDueAmnt = totAmountToSave + dueAmtPassed;
         double amntDisplayed = totalDueAmnt - getEnteredAmnt();
-        totalDueAmntV.setText("Total Due Amount :" + TruncateDecimal(amntDisplayed + ""));
+        totalDueAmntV.setText("*Total Due Amount :" + TruncateDecimal(amntDisplayed + ""));
     }
 
     private void showToast(String msgForToast) {
@@ -428,6 +451,13 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         });
 
 
+        //SETTING SCREEN WIDTH
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //*************
+
+
         Button okayButton = dialog.findViewById(R.id.pop_up_for_payment_okay);
         okayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -453,7 +483,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         totDueCont.setVisibility(View.VISIBLE);
         TextView totDueAmnt = dialog.findViewById(R.id.pop_up_for_payment_due_tot);
         double currentDue = (dueAmtPassed + billAmt) - entAmt;
-        totDueAmnt.setText(": " + TruncateDecimal(currentDue + ""));
+        totDueAmnt.setText(TruncateDecimal(currentDue + ""));
 
         Button addPaymentBtn = dialog.findViewById(R.id.pop_up_for_payment_add_pay);
         addPaymentBtn.setVisibility(View.VISIBLE);
@@ -466,10 +496,10 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         });
 
 
-        billAmntV.setText(": " + TruncateDecimal(billAmt + ""));
-        //       dateV.setText(": " + currentTime);
-        enteredAmntV.setText(": " + TruncateDecimal(entAmt + ""));
-        dueAmtV.setText(": " + TruncateDecimal(dueAmt + ""));
+        billAmntV.setText( TruncateDecimal(billAmt + ""));
+        //       dateV.setText( currentTime);
+        enteredAmntV.setText( TruncateDecimal(entAmt + ""));
+        dueAmtV.setText( TruncateDecimal(dueAmt + ""));
 
         dialog.show();
     }
@@ -484,5 +514,179 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                 return 0;
             }
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideViews();
+    }
+
+    private void hideViews() {
+        LinearLayout prefixCont, columnCont, addCont, barcodeCont, saveCont;
+        prefixCont = findViewById(R.id.prefix_cont);
+        columnCont = findViewById(R.id.column_name_cont);
+
+        addCont = findViewById(R.id.add_cont);
+        barcodeCont = findViewById(R.id.barcode_cont);
+        saveCont = findViewById(R.id.saveCont);
+
+        prefixCont.setVisibility(View.INVISIBLE);
+        columnCont.setVisibility(View.INVISIBLE);
+
+        dateView.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+        totQtyView.setVisibility(View.INVISIBLE);
+        totalView.setVisibility(View.INVISIBLE);
+        currentDueAmntV.setVisibility(View.INVISIBLE);
+        totalDueAmntV.setVisibility(View.INVISIBLE);
+        amtEditText.setVisibility(View.INVISIBLE);
+
+
+        addCont.setVisibility(View.INVISIBLE);
+        barcodeCont.setVisibility(View.INVISIBLE);
+        saveCont.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        hideViews();
+
+        final LinearLayout prefixCont, columnCont, addCont, barcodeCont, saveCont;
+        prefixCont = findViewById(R.id.prefix_cont);
+        columnCont = findViewById(R.id.column_name_cont);
+        addCont = findViewById(R.id.add_cont);
+        barcodeCont = findViewById(R.id.barcode_cont);
+        saveCont = findViewById(R.id.saveCont);
+
+        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                prefixCont.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInLeft).duration(300).repeat(0).playOn(prefixCont);
+
+                dateView.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInRight).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        columnCont.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                recyclerView.setVisibility(View.VISIBLE);
+                                salesAdapter.swapAdapter(cartItems);
+
+                                totQtyView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInLeft).duration(300).repeat(0).playOn(totQtyView);
+                                totalView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(totalView);
+                                currentDueAmntV.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).withListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        amtEditText.setVisibility(View.VISIBLE);
+                                        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                                            @Override
+                                            public void onAnimationStart(Animator animation) {
+
+                                            }
+
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                totalDueAmntV.setVisibility(View.VISIBLE);
+
+                                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(totalDueAmntV);
+                                                addCont.setVisibility(View.VISIBLE);
+                                                YoYo.with(Techniques.FadeInLeft).duration(300).repeat(0).playOn(addCont);
+                                                saveCont.setVisibility(View.VISIBLE);
+                                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(saveCont);
+                                                barcodeCont.setVisibility(View.VISIBLE);
+                                                YoYo.with(Techniques.FadeInUp).duration(300).repeat(0).playOn(barcodeCont);
+                                            }
+
+                                            @Override
+                                            public void onAnimationCancel(Animator animation) {
+
+                                            }
+
+                                            @Override
+                                            public void onAnimationRepeat(Animator animation) {
+
+                                            }
+                                        }).duration(300).repeat(0).playOn(amtEditText);
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                }).duration(300).repeat(0).playOn(currentDueAmntV);
+
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(300).repeat(0).playOn(columnCont);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(300).repeat(0).playOn(dateView);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
     }
 }

@@ -7,11 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.animation.Animator;
 import android.app.Dialog;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -129,6 +133,11 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.pop_up_customer_sale_item_qty);
 
+        //SETTING SCREEN WIDTH
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //*************
 
         final TextView labelText = dialog.findViewById(R.id.cust_sale_add_item_label_pop);
         labelText.setText(String.format("%s / %s / %s", itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory()));
@@ -246,8 +255,8 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
         });
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, spinnerData);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.custom_spinner_item, spinnerData);
+        spinnerAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         unitS.setAdapter(spinnerAdapter);
 
         dialog.show();
@@ -388,6 +397,6 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
             public void onAnimationRepeat(Animator animation) {
 
             }
-        }).duration(500).repeat(0).playOn(searchEditText);
+        }).duration(400).repeat(0).playOn(searchEditText);
     }
 }

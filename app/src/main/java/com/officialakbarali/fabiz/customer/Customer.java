@@ -339,20 +339,16 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         viewallCont.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(viewallCont);
+                        YoYo.with(Techniques.SlideInLeft).duration(300).repeat(0).playOn(viewallCont);
 
                         manageCont.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(manageCont);
+                        YoYo.with(Techniques.SlideInRight).duration(300).repeat(0).playOn(manageCont);
 
                         barcodeCont.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInLeft).duration(500).repeat(0).playOn(barcodeCont);
+                        YoYo.with(Techniques.SlideInLeft).duration(300).repeat(0).playOn(barcodeCont);
 
                         addCont.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInRight).duration(500).repeat(0).playOn(addCont);
-
-
-                        searcheditText.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInUp).withListener(new Animator.AnimatorListener() {
+                        YoYo.with(Techniques.SlideInRight).withListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animation) {
 
@@ -360,7 +356,28 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
 
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                showCustomer(FabizContract.Customer.COLUMN_DAY + "=?", new String[]{getCurrentDay()});
+                                searcheditText.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        showCustomer(FabizContract.Customer.COLUMN_DAY + "=?", new String[]{getCurrentDay()});
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                }).duration(500).repeat(0).playOn(searcheditText);
                             }
 
                             @Override
@@ -372,7 +389,10 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                             public void onAnimationRepeat(Animator animation) {
 
                             }
-                        }).duration(800).repeat(0).playOn(searcheditText);
+                        }).duration(300).repeat(0).playOn(addCont);
+
+
+
 
                     }
 
@@ -385,7 +405,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                     public void onAnimationRepeat(Animator animation) {
 
                     }
-                }).duration(600).repeat(0).playOn(custDayContainer);
+                }).duration(400).repeat(0).playOn(custDayContainer);
             }
 
             @Override
@@ -397,7 +417,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             public void onAnimationRepeat(Animator animation) {
 
             }
-        }).duration(600).repeat(0).playOn(searcheditText);
+        }).duration(500).repeat(0).playOn(searcheditText);
 
     }
 }

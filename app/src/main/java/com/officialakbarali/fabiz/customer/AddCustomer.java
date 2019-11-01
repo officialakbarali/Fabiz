@@ -317,7 +317,7 @@ public class AddCustomer extends AppCompatActivity {
                 head.setVisibility(View.VISIBLE);
                 YoYo.with(Techniques.FadeInDown).duration(400).repeat(0).playOn(head);
                 prefixContainer.setVisibility(View.VISIBLE);
-                YoYo.with(Techniques.FadeInLeft).duration(500).repeat(0).playOn(prefixContainer);
+                YoYo.with(Techniques.FadeInLeft).duration(400).repeat(0).playOn(prefixContainer);
                 belowHead.setVisibility(View.VISIBLE);
                 YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
                     @Override
@@ -385,7 +385,7 @@ public class AddCustomer extends AppCompatActivity {
                     public void onAnimationRepeat(Animator animation) {
 
                     }
-                }).duration(600).repeat(0).playOn(belowHead);
+                }).duration(400).repeat(0).playOn(belowHead);
             }
 
             @Override
