@@ -3,144 +3,192 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_dialogue_frame_white"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="17dp">
+        android:padding="20dp">
 
     <TextView
             android:id="@+id/sales_return_pop_item_name"
+            style="@style/text_size_mid_l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:textSize="19sp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
             tools:text="Broasted Chicken" />
 
+
+    <TextView
+            android:id="@+id/sales_return_pop_date"
+            style="@style/text_size_mid_l"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            tools:text="Broasted Chicken" />
+
+    <Button
+            android:id="@+id/sales_return_pop_date_change"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Change"
+            android:textAllCaps="false"
+            android:visibility="gone" />
+
+
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
-                android:id="@+id/sales_return_pop_date"
-                android:layout_width="wrap_content"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="20dp"
-                android:text="Date :29,Mon Dec 1997 12:25 AM" />
-
-        <Button
-                android:id="@+id/sales_return_pop_date_change"
-                android:layout_width="72dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Change"
-                android:textAllCaps="false"
-                android:visibility="gone" />
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Unit" />
+                android:layout_weight="1"
+                android:text="Unit"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <Spinner
                 android:id="@+id/spinner_unit"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/text_color"
                 android:spinnerMode="dropdown" />
 
     </LinearLayout>
 
 
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Price" />
+                android:layout_weight="1"
+                android:text="Price"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <EditText
                 android:id="@+id/sales_return_pop_price"
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/app_background"
                 android:inputType="numberDecimal"
+                android:padding="20dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
                 tools:text="250" />
 
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
                 android:id="@+id/sales_return_pop_max"
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                tools:text="Enter QTY to Return\n(Maximum 3)" />
+                android:layout_weight="1"
+                android:text="Enter QTY to Return\n(Maximum 3)"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <EditText
                 android:id="@+id/sales_return_pop_qty"
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/app_background"
                 android:inputType="number"
-                tools:text="2" />
+                android:padding="20dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                tools:text="250" />
 
     </LinearLayout>
 
+
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
         <TextView
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Total Amount\nReturned" />
+                android:layout_weight="1"
+                android:text="Total Amount\nReturned"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
 
         <TextView
                 android:id="@+id/sales_return_pop_total"
-                android:layout_width="150dp"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="500" />
+                android:layout_weight="1"
+                android:background="@color/app_background"
+                android:padding="20dp"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                tools:text="250" />
 
     </LinearLayout>
 
+
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
         <Button
                 android:id="@+id/sales_return_pop_remove"
-                android:layout_width="wrap_content"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_color_gradient"
                 android:text="Return"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/pure_white" />
 
         <Button
                 android:id="@+id/sales_return_pop_cancel"
-                android:layout_width="wrap_content"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_color_gradient"
                 android:text="Cancel"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textColor="@color/pure_white"
+                android:visibility="visible" />
 
     </LinearLayout>
-
 
 </LinearLayout>

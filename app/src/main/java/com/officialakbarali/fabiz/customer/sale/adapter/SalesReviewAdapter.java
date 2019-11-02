@@ -4,13 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.customer.sale.SalesReview;
 import com.officialakbarali.fabiz.customer.sale.data.SalesReviewDetail;
 
 import java.text.ParseException;
@@ -49,8 +53,9 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull SalesReviewHolder holder, int position) {
-        SalesReviewDetail salesReview = salesList.get(position);
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale_animation));
 
+        SalesReviewDetail salesReview = salesList.get(position);
 
         String salesIdS = salesReview.getId() + "";
         if (salesIdS.length() > 10) {
@@ -59,60 +64,75 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             holder.billIdV.setText("Bill Id :" + salesIdS);
         }
 
-
         String dateS = salesReview.getDate();
         if (dateS.length() > 24) {
-            holder.dateV.setText("Date :" + dateS.substring(0, 16) + "...");
+            holder.dateV.setText(dateS.substring(0, 16) + "...");
         } else {
-            holder.dateV.setText("Date :" + dateS);
+            holder.dateV.setText(dateS);
         }
 
 
         String qtyS = salesReview.getQty() + "";
         if (qtyS.length() > 4) {
-            holder.totQtyV.setText("Total Items :" + qtyS.substring(0, 1) + "..");
+            holder.totQtyV.setText(qtyS.substring(0, 1) + "..");
         } else {
-            holder.totQtyV.setText("Total Items :" + qtyS);
+            holder.totQtyV.setText(qtyS);
         }
 
 
         String totalS = TruncateDecimal(salesReview.getTotal() + "");
         if (totalS.length() > 17) {
-            holder.totV.setText("Total Amount :" + totalS.substring(0, 13) + "...");
+            holder.totV.setText(totalS.substring(0, 13) + "...");
         } else {
-            holder.totV.setText("Total Amount :" + totalS);
+            holder.totV.setText(totalS);
         }
 
-        String paidS = TruncateDecimal(salesReview.getPaid() + "");
-        if (paidS.length() > 13) {
-            holder.paidV.setText("Paid Amount :" + paidS.substring(0, 13) + "...");
-        } else {
-            holder.paidV.setText("Paid Amount :" + paidS);
-        }
 
-        String dueS = TruncateDecimal(salesReview.getDue() + "");
-        if (dueS.length() > 13) {
-            holder.dueV.setText("Due Amount :" + dueS.substring(0, 13) + "...");
-        } else {
-            holder.dueV.setText("Due Amount :" + dueS);
-        }
+        if (FROM_PAYMENT_PAGE) {
+            holder.viewB.setVisibility(View.GONE);
+            holder.payButton.setVisibility(View.VISIBLE);
 
-        String returnS = TruncateDecimal(salesReview.getReturnedAmount() + "");
-        if (returnS.length() > 13) {
-            holder.returnV.setText("Return Amount :" + returnS.substring(0, 13) + "...");
-        } else {
-            holder.returnV.setText("Return Amount :" + returnS);
-        }
 
-        String currentTotalS = TruncateDecimal(salesReview.getCurrentTotal() + "");
-        if (currentTotalS.length() > 13) {
-            holder.cTotalV.setText("Current Total Amount :" + currentTotalS.substring(0, 13) + "...");
-        } else {
-            holder.cTotalV.setText("Current Total Amount :" + currentTotalS);
-        }
+            holder.paidCont.setVisibility(View.VISIBLE);
+            String paidS = TruncateDecimal(salesReview.getPaid() + "");
+            if (paidS.length() > 13) {
+                holder.paidV.setText(paidS.substring(0, 13) + "...");
+            } else {
+                holder.paidV.setText(paidS);
+            }
 
-        if(FROM_PAYMENT_PAGE){
-            holder.viewB.setText("Pay this Bill");
+            holder.dueCont.setVisibility(View.VISIBLE);
+            String dueS = TruncateDecimal(salesReview.getDue() + "");
+            if (dueS.length() > 13) {
+                holder.dueV.setText(dueS.substring(0, 13) + "...");
+            } else {
+                holder.dueV.setText(dueS);
+            }
+
+            holder.returnC.setVisibility(View.VISIBLE);
+            String returnS = TruncateDecimal(salesReview.getReturnedAmount() + "");
+            if (returnS.length() > 13) {
+                holder.returnV.setText(returnS.substring(0, 13) + "...");
+            } else {
+                holder.returnV.setText(returnS);
+            }
+
+
+            holder.currentCont.setVisibility(View.VISIBLE);
+            String currentTotalS = TruncateDecimal(salesReview.getCurrentTotal() + "");
+            if (currentTotalS.length() > 13) {
+                holder.cTotalV.setText(currentTotalS.substring(0, 13) + "...");
+            } else {
+                holder.cTotalV.setText(currentTotalS);
+            }
+
+            holder.discCont.setVisibility(View.VISIBLE);
+            String discountS = TruncateDecimal(salesReview.getDiscount() + "");
+            if (discountS.length() > 13) {
+                holder.cDiscountV.setText(discountS.substring(0, 13) + "...");
+            } else {
+                holder.cDiscountV.setText(discountS);
+            }
         }
     }
 
@@ -131,11 +151,20 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
 
 
     class SalesReviewHolder extends RecyclerView.ViewHolder {
-        TextView billIdV, dateV, totQtyV, totV, paidV, dueV, returnV, cTotalV;
-        Button viewB;
+        TextView billIdV, dateV, totQtyV, totV, paidV, dueV, returnV, cTotalV, cDiscountV;
+        ImageButton viewB;
+        LinearLayout mainParent;
 
+        Button payButton;
+
+        LinearLayout returnC, discCont, currentCont, paidCont, dueCont;
         public SalesReviewHolder(@NonNull View itemView) {
             super(itemView);
+
+
+
+            mainParent = itemView.findViewById(R.id.main_parent);
+
             billIdV = itemView.findViewById(R.id.sales_review_view_bill_id);
             dateV = itemView.findViewById(R.id.sales_review_view_date);
             totQtyV = itemView.findViewById(R.id.sales_review_view_tot_items);
@@ -147,6 +176,8 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             returnV = itemView.findViewById(R.id.sales_review_view_return_total);
             cTotalV = itemView.findViewById(R.id.sales_review_view_current_total);
 
+            cDiscountV = itemView.findViewById(R.id.sales_review_view_discount);
+
             viewB = itemView.findViewById(R.id.sales_review_view_view);
             viewB.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -154,6 +185,22 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
                     mClickHandler.onClick(salesList.get(getAdapterPosition()));
                 }
             });
+
+
+            returnC = itemView.findViewById(R.id.return_cont);
+            discCont = itemView.findViewById(R.id.disc_cont);
+            currentCont = itemView.findViewById(R.id.current_cont);
+            paidCont = itemView.findViewById(R.id.paid_cont);
+            dueCont = itemView.findViewById(R.id.due_cont);
+
+            payButton = itemView.findViewById(R.id.pay_btn);
+            payButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mClickHandler.onClick(salesList.get(getAdapterPosition()));
+                }
+            });
+
         }
     }
 }

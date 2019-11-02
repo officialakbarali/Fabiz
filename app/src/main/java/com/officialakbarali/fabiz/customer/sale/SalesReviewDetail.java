@@ -4,27 +4,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesAdapter;
@@ -53,13 +62,13 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
     private Toast toast;
     private String custId, billId;
 
-    private TextView dateView, totQtyView, totalView, billIdView, discountView;
+    private TextView dateView, totQtyView, totalView, billIdView, discountView, returnView, currentView, paidView, dueView;
     FabizProvider fabizProvider;
 
     private SalesAdapter salesAdapter;
 
     private boolean FROM_SALES_RETURN = false;
-
+    RecyclerView recyclerView;
 
     //IF DUE BECOME NEGATIVE AFTER RETURN AN ITEM
     private boolean NEGATIVE_DUE = false;
@@ -95,10 +104,15 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         totalView = findViewById(R.id.cust_sale_total);
         dateView = findViewById(R.id.cust_sale_time);
 
+        returnView = findViewById(R.id.cust_sale_return);
+        dueView = findViewById(R.id.cust_sale_due);
+        currentView = findViewById(R.id.cust_sale_current);
+        paidView = findViewById(R.id.cust_sale_paid);
+
         custId = getIntent().getStringExtra("custId");
         billId = getIntent().getStringExtra("billId");
 
-        RecyclerView recyclerView = findViewById(R.id.cust_sale_recycler);
+        recyclerView = findViewById(R.id.cust_sale_recycler);
 
 
         if (FROM_SALES_RETURN) {
@@ -113,7 +127,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         recyclerView.setAdapter(salesAdapter);
 
         setUpBillDetail();
-        setUpBillItems();
+
         if (FROM_SALES_RETURN) setUpThisPageForReturn();
     }
 
@@ -121,28 +135,41 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
+        setUpAnimation();
     }
 
     private void setUpThisPageForReturn() {
         //TODO IF ANYTHING NEED TO BE CHANGE IN FUTURE FOR SALES RETURN
+        ImageButton returnButton = findViewById(R.id.return_icon);
+        returnButton.setVisibility(View.INVISIBLE);
     }
 
     private void setUpBillDetail() {
 
         Cursor billCursor = fabizProvider.query(FabizContract.BillDetail.TABLE_NAME,
                 new String[]{FabizContract.BillDetail._ID, FabizContract.BillDetail.COLUMN_QTY,
-                        FabizContract.BillDetail.COLUMN_DATE, FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, FabizContract.BillDetail.COLUMN_DISCOUNT}
+                        FabizContract.BillDetail.COLUMN_DATE
+                        , FabizContract.BillDetail.COLUMN_PRICE
+                        , FabizContract.BillDetail.COLUMN_RETURNED_TOTAL
+                        , FabizContract.BillDetail.COLUMN_PAID
+                        , FabizContract.BillDetail.COLUMN_DUE
+                        , FabizContract.BillDetail.COLUMN_CURRENT_TOTAL, FabizContract.BillDetail.COLUMN_DISCOUNT}
                 , FabizContract.BillDetail._ID + "=?", new String[]{billId + ""}
                 , null);
 
         if (billCursor.moveToNext()) {
-            billIdView.setText("Billid :" + billId);
+            billIdView.setText("Bill Id : " + billId);
 
-            dateView.setText("Time :" + billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)));
+            dateView.setText(billCursor.getString(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DATE)));
 
-            totQtyView.setText("Total Item :" + billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)));
-            totalView.setText("Total :" + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)) + ""));
-            discountView.setText("Discount On Due :" + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT)) + ""));
+            totQtyView.setText("Total Item : " + billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_QTY)));
+            totalView.setText("Total : " + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PRICE)) + ""));
+            discountView.setText("Discount On Due : " + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT)) + ""));
+
+            currentView.setText("Current Total : " + billCursor.getInt(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_CURRENT_TOTAL)));
+            paidView.setText("Paid Amount : " + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_PAID)) + ""));
+            returnView.setText("Returned Amount : " + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_RETURNED_TOTAL)) + ""));
+            dueView.setText("Due Amount : " + TruncateDecimal(billCursor.getDouble(billCursor.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DUE)) + ""));
         }
     }
 
@@ -177,6 +204,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                     billItemsCursor.getDouble(billItemsCursor.getColumnIndexOrThrow(FabizContract.Cart.COLUMN_RETURN_QTY))
             ));
         }
+        recyclerView.setVisibility(View.VISIBLE);
         salesAdapter.swapAdapter(cartItems);
     }
 
@@ -219,6 +247,13 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         paymentDialog = new Dialog(this);
         paymentDialog.setContentView(R.layout.pop_up_sales_return_item);
+
+        //SETTING SCREEN WIDTH
+        paymentDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = paymentDialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //*************
+
 
         nameTextP = paymentDialog.findViewById(R.id.sales_return_pop_item_name);
         maxQtyP = paymentDialog.findViewById(R.id.sales_return_pop_max);
@@ -300,8 +335,8 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         });
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, spinnerData);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.custom_spinner_item, spinnerData);
+        spinnerAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         unitS.setAdapter(spinnerAdapter);
         unitS.setSelection(indexOfdCurrentUnit);
         //*****************END
@@ -619,7 +654,16 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
         paymentDialog.dismiss();
         final Dialog lastDialog = new Dialog(this);
+
         lastDialog.setContentView(R.layout.pop_up_for_sale_and_payment_success);
+
+
+        //SETTING SCREEN WIDTH
+        lastDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = lastDialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //*************
+
         lastDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -654,5 +698,131 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         dueAmtV.setText(": " + TruncateDecimal(dueAmnt + ""));
 
         lastDialog.show();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideViews();
+    }
+
+    private void hideViews() {
+        LinearLayout columnNameFrame = findViewById(R.id.column_name_cont);
+
+        billIdView.setVisibility(View.INVISIBLE);
+        dateView.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+
+        columnNameFrame.setVisibility(View.INVISIBLE);
+
+        totalView.setVisibility(View.INVISIBLE);
+        totQtyView.setVisibility(View.INVISIBLE);
+        returnView.setVisibility(View.INVISIBLE);
+        discountView.setVisibility(View.INVISIBLE);
+        currentView.setVisibility(View.INVISIBLE);
+        paidView.setVisibility(View.INVISIBLE);
+        dueView.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void setUpAnimation() {
+        hideViews();
+
+
+        final LinearLayout columnNameFrame = findViewById(R.id.column_name_cont);
+
+        YoYo.with(Techniques.FadeInLeft).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                billIdView.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).duration(400).repeat(0).playOn(billIdView);
+                dateView.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        columnNameFrame.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                setUpBillItems();
+
+                                totQtyView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInLeft).duration(300).repeat(0).playOn(totQtyView);
+
+                                totalView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(totalView);
+
+                                returnView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(returnView);
+
+                                discountView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(discountView);
+
+                                currentView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(currentView);
+
+                                paidView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(paidView);
+
+                                dueView.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.FadeInRight).duration(300).repeat(0).playOn(dueView);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(300).repeat(0).playOn(columnNameFrame);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(300).repeat(0).playOn(dateView);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
+
     }
 }

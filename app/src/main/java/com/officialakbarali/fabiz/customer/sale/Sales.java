@@ -149,6 +149,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                 Intent pickItem = new Intent(Sales.this, Item.class);
                 pickItem.putExtra("fromSales", true);
                 startActivity(pickItem);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -159,6 +160,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                 Intent scanFromBarcodeIntent = new Intent(Sales.this, FabizBarcode.class);
                 scanFromBarcodeIntent.putExtra("FOR_WHO", FOR_ITEM + "");
                 startActivity(scanFromBarcodeIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
@@ -219,6 +221,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         if (addPaymentIntent != null) {
             addPaymentIntent.putExtra("id", custId + "");
             startActivity(addPaymentIntent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 

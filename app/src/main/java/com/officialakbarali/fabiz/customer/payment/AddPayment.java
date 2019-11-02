@@ -4,26 +4,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.bottomSheets.SalesReviewFilterBottomSheet;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReviewAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.SalesReviewDetail;
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -38,6 +51,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.officialakbarali.fabiz.bottomSheets.SalesReviewFilterBottomSheet.SALES_REVIEW_FILTER_TAG;
 import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_REAL;
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
@@ -46,7 +60,7 @@ import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_CODE_PAY;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_UPDATE;
 
-public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.SalesReviewAdapterOnClickListener {
+public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.SalesReviewAdapterOnClickListener, SalesReviewFilterBottomSheet.SalesReviewFilterListener {
     private Toast toast;
 
     SalesReviewAdapter salesReviewAdapter;
@@ -63,6 +77,10 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
 
     boolean dueDiscount = false;
 
+    EditText searchEditText;
+    String filterSelection = FabizContract.BillDetail.FULL_COLUMN_ID + " LIKE ?";
+    RecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,14 +88,14 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
 
         custId = getIntent().getStringExtra("id");
 
-        RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
+        recyclerView = findViewById(R.id.sales_review_recycler);
         salesReviewAdapter = new SalesReviewAdapter(this, this, true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(salesReviewAdapter);
 
-        Button showCalenderForFilter = findViewById(R.id.sales_review_date_filter_button);
+        ImageButton showCalenderForFilter = findViewById(R.id.sales_review_date_filter_button);
         showCalenderForFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,25 +103,55 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
             }
         });
 
-        Button searchButton = findViewById(R.id.sales_review_search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+
+        searchEditText = findViewById(R.id.sales_review_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                EditText editText = findViewById(R.id.sales_review_search);
-                if (!editText.getText().toString().trim().matches("")) {
-                    Spinner filterSpinner = findViewById(R.id.sales_review_spinner);
-                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
-                    showBills(selection, new String[]{editText.getText().toString().trim() + "%"});
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!searchEditText.getText().toString().trim().matches("")) {
+                    showBills(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
                 } else {
                     showBills(null, null);
                 }
-
             }
         });
+        setUpDrawableEndEditext();
+
+
         setPaymentsDetail();
-        showBills(null, null);
     }
 
+
+    private void setUpDrawableEndEditext() {
+        searchEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (searchEditText.getRight() - searchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        SalesReviewFilterBottomSheet salesReviewFilterBottomSheet = SalesReviewFilterBottomSheet.newInstance();
+                        salesReviewFilterBottomSheet.show(getSupportFragmentManager(), SALES_REVIEW_FILTER_TAG);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
     private void setPaymentsDetail() {
         FabizProvider providerForFetch = new FabizProvider(this, false);
@@ -153,7 +201,7 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT))
             ));
         }
-
+        recyclerView.setVisibility(View.VISIBLE);
         salesReviewAdapter.swapAdapter(salesReviewList);
     }
 
@@ -179,33 +227,12 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
         datePickerDialog.show();
     }
 
-    private String getSelection(String filterFromForm) {
-        String caseSelection;
-
-        switch (filterFromForm) {
-            case "Name":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_NAME;
-                break;
-            case "ItemId":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_ITEM_ID;
-                break;
-            case "Brand":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_BRAND;
-                break;
-            case "Category":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_CATAGORY;
-                break;
-            default:
-                caseSelection = FabizContract.BillDetail.FULL_COLUMN_ID;
-        }
-
-        return caseSelection + " LIKE ?";
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
+        setUpAnimation();
     }
 
     @Override
@@ -217,6 +244,12 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
     private void showPaymentDialogue() {
         paymentDialog = new Dialog(this);
         paymentDialog.setContentView(R.layout.pop_up_payment);
+
+        //SETTING SCREEN WIDTH
+        paymentDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = paymentDialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //*************
 
         TextView billDueText = paymentDialog.findViewById(R.id.cust_payment_due);
         billDueText.setText(TruncateDecimal(mSalesReviewDetail.getDue() + ""));
@@ -390,6 +423,13 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
     private void showDialogueInfo(double entAmt, double dueAmt) {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.pop_up_for_sale_and_payment_success);
+
+        //SETTING SCREEN WIDTH
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //*************
+
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -472,5 +512,108 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
         }
         toast = Toast.makeText(this, msgForToast, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    @Override
+    public void onFilterSelect(String filterItem) {
+        filterSelection = filterItem;
+        if (!searchEditText.getText().toString().trim().matches("")) {
+            showBills(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
+        }
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideAllViews();
+    }
+
+    private void hideAllViews() {
+        TextView custDue = findViewById(R.id.cust_payment_due_total);
+        LinearLayout searchCont = findViewById(R.id.search_cont);
+
+        custDue.setVisibility(View.INVISIBLE);
+        searchCont.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        hideAllViews();
+
+        final TextView custDue = findViewById(R.id.cust_payment_due_total);
+        final LinearLayout searchCont = findViewById(R.id.search_cont);
+
+        YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                custDue.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).duration(300).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        searchCont.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.FadeInUp).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                showBills(null, null);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).duration(300).repeat(0).playOn(searchCont);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).repeat(0).playOn(custDue);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
+
+
     }
 }

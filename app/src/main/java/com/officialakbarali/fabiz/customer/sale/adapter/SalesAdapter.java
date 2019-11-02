@@ -88,7 +88,6 @@ public class SalesAdapter extends RecyclerView.Adapter<SalesAdapter.SalesViewHol
         if (SET_SALES_REVIEW_VISIBILITY) {
             if (SET_SALES_RETURN_VISIBILITY) {
                 holder.removeBtn.setVisibility(View.VISIBLE);
-                // holder.removeBtn.setText("Return this Item");
             } else {
                 holder.removeBtn.setVisibility(View.GONE);
             }

@@ -36,11 +36,11 @@
                 android:textStyle="bold" />
 
         <Spinner
-                android:backgroundTint="@color/text_color"
                 android:id="@+id/spinner_unit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/text_color"
                 android:spinnerMode="dropdown" />
 
     </LinearLayout>

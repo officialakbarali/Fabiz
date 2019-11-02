@@ -98,6 +98,7 @@
 
 
     <CheckBox
+            android:buttonTint="@color/text_color"
             android:id="@+id/cust_payment_due_discount"
             style="@style/text_size_med"
             android:layout_width="match_parent"

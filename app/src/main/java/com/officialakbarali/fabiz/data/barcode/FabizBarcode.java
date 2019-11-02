@@ -326,8 +326,8 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
 
         });
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, spinnerData);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getBaseContext(), R.layout.custom_spinner_item, spinnerData);
+        spinnerAdapter.setDropDownViewResource(R.layout.custom_spinner_item);
         unitS.setAdapter(spinnerAdapter);
 
         dialog.show();

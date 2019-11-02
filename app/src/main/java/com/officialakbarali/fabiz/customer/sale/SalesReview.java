@@ -4,20 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.bottomSheets.ItemFilterBottomSheet;
+import com.officialakbarali.fabiz.bottomSheets.SalesReviewFilterBottomSheet;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReviewAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.SalesReviewDetail;
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -28,13 +38,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.officialakbarali.fabiz.bottomSheets.ItemFilterBottomSheet.ITEM_FILTER_TAG;
+import static com.officialakbarali.fabiz.bottomSheets.SalesReviewFilterBottomSheet.SALES_REVIEW_FILTER_TAG;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToSearchFormat;
 
-public class SalesReview extends AppCompatActivity implements SalesReviewAdapter.SalesReviewAdapterOnClickListener {
+public class SalesReview extends AppCompatActivity implements SalesReviewAdapter.SalesReviewAdapterOnClickListener, SalesReviewFilterBottomSheet.SalesReviewFilterListener {
     SalesReviewAdapter salesReviewAdapter;
     private String custId;
-
+    RecyclerView recyclerView;
     private boolean FROM_SALERS_RETURN = false;
+    EditText searchEditText;
+    String filterSelection = FabizContract.BillDetail.FULL_COLUMN_ID + " LIKE ?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +58,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
         FROM_SALERS_RETURN = getIntent().getBooleanExtra("fromSalesReturn", false);
         custId = getIntent().getStringExtra("id");
 
-        RecyclerView recyclerView = findViewById(R.id.sales_review_recycler);
+        recyclerView = findViewById(R.id.sales_review_recycler);
 
         salesReviewAdapter = new SalesReviewAdapter(this, this, false);
 
@@ -56,7 +70,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
 
         if (FROM_SALERS_RETURN) setUpThisPageForReturn();
 
-        Button showCalenderForFilter = findViewById(R.id.sales_review_date_filter_button);
+        ImageButton showCalenderForFilter = findViewById(R.id.sales_review_date_filter_button);
         showCalenderForFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,19 +78,48 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
             }
         });
 
-        Button searchButton = findViewById(R.id.sales_review_search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+
+        searchEditText = findViewById(R.id.sales_review_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                EditText editText = findViewById(R.id.sales_review_search);
-                if (!editText.getText().toString().trim().matches("")) {
-                    Spinner filterSpinner = findViewById(R.id.sales_review_spinner);
-                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
-                    showBills(selection, new String[]{editText.getText().toString().trim() + "%"});
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!searchEditText.getText().toString().trim().matches("")) {
+                    showBills(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
                 } else {
                     showBills(null, null);
                 }
+            }
+        });
+        setUpDrawableEndEditext();
+    }
 
+    private void setUpDrawableEndEditext() {
+        searchEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (searchEditText.getRight() - searchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        SalesReviewFilterBottomSheet salesReviewFilterBottomSheet = SalesReviewFilterBottomSheet.newInstance();
+                        salesReviewFilterBottomSheet.show(getSupportFragmentManager(), SALES_REVIEW_FILTER_TAG);
+                        return true;
+                    }
+                }
+                return false;
             }
         });
     }
@@ -85,7 +128,7 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
-        showBills(null, null);
+        setUpAnimation();
     }
 
     @Override
@@ -103,12 +146,11 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
 
 
         startActivity(salesDetaiiilIntent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     private void setUpThisPageForReturn() {
-        TextView textHead, quoteText;
-        textHead = findViewById(R.id.sales_review_head);
-        textHead.setText("Sales Return");
+        TextView quoteText;
         quoteText = findViewById(R.id.sales_review_quote);
         quoteText.setVisibility(View.VISIBLE);
     }
@@ -153,30 +195,8 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
                     cursorBills.getDouble(cursorBills.getColumnIndexOrThrow(FabizContract.BillDetail.COLUMN_DISCOUNT))
             ));
         }
+        recyclerView.setVisibility(View.VISIBLE);
         salesReviewAdapter.swapAdapter(salesReviewList);
-    }
-
-    private String getSelection(String filterFromForm) {
-        String caseSelection;
-
-        switch (filterFromForm) {
-            case "Name":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_NAME;
-                break;
-            case "ItemId":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_ITEM_ID;
-                break;
-            case "Brand":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_BRAND;
-                break;
-            case "Category":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_CATAGORY;
-                break;
-            default:
-                caseSelection = FabizContract.BillDetail.FULL_COLUMN_ID;
-        }
-
-        return caseSelection + " LIKE ?";
     }
 
     private void showDatePicker() {
@@ -199,5 +219,84 @@ public class SalesReview extends AppCompatActivity implements SalesReviewAdapter
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideViews();
+    }
+
+    private void hideViews() {
+        LinearLayout searchCont = findViewById(R.id.search_cont);
+
+        recyclerView.setVisibility(View.INVISIBLE);
+        searchCont.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        hideViews();
+
+        final LinearLayout searchCont = findViewById(R.id.search_cont);
+
+        YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                searchCont.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        showBills(null, null);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(400).repeat(0).playOn(searchCont);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
+
+
+    }
+
+    @Override
+    public void onFilterSelect(String filterItem) {
+        filterSelection = filterItem;
+        if (!searchEditText.getText().toString().trim().matches("")) {
+            showBills(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
+        }
     }
 }
