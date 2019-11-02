@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,35 +39,37 @@ public class PaymentReviewAdapter extends RecyclerView.Adapter<PaymentReviewAdap
 
     @Override
     public void onBindViewHolder(@NonNull PaymentReviewHolder holder, int position) {
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale_animation));
+
         PaymentReviewDetail detail = paymentReviewDetailList.get(position);
 
         String idS = "" + detail.getId();
         if (idS.length() > 10) {
-            holder.idV.setText("Payment Id :" + idS.substring(0, 6));
+            holder.idV.setText(idS.substring(0, 6));
         } else {
-            holder.idV.setText("Payment Id :" + idS);
+            holder.idV.setText(idS);
         }
 
         String dateS = detail.getDate();
         if (dateS.length() > 24) {
-            holder.dateV.setText("Date :" + dateS.substring(0, 20));
+            holder.dateV.setText(dateS.substring(0, 20));
         } else {
-            holder.dateV.setText("Date :" + dateS);
+            holder.dateV.setText(dateS);
         }
 
         String amountS = TruncateDecimal("" + detail.getAmount());
         if (amountS.length() > 17) {
-            holder.amountV.setText("Paid Amount :" + amountS.substring(0, 13));
+            holder.amountV.setText(amountS.substring(0, 13));
         } else {
-            holder.amountV.setText("Paid Amount :" + amountS);
+            holder.amountV.setText(amountS);
         }
 
 
         String billId = detail.getBillId();
         if (billId.length() > 25) {
-            holder.billId.setText("Paid Bill Id :" + billId.substring(0, 21) + "...");
+            holder.billId.setText(billId.substring(0, 21) + "...");
         } else {
-            holder.billId.setText("Paid Bill Id :" + billId);
+            holder.billId.setText(billId);
         }
 
     }
@@ -84,10 +88,13 @@ public class PaymentReviewAdapter extends RecyclerView.Adapter<PaymentReviewAdap
     }
 
     class PaymentReviewHolder extends RecyclerView.ViewHolder {
+        LinearLayout mainParent;
         TextView idV, dateV, amountV, billId;
 
         PaymentReviewHolder(@NonNull View itemView) {
             super(itemView);
+
+            mainParent = itemView.findViewById(R.id.main_parent);
             idV = itemView.findViewById(R.id.payment_review_item_id);
             dateV = itemView.findViewById(R.id.payment_review_item_date);
             amountV = itemView.findViewById(R.id.payment_review_item_amt);

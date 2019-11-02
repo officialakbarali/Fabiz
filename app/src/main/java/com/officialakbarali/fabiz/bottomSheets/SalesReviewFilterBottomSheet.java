@@ -13,12 +13,11 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.data.db.FabizContract;
 
 public class SalesReviewFilterBottomSheet extends BottomSheetDialogFragment {
     public static final String SALES_REVIEW_FILTER_TAG = "sales_review_filter_dialogue";
 
-    String selectedFilter = FabizContract.BillDetail.FULL_COLUMN_ID;
+    String selectedFilter = "BillId";
     RadioGroup radioGroup;
 
     private SalesReviewFilterBottomSheet.SalesReviewFilterListener mListener;
@@ -71,23 +70,22 @@ public class SalesReviewFilterBottomSheet extends BottomSheetDialogFragment {
         int selectedId = radioGroup.getCheckedRadioButtonId();
         switch (selectedId) {
             case R.id.item_filter_name:
-                selectedFilter = FabizContract.Cart.FULL_COLUMN_NAME;
+                selectedFilter = "Name";
                 break;
             case R.id.item_filter_id:
-                selectedFilter = FabizContract.Cart.FULL_COLUMN_ITEM_ID;
+                selectedFilter = "ItemId";
                 break;
             case R.id.item_filter_brand:
-                selectedFilter = FabizContract.Cart.FULL_COLUMN_BRAND;
+                selectedFilter = "Brand";
                 break;
             case R.id.item_filter_cate:
-                selectedFilter = FabizContract.Cart.FULL_COLUMN_CATAGORY;
+                selectedFilter = "Category";
                 break;
             default:
-                selectedFilter = FabizContract.BillDetail.FULL_COLUMN_ID;
+                selectedFilter = "BillId";
                 break;
 
         }
-        selectedFilter += " LIKE ?";
         mListener.onFilterSelect(selectedFilter);
     }
 }

@@ -4,14 +4,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.customer.payment.adapter.PaymentReviewAdapter;
@@ -27,9 +33,10 @@ import java.util.List;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToSearchFormat;
 
 public class PaymentReview extends AppCompatActivity {
-
+    RecyclerView recyclerView;
     String custId;
     PaymentReviewAdapter adapter;
+    EditText searchEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +45,14 @@ public class PaymentReview extends AppCompatActivity {
 
         custId = getIntent().getStringExtra("id");
 
-        RecyclerView recyclerView = findViewById(R.id.payment_review_recycler);
+        recyclerView = findViewById(R.id.payment_review_recycler);
         adapter = new PaymentReviewAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
 
-        Button showCalenderForFilter = findViewById(R.id.payment_review_date_filter);
+        ImageButton showCalenderForFilter = findViewById(R.id.payment_review_date_filter);
         showCalenderForFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,27 +60,38 @@ public class PaymentReview extends AppCompatActivity {
             }
         });
 
-        Button searchButton = findViewById(R.id.payment_review_search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+
+        searchEditText = findViewById(R.id.payment_review_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                EditText fromEditText = findViewById(R.id.payment_review_search);
-                String searchString = fromEditText.getText().toString();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String searchString = searchEditText.getText().toString();
                 if (searchString.matches("")) {
                     showPayments(null, null);
-                    return;
+                } else {
+                    showPayments(FabizContract.Payment.FULL_COLUMN_BILL_ID + " LIKE ?", new String[]{searchString + "%"});
                 }
-                showPayments(FabizContract.Payment.FULL_COLUMN_ID + "=?", new String[]{searchString});
+
             }
         });
 
-        showPayments(null, null);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
+        setUpAnimation();
     }
 
     private void showPayments(String Fselection, String[] FselectionArg) {
@@ -107,6 +125,7 @@ public class PaymentReview extends AppCompatActivity {
                     paymentDetailCursor.getString(paymentDetailCursor.getColumnIndexOrThrow(FabizContract.Payment.COLUMN_BILL_ID))
             ));
         }
+        recyclerView.setVisibility(View.VISIBLE);
         adapter.swapAdapter(details);
     }
 
@@ -130,5 +149,60 @@ public class PaymentReview extends AppCompatActivity {
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
+    }
+
+    private void hideViews() {
+        LinearLayout searchFrame = findViewById(R.id.search_cont);
+
+        recyclerView.setVisibility(View.INVISIBLE);
+        searchFrame.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        hideViews();
+        final LinearLayout searchFrame = findViewById(R.id.search_cont);
+
+        YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                searchFrame.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        showPayments(null, null);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(400).repeat(0).playOn(searchFrame);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
     }
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,22 +39,23 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
 
     @Override
     public void onBindViewHolder(@NonNull SalesReturnReviewViewHolder holder, int position) {
-        SalesReturnReviewItem salesReturnReviewItem = salesReturnList.get(position);
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale_animation));
 
+        SalesReturnReviewItem salesReturnReviewItem = salesReturnList.get(position);
 
         String returnIdS = salesReturnReviewItem.getId() + "";
         if (returnIdS.length() > 17) {
-            holder.returnIdT.setText("Return Id :" + returnIdS.substring(0, 13));
+            holder.returnIdT.setText("Return Id : " + returnIdS.substring(0, 13));
         } else {
-            holder.returnIdT.setText("Return Id :" + returnIdS);
+            holder.returnIdT.setText("Return Id : " + returnIdS);
         }
 
 
         String billIdS = salesReturnReviewItem.getBillId() + "";
         if (billIdS.length() > 17) {
-            holder.billIdT.setText("Bill Id :" + billIdS.substring(0, 13));
+            holder.billIdT.setText("Bill Id : " + billIdS.substring(0, 13));
         } else {
-            holder.billIdT.setText("Bill Id :" + billIdS);
+            holder.billIdT.setText("Bill Id : " + billIdS);
         }
 
         String dateS = salesReturnReviewItem.getDate();
@@ -70,26 +73,26 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
 
         String priceS = TruncateDecimal(salesReturnReviewItem.getPrice() + "");
         if (priceS.length() > 12) {
-            holder.priceT.setText("Price :" + priceS.substring(0, 8));
+            holder.priceT.setText(priceS.substring(0, 8));
         } else {
-            holder.priceT.setText("Price :" + priceS);
+            holder.priceT.setText(priceS);
         }
 
         String qtyS = salesReturnReviewItem.getQty() + "";
         if (qtyS.length() > 6) {
-            holder.qtyT.setText("QTY :" + qtyS.substring(0, 2));
+            holder.qtyT.setText(qtyS.substring(0, 2));
         } else {
-            holder.qtyT.setText("QTY :" + qtyS);
+            holder.qtyT.setText(qtyS);
         }
 
         String totalS = TruncateDecimal(salesReturnReviewItem.getTotal() + "");
         if (totalS.length() > 12) {
-            holder.totalT.setText("Total :" + totalS.substring(0, 8));
+            holder.totalT.setText(totalS.substring(0, 8));
         } else {
-            holder.totalT.setText("Total :" + totalS);
+            holder.totalT.setText(totalS);
         }
 
-        holder.unitT.setText("Unit :" + salesReturnReviewItem.getUnitName());
+        holder.unitT.setText(salesReturnReviewItem.getUnitName());
 
     }
 
@@ -108,9 +111,12 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
 
     class SalesReturnReviewViewHolder extends RecyclerView.ViewHolder {
         TextView billIdT, dateT, itemNameT, priceT, qtyT, totalT, returnIdT, unitT;
+        LinearLayout mainParent;
 
         public SalesReturnReviewViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            mainParent = itemView.findViewById(R.id.main_parent);
 
             billIdT = itemView.findViewById(R.id.sales_return_review_item_billid);
             dateT = itemView.findViewById(R.id.sales_return_review_item_date);

@@ -4,17 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.DatePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
+import com.officialakbarali.fabiz.bottomSheets.SalesReviewFilterBottomSheet;
 import com.officialakbarali.fabiz.customer.sale.adapter.SalesReturnReviewAdapter;
 import com.officialakbarali.fabiz.customer.sale.data.SalesReturnReviewItem;
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -25,12 +36,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.officialakbarali.fabiz.bottomSheets.SalesReviewFilterBottomSheet.SALES_REVIEW_FILTER_TAG;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToSearchFormat;
 
-public class SalesReturnReview extends AppCompatActivity {
+public class SalesReturnReview extends AppCompatActivity implements SalesReviewFilterBottomSheet.SalesReviewFilterListener {
     private String custId;
 
     SalesReturnReviewAdapter reviewAdapter;
+    EditText searchEditText;
+    String filterSelection = FabizContract.SalesReturn.COLUMN_BILL_ID + " LIKE ?";
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +54,14 @@ public class SalesReturnReview extends AppCompatActivity {
 
         custId = getIntent().getStringExtra("id");
 
-        RecyclerView recyclerView = findViewById(R.id.sales_return_review_recycler);
+        recyclerView = findViewById(R.id.sales_return_review_recycler);
         reviewAdapter = new SalesReturnReviewAdapter(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(reviewAdapter);
 
-        showReturnedItems(null, null);
-
-        Button showCalenderForFilter = findViewById(R.id.sales_return_review_date);
+        ImageButton showCalenderForFilter = findViewById(R.id.sales_return_review_date);
         showCalenderForFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,19 +69,49 @@ public class SalesReturnReview extends AppCompatActivity {
             }
         });
 
-        Button searchButton = findViewById(R.id.sales_return_review_search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchEditText = findViewById(R.id.sales_return_review_search);
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                EditText editText = findViewById(R.id.sales_return_review_search);
-                if (!editText.getText().toString().trim().matches("")) {
-                    Spinner filterSpinner = findViewById(R.id.sales_return_review_filter);
-                    String selection = getSelection(String.valueOf(filterSpinner.getSelectedItem()));
-                    showReturnedItems(selection, new String[]{editText.getText().toString().trim() + "%"});
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!searchEditText.getText().toString().trim().matches("")) {
+                    showReturnedItems(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
                 } else {
                     showReturnedItems(null, null);
                 }
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        setUpDrawableEndEditext();
+    }
+
+
+    private void setUpDrawableEndEditext() {
+        searchEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (searchEditText.getRight() - searchEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        SalesReviewFilterBottomSheet salesReviewFilterBottomSheet = SalesReviewFilterBottomSheet.newInstance();
+                        salesReviewFilterBottomSheet.show(getSupportFragmentManager(), SALES_REVIEW_FILTER_TAG);
+                        return true;
+                    }
+                }
+                return false;
             }
         });
     }
@@ -77,6 +120,7 @@ public class SalesReturnReview extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
+        setUpAnimation();
     }
 
     private void showReturnedItems(String Fselection, String[] FselectionArg) {
@@ -132,32 +176,11 @@ public class SalesReturnReview extends AppCompatActivity {
                     returnCursor.getString(returnCursor.getColumnIndexOrThrow(FabizContract.ItemUnit.COLUMN_UNIT_NAME))
             ));
         }
+        recyclerView.setVisibility(View.VISIBLE);
         reviewAdapter.swapAdapter(salesReturnReviewItems);
 
     }
 
-    private String getSelection(String filterFromForm) {
-        String caseSelection;
-
-        switch (filterFromForm) {
-            case "Name":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_NAME;
-                break;
-            case "ItemId":
-                caseSelection = FabizContract.SalesReturn.FULL_COLUMN_ITEM_ID;
-                break;
-            case "Brand":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_BRAND;
-                break;
-            case "Category":
-                caseSelection = FabizContract.Cart.FULL_COLUMN_CATAGORY;
-                break;
-            default:
-                caseSelection = FabizContract.SalesReturn.COLUMN_BILL_ID;
-        }
-
-        return caseSelection + " LIKE ?";
-    }
 
     private void showDatePicker() {
         final Calendar c = Calendar.getInstance();
@@ -180,4 +203,105 @@ public class SalesReturnReview extends AppCompatActivity {
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
     }
+
+    @Override
+    public void onFilterSelect(String filterItem) {
+        filterSelection = getSelection(filterItem);
+        if (!searchEditText.getText().toString().trim().matches("")) {
+            showReturnedItems(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
+        }
+    }
+
+    private String getSelection(String filterFromForm) {
+        String caseSelection;
+
+        switch (filterFromForm) {
+            case "Name":
+                caseSelection = FabizContract.Cart.COLUMN_NAME;
+                break;
+            case "ItemId":
+                caseSelection = FabizContract.SalesReturn.COLUMN_ITEM_ID;
+                break;
+            case "Brand":
+                caseSelection = FabizContract.Cart.COLUMN_BRAND;
+                break;
+            case "Category":
+                caseSelection = FabizContract.Cart.COLUMN_CATEGORY;
+                break;
+            default:
+                caseSelection = FabizContract.SalesReturn.COLUMN_BILL_ID;
+        }
+        return caseSelection + " LIKE ?";
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideViews();
+    }
+
+    private void hideViews() {
+        LinearLayout seatchCont = findViewById(R.id.search_cont);
+        recyclerView.setVisibility(View.INVISIBLE);
+        seatchCont.setVisibility(View.INVISIBLE);
+    }
+
+    private void setUpAnimation() {
+        hideViews();
+        final LinearLayout searchCont = findViewById(R.id.search_cont);
+
+        YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                searchCont.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+
+                        showReturnedItems(null, null);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(400).repeat(0).playOn(                searchCont
+                );
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
+
+    }
+
 }

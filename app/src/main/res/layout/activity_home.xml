@@ -229,7 +229,7 @@
                         android:id="@+id/sales_return_cont"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="18dp"
+
                         android:layout_weight="1"
                         android:orientation="vertical">
 
@@ -324,7 +324,6 @@
                         android:id="@+id/sales_return_review_cont"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="18dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 

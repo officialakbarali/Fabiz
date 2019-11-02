@@ -516,10 +516,33 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
 
     @Override
     public void onFilterSelect(String filterItem) {
-        filterSelection = filterItem;
+        filterSelection = getSelection(filterItem);
         if (!searchEditText.getText().toString().trim().matches("")) {
             showBills(filterSelection, new String[]{searchEditText.getText().toString().trim() + "%"});
         }
+    }
+
+    private String getSelection(String filterFromForm) {
+        String caseSelection;
+
+        switch (filterFromForm) {
+            case "Name":
+                caseSelection = FabizContract.Cart.FULL_COLUMN_NAME;
+                break;
+            case "ItemId":
+                caseSelection = FabizContract.Cart.FULL_COLUMN_ITEM_ID;
+                break;
+            case "Brand":
+                caseSelection = FabizContract.Cart.FULL_COLUMN_BRAND;
+                break;
+            case "Category":
+                caseSelection = FabizContract.Cart.FULL_COLUMN_CATAGORY;
+                break;
+            default:
+                caseSelection = FabizContract.BillDetail.FULL_COLUMN_ID;
+        }
+
+        return caseSelection + " LIKE ?";
     }
 
 
@@ -613,7 +636,5 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
 
             }
         }).duration(400).repeat(0).playOn(recyclerView);
-
-
     }
 }

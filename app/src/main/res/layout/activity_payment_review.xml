@@ -3,38 +3,47 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="7dp"
+        android:background="@color/app_background"
         android:orientation="vertical"
+        android:padding="18dp"
         tools:context=".customer.payment.PaymentReview">
 
+
     <LinearLayout
+            android:id="@+id/search_cont"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
+            android:layout_marginBottom="15dp"
             android:orientation="horizontal">
 
         <EditText
                 android:id="@+id/payment_review_search"
+                style="@style/text_size_med"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:background="@color/white_2"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:hint="Enter bill id"
+                android:maxLines="1"
+                android:paddingStart="18dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/text_color" />
 
-        <Button
-                android:id="@+id/payment_review_search_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:text="Search"
-                android:textAllCaps="false" />
-
-        <Button
+        <ImageButton
                 android:id="@+id/payment_review_date_filter"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pick Date"
-                android:textAllCaps="false" />
+                android:layout_height="match_parent"
+                android:layout_marginStart="0.7dp"
+                android:background="@color/white_2"
+                android:padding="18dp"
+                android:src="@drawable/ic_date" />
 
     </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/payment_review_recycler"
