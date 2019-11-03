@@ -40,7 +40,7 @@
                     android:inputType="textCapCharacters"
                     android:maxLines="1"
                     android:padding="15dp"
-
+                    android:textAlignment="center"
                     android:textColor="@color/text_color" />
 
         </LinearLayout>

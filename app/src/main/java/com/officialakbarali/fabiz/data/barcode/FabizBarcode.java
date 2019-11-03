@@ -284,6 +284,9 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
+                    if (checkAlreadyExist(itemDetail.getId(), myUnitData.getId())) {
+                        showToast(itemDetail.getName() + " Replaced Successfully");
+                    }
                     cartItems.add(new Cart("0", "0", itemDetail.getId(), myUnitData.getId(), myUnitData.getUnitName(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
@@ -373,5 +376,17 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
         }
         toast = Toast.makeText(this, msgForToast, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    private boolean checkAlreadyExist(String itemId, String unitId) {
+        boolean alredyExits = false;
+        for (int i = 0; i < cartItems.size(); i++) {
+            if (cartItems.get(i).getItemId().matches(itemId) && cartItems.get(i).getUnitId().matches(unitId)) {
+                alredyExits = true;
+                cartItems.remove(i);
+                break;
+            }
+        }
+        return alredyExits;
     }
 }

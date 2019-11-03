@@ -335,10 +335,25 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
                 }
 
 
-                if (dueA > enteredAmount && dueA < 0 && enteredAmount < 0) {
+                if (dueA > enteredAmount && dueA <= 0 && enteredAmount < 0) {
                     showToast("You giving more amount than the total credit");
                     return;
                 }
+
+//                if (dueA <= 0 && enteredAmount < dueA) {
+//                    showToast("Total due is ");
+//                    return;
+//                }
+
+
+                if (dueDiscount) {
+                    if (enteredAmount < 0) {
+                        showToast("Please enter valid discount amount");
+                        return;
+                    }
+                }
+
+
                 setPaymentToSql(enteredAmount);
 
             } catch (Error e) {

@@ -85,7 +85,7 @@ public class ManageRoute extends AppCompatActivity {
 
     public void sunday(View view) {
         Intent setDayRouteIntent = new Intent(ManageRoute.this, RouteModify.class);
-        setDayRouteIntent.putExtra("today", Calendar.MONDAY + "");
+        setDayRouteIntent.putExtra("today", Calendar.SUNDAY + "");
         startActivity(setDayRouteIntent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }

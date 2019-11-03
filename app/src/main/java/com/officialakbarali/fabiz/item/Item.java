@@ -210,11 +210,14 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 String qtyS = quantityText.getText().toString().trim();
                 String totS = totalText.getText().toString().trim();
                 if (conditionsForDialogue(priceS, qtyS, totS)) {
+                    if (checkAlreadyExist(itemDetail.getId(), myUnitData.getId())) {
+                        showToast(itemDetail.getName() + " Replaced Successfully");
+                    }
                     cartItems.add(new Cart("", "", itemDetail.getId(), myUnitData.getId(), myUnitData.getUnitName(), itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory(),
                             Double.parseDouble(priceS), Integer.parseInt(qtyS), Double.parseDouble(totS), 0));
                     finish();
                 } else {
-                    showToast();
+                    showToast("Please enter valid number");
                 }
                 dialog.dismiss();
             }
@@ -227,8 +230,6 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                 dialog.dismiss();
             }
         });
-
-
 
 
 //**************************************SETTING UP SPINNER
@@ -285,11 +286,11 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
     }
 
 
-    private void showToast() {
+    private void showToast(String msg) {
         if (toast != null) {
             toast.cancel();
         }
-        toast = Toast.makeText(this, "Please enter valid number", Toast.LENGTH_LONG);
+        toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -398,5 +399,17 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
 
             }
         }).duration(400).repeat(0).playOn(searchEditText);
+    }
+
+    private boolean checkAlreadyExist(String itemId, String unitId) {
+        boolean alredyExits = false;
+        for (int i = 0; i < cartItems.size(); i++) {
+            if (cartItems.get(i).getItemId().matches(itemId) && cartItems.get(i).getUnitId().matches(unitId)) {
+                alredyExits = true;
+                cartItems.remove(i);
+                break;
+            }
+        }
+        return alredyExits;
     }
 }

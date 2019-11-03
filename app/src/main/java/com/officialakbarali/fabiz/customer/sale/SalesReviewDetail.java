@@ -429,7 +429,13 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
                 ContentValues values = validateAndReturnContentValues(DcurrentTime, cartITemList.getItemId(), currentUnitData.getId(), qtyTextP.getText().toString(), priceTextP.getText().toString(),
                         totAmountP.getText().toString(), currentMaxLimit);
                 if (values != null) {
-                    saveThisReturnedItem(values);
+                    double basePrice = cartITemList.getPrice() / myUnitData.getQty();
+                    double currentPrice = currentUnitData.getQty() * basePrice;
+                    if (Double.parseDouble(priceTextP.getText().toString()) > currentPrice) {
+                        showToast("Please enter the valid price for item");
+                    } else {
+                        saveThisReturnedItem(values, cartITemList.getId());
+                    }
                 }
             }
         });
@@ -547,7 +553,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         }
     }
 
-    private void saveThisReturnedItem(ContentValues values) {
+    private void saveThisReturnedItem(ContentValues values, String cartId) {
         NEGATIVE_DUE = false;
         List<SyncLogDetail> syncLogList = new ArrayList<>();
         FabizProvider saveProvider = new FabizProvider(this, true);
@@ -594,8 +600,8 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
 
                         Cursor returnUpdateToBillCursor = saveProvider.query(FabizContract.Cart.TABLE_NAME,
                                 new String[]{FabizContract.Cart._ID, FabizContract.Cart.COLUMN_RETURN_QTY}
-                                , FabizContract.Cart.COLUMN_BILL_ID + "=? AND " + FabizContract.Cart.COLUMN_ITEM_ID + "=?",
-                                new String[]{billId + "", values.getAsInteger(FabizContract.SalesReturn.COLUMN_ITEM_ID) + ""}, null);
+                                , FabizContract.Cart._ID + "=?",
+                                new String[]{cartId}, null);
 
                         if (returnUpdateToBillCursor.moveToNext()) {
 
