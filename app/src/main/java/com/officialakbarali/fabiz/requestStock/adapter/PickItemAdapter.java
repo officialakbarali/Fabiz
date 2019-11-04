@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,8 @@ public class PickItemAdapter extends RecyclerView.Adapter<PickItemAdapter.ItemVi
 
     @Override
     public void onBindViewHolder(@NonNull PickItemAdapter.ItemViewHolder holder, int position) {
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.fade_scale_animation));
+
         PickItemData itemDetail = itemDetailList.get(position);
 
         String id = "" + itemDetail.getId();
@@ -104,10 +108,13 @@ public class PickItemAdapter extends RecyclerView.Adapter<PickItemAdapter.ItemVi
         TextView itemId, itemName, itemBrand, itemCategory, itemPrice;
         EditText qtyText;
         Button addButton;
-
+        LinearLayout mainParent;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            mainParent = itemView.findViewById(R.id.main_parent);
+
             itemId = itemView.findViewById(R.id.id);
             itemName = itemView.findViewById(R.id.name);
             itemBrand = itemView.findViewById(R.id.brand);

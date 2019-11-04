@@ -53,27 +53,55 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-        <TextView
-                style="@style/text_size_med"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Price"
-                android:textColor="@color/text_color"
-                android:textStyle="bold" />
 
-        <EditText
-                android:id="@+id/cust_sale_add_item_price"
-                style="@style/text_size_med"
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_border_grey_left">
+
+            <TextView
+                    android:paddingStart="20dp"
+                    android:textAlignment="textStart"
+                    style="@style/text_size_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="0.5dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/rounded_border_pop_left"
+                    android:gravity="center"
+                    android:text="Price"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/app_background"
-                android:inputType="numberDecimal"
-                android:padding="20dp"
-                android:textColor="@color/text_color"
-                android:textStyle="bold"
-                tools:text="250" />
+                android:background="@drawable/rounded_border_grey_right">
+
+            <EditText
+                    android:id="@+id/cust_sale_add_item_price"
+                    style="@style/text_size_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0.5dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/rounded_border_pop_right"
+                    android:inputType="numberDecimal"
+                    android:padding="20dp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    tools:text="250" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -83,28 +111,55 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-        <TextView
-                style="@style/text_size_med"
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_border_grey_left">
+
+
+            <TextView
+                    android:paddingStart="20dp"
+                    android:textAlignment="textStart"
+                    style="@style/text_size_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="0.5dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/rounded_border_pop_left"
+                    android:gravity="center"
+                    android:text="Enter Quantity"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enter Quantity"
-                android:textColor="@color/text_color"
-                android:textStyle="bold" />
+                android:background="@drawable/rounded_border_grey_right">
 
         <EditText
                 android:id="@+id/cust_sale_add_item_qty"
                 style="@style/text_size_med"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/app_background"
+                android:layout_marginStart="0.5dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/rounded_border_pop_right"
                 android:inputType="number"
                 android:padding="20dp"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
                 tools:text="2" />
 
+    </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -115,11 +170,13 @@
             android:orientation="horizontal">
 
         <TextView
+                android:textAlignment="textStart"
                 style="@style/text_size_med"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Total"
+                android:gravity="center"
                 android:textColor="@color/text_color"
                 android:textStyle="bold" />
 
@@ -129,7 +186,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/app_background"
                 android:padding="20dp"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"

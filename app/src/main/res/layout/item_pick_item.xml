@@ -1,83 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tool="http://schemas.android.com/tools"
+        android:id="@+id/main_parent"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/button_color_main_home_icon"
+        android:orientation="vertical"
+        android:padding="18dp">
+
 
     <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <EditText
-                android:id="@+id/qty_for_req"
-                android:layout_width="50dp"
+        <TextView
+                android:id="@+id/name"
+                style="@style/text_size_mid_l"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:inputType="number"
-                android:text="" />
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                tool:text="WASHING POWDER" />
 
-        <Button
-                android:id="@+id/add_btn_for_req"
-                android:layout_width="70dp"
+        <TextView
+                android:id="@+id/price"
+                style="@style/text_size_mid_l"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Add"
-                android:textAllCaps="false" />
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                tool:text="20 BD" />
+
     </LinearLayout>
+
 
     <TextView
             android:id="@+id/id"
+            style="@style/text_size_med"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
             tool:text="Id: 20" />
 
-    <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            tool:text="Price: 20" />
 
-    <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            tool:text="Name: 40" />
-
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/app_background" />
 
     <TextView
             android:id="@+id/brand"
+            style="@style/text_size_med"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             tool:text="Brand: 15" />
 
     <TextView
             android:id="@+id/category"
+            style="@style/text_size_med"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
             tool:text="Category: 15" />
 
-    <View
+
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@android:color/black" />
-</RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1">
+
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_border_grey_left">
+
+                <TextView
+                        style="@style/text_size_med"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="0.5dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="@drawable/rounded_border_white_left"
+                        android:gravity="center"
+                        android:text="Quantity" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_border_grey_right">
+
+                <EditText
+                        android:id="@+id/qty_for_req"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+
+                        android:layout_marginStart="0.5dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginBottom="1dp"
+
+                        android:background="@drawable/rounded_border_white_right"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:padding="20dp"
+                        android:text="0" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <Button
+                android:id="@+id/add_btn_for_req"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/button_normal_grey"
+                android:text="Add this item"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color" />
+    </LinearLayout>
+
+</LinearLayout>

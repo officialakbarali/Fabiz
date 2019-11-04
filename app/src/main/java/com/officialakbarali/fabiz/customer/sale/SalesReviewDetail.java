@@ -284,7 +284,7 @@ public class SalesReviewDetail extends AppCompatActivity implements SalesAdapter
         final double maxLimitOfReturn = cartITemList.getQty() - cartITemList.getReturnQty();
         currentMaxLimit = maxLimitOfReturn;
 
-        maxQtyP.setText("Enter QTY to Return\n(Maximum " + maxLimitOfReturn + ")");
+        maxQtyP.setText("Qty\n(Maximum " + maxLimitOfReturn + ")");
 
         priceTextP.setText(TruncateDecimal(cartITemList.getPrice() + ""));
 

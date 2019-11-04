@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,9 @@ public class RequestStockAdapter extends RecyclerView.Adapter<RequestStockAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RequestStockViewHolder holder, int position) {
+
+        holder.mainParent.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_scale_animation));
+
         RequestItem requestItem = itemList.get(position);
 
         if (requestItem.getName().length() > 100) {
@@ -70,8 +75,12 @@ public class RequestStockAdapter extends RecyclerView.Adapter<RequestStockAdapte
         TextView nameV, qtyV;
         Button removeB;
 
+        LinearLayout mainParent;
+
         public RequestStockViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            mainParent = itemView.findViewById(R.id.main_parent);
 
             nameV = itemView.findViewById(R.id.item_request_stock_name);
             qtyV = itemView.findViewById(R.id.item_request_stock_qty);

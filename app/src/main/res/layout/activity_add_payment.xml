@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:textColor="@color/text_color"
-            tools:text="Pick the bill you want to remove" />
+            tools:text="" />
 
     <LinearLayout
             android:id="@+id/search_cont"
@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/white_2"
+                android:background="@drawable/rounded_white2_editext"
                 android:drawableStart="@drawable/ic_search"
                 android:drawableEnd="@drawable/ic_filter"
                 android:drawablePadding="10dp"
@@ -47,8 +47,8 @@
                 android:id="@+id/sales_review_date_filter_button"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="0.7dp"
-                android:background="@color/white_2"
+                android:layout_marginStart="1dp"
+                android:background="@drawable/rounded_white2_button"
                 android:padding="18dp"
                 android:src="@drawable/ic_date" />
 

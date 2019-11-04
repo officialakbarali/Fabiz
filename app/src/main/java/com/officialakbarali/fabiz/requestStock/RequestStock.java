@@ -4,17 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.Animator;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.R;
-import com.officialakbarali.fabiz.item.Item;
 import com.officialakbarali.fabiz.requestStock.adapter.RequestStockAdapter;
 import com.officialakbarali.fabiz.requestStock.data.RequestItem;
 
@@ -25,13 +33,14 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
     private Toast toast;
 
     private RequestStockAdapter adapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_stock);
 
-        RecyclerView recyclerView = findViewById(R.id.request_stock_recycler);
+        recyclerView = findViewById(R.id.request_stock_recycler);
         adapter = new RequestStockAdapter(this, this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -39,7 +48,7 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
         recyclerView.setAdapter(adapter);
 
 
-        Button enterItemButton = findViewById(R.id.request_stock_enter_item);
+        ImageButton enterItemButton = findViewById(R.id.request_stock_enter_item);
         enterItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,12 +56,13 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
             }
         });
 
-        Button pickItemButton = findViewById(R.id.request_stock_pick_list);
+        ImageButton pickItemButton = findViewById(R.id.request_stock_pick_list);
         pickItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent pickItemIntent = new Intent(RequestStock.this, com.officialakbarali.fabiz.requestStock.RequestItem.class);
                 startActivity(pickItemIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
@@ -61,7 +71,8 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
     protected void onResume() {
         super.onResume();
         new CommonResumeCheck(this);
-        adapter.swapAdapter(itemsForRequest);
+        setUpAnimation();
+
     }
 
     @Override
@@ -82,6 +93,11 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.pop_up_enter_item_request);
 
+        //SETTING SCREEN WIDTH
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //*************
 
         final EditText quantityText = dialog.findViewById(R.id.pop_up_item_request_qty);
         quantityText.setText("1");
@@ -114,6 +130,92 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
             }
         });
         dialog.show();
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideAll();
+    }
+
+    private void hideAll() {
+        LinearLayout addCont, pickCont, printCont;
+
+        recyclerView.setVisibility(View.INVISIBLE);
+
+        addCont = findViewById(R.id.enter_cont);
+        pickCont = findViewById(R.id.pick_cont);
+        printCont = findViewById(R.id.print_cont);
+
+        addCont.setVisibility(View.INVISIBLE);
+        printCont.setVisibility(View.INVISIBLE);
+        pickCont.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void setUpAnimation() {
+        hideAll();
+        final LinearLayout addCont, pickCont, printCont;
+        addCont = findViewById(R.id.enter_cont);
+        pickCont = findViewById(R.id.pick_cont);
+        printCont = findViewById(R.id.print_cont);
+
+        YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                addCont.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInLeft).duration(400).repeat(0).playOn(addCont);
+                pickCont.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInDown).duration(400).repeat(0).playOn(pickCont);
+                printCont.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.FadeInRight).withListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        adapter.swapAdapter(itemsForRequest);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                }).duration(400).repeat(0).playOn(printCont);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(400).repeat(0).playOn(recyclerView);
+
+
     }
 }
 

@@ -57,7 +57,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/app_background"
                 android:padding="20dp"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
@@ -72,38 +71,68 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-        <TextView
-                style="@style/text_size_med"
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_border_grey_left">
+
+            <TextView
+                    style="@style/text_size_med"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="0.5dp"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/rounded_border_pop_left"
+                    android:gravity="center"
+                    android:paddingStart="20dp"
+                    android:text="Enter the amount"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Enter the amount"
-                android:textColor="@color/text_color"
-                android:textStyle="bold" />
+                android:background="@drawable/rounded_border_grey_right">
 
         <EditText
                 android:id="@+id/cust_payment_to_pay"
                 style="@style/text_size_med"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/app_background"
+
+                android:layout_marginStart="0.5dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/rounded_border_pop_right"
+
                 android:inputType="numberSigned|numberDecimal"
                 android:padding="20dp"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
                 tools:text="2" />
 
+        </LinearLayout>
+
     </LinearLayout>
 
 
     <CheckBox
-            android:buttonTint="@color/text_color"
             android:id="@+id/cust_payment_due_discount"
             style="@style/text_size_med"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:buttonTint="@color/text_color"
             android:text="Due Discount"
             android:textColor="@color/text_color"
             android:textStyle="bold" />
