@@ -190,12 +190,19 @@ public class AddCustomer extends AppCompatActivity {
         return !matcher.find();
     }
 
+    private boolean validateAddressInformation(String passedString){
+        if (passedString.matches("NA")) return false;
+        Pattern pattern = Pattern.compile("[^A-Za-z0-9 ._,-]");
+        Matcher matcher = pattern.matcher(passedString);
+        return !matcher.find();
+    }
+
 
     private boolean validateCustomerFields(ContentValues values) {
         if (validateName(values.getAsString(FabizContract.Customer.COLUMN_NAME))) {
             if (validatePhoneNumber(values.getAsString(FabizContract.Customer.COLUMN_PHONE))) {
                 if (validateEmail(values.getAsString(FabizContract.Customer.COLUMN_EMAIL))) {
-                    if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_ADDRESS))) {
+                    if (validateAddressInformation(values.getAsString(FabizContract.Customer.COLUMN_ADDRESS))) {
                         if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_SHOP_NAME))) {
                             if (validateCommonInformation(values.getAsString(FabizContract.Customer.COLUMN_CR_NO))) {
                                 if (validateVatNumber(values.getAsString(FabizContract.Customer.COLUMN_VAT_NO))) {

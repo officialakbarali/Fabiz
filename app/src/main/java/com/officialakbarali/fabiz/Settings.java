@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.officialakbarali.fabiz.data.db.FabizContract;
 import com.officialakbarali.fabiz.data.db.FabizProvider;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.SET_DECIMAL_LENGTH;
+import static com.officialakbarali.fabiz.data.CommonInformation.setCurrency;
 
 public class Settings extends AppCompatActivity {
     Toast toast;
@@ -46,6 +48,7 @@ public class Settings extends AppCompatActivity {
                 editor.putInt("decimal_precision", 2);
                 SET_DECIMAL_LENGTH(2);
                 editor.apply();
+                setUpCurrency();
                 startActivity(mainHomeIntent);
             }
         });
@@ -62,9 +65,11 @@ public class Settings extends AppCompatActivity {
                 editor.putInt("decimal_precision", 3);
                 SET_DECIMAL_LENGTH(3);
                 editor.apply();
+                setUpCurrency();
                 startActivity(mainHomeIntent);
             }
         });
+        setUpCurrencyEditText();
     }
 
     @Override
@@ -72,6 +77,12 @@ public class Settings extends AppCompatActivity {
         super.onResume();
 
         new ServiceResumeCheck(this);
+    }
+
+    private void setUpCurrencyEditText() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        EditText currecyText = findViewById(R.id.currency);
+        currecyText.setText(sharedPreferences.getString("currency", "BD"));
     }
 
     public void logout() {
@@ -101,5 +112,18 @@ public class Settings extends AppCompatActivity {
         }
         toast = Toast.makeText(this, msgForToast, Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    private void setUpCurrency() {
+        EditText currecyText = findViewById(R.id.currency);
+        String currency = currecyText.getText().toString().trim().toUpperCase();
+        if (currency.length() > 0 && currency.length() <= 3) {
+            SharedPreferences
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("currency", currency);
+            editor.apply();
+            setCurrency(currency);
+        }
     }
 }

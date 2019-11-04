@@ -17,6 +17,7 @@ import com.officialakbarali.fabiz.customer.sale.data.SalesReturnReviewItem;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
+import static com.officialakbarali.fabiz.data.CommonInformation.getCurrency;
 
 
 public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnReviewAdapter.SalesReturnReviewViewHolder> {
@@ -75,7 +76,7 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
         if (priceS.length() > 12) {
             holder.priceT.setText(priceS.substring(0, 8));
         } else {
-            holder.priceT.setText(priceS);
+            holder.priceT.setText(priceS+ " " + getCurrency());
         }
 
         String qtyS = salesReturnReviewItem.getQty() + "";
@@ -89,7 +90,7 @@ public class SalesReturnReviewAdapter extends RecyclerView.Adapter<SalesReturnRe
         if (totalS.length() > 12) {
             holder.totalT.setText(totalS.substring(0, 8));
         } else {
-            holder.totalT.setText(totalS);
+            holder.totalT.setText(totalS+ " " + getCurrency());
         }
 
         holder.unitT.setText(salesReturnReviewItem.getUnitName());

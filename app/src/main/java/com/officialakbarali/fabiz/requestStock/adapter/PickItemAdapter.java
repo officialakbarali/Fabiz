@@ -19,6 +19,7 @@ import com.officialakbarali.fabiz.requestStock.data.PickItemData;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
+import static com.officialakbarali.fabiz.data.CommonInformation.getCurrency;
 
 public class PickItemAdapter extends RecyclerView.Adapter<PickItemAdapter.ItemViewHolder> {
     private Context mContext;
@@ -78,7 +79,7 @@ public class PickItemAdapter extends RecyclerView.Adapter<PickItemAdapter.ItemVi
         if (price.length() > 20) {
             holder.itemPrice.setText("Price: " + price.substring(0, 16) + "...");
         } else {
-            holder.itemPrice.setText("Price: " + TruncateDecimal(price + ""));
+            holder.itemPrice.setText("Price: " + TruncateDecimal(price + "")  + " " + getCurrency());
         }
 
         String qty = itemDetail.getQty() + "";

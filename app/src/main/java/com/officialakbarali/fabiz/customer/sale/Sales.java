@@ -59,6 +59,7 @@ import static com.officialakbarali.fabiz.data.CommonInformation.GET_DATE_FORMAT_
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertDateToDisplayFormat;
+import static com.officialakbarali.fabiz.data.CommonInformation.getCurrency;
 import static com.officialakbarali.fabiz.data.barcode.FabizBarcode.FOR_ITEM;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_CODE_SALE;
 import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
@@ -107,7 +108,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         dueAmtPassed = Double.parseDouble(getIntent().getStringExtra("custDueAmt"));
 
         currentDueAmntV = findViewById(R.id.cust_sale_curr_due);
-        currentDueAmntV.setText("Previous Due Amount :" + TruncateDecimal(dueAmtPassed + ""));
+        currentDueAmntV.setText("Previous Due Amount :" + TruncateDecimal(dueAmtPassed + "")+ " " + getCurrency());
         totalDueAmntV = findViewById(R.id.cust_sale_tot_due);
 
         totQtyView = findViewById(R.id.cust_sale_tot_qty);
@@ -284,11 +285,11 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             totQtyForSave += cart.getQty();
         }
         totQtyView.setText("Total Item :" + TruncateDecimal(totQtyForSave + ""));
-        totalView.setText("Total :" + TruncateDecimal(totAmountToSave + ""));
+        totalView.setText("Total :" + TruncateDecimal(totAmountToSave + "")+ " " + getCurrency());
 
         totalDueAmnt = totAmountToSave + dueAmtPassed;
         double amntDisplayed = totalDueAmnt - getEnteredAmnt();
-        totalDueAmntV.setText("*Total Due Amount :" + TruncateDecimal(amntDisplayed + ""));
+        totalDueAmntV.setText("*Total Due Amount :" + TruncateDecimal(amntDisplayed + "")+ " " + getCurrency());
     }
 
     private void showToast(String msgForToast) {

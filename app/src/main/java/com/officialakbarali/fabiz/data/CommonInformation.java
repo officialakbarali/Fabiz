@@ -8,13 +8,24 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.RecursiveTask;
 
 public final class CommonInformation {
     private static int PHONE_NUMBER_LENGTH = 6;
     private static int DECIMAL_LENGTH = 3;
     private static String REAL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static String REAL_DATE_FORMAT_OF_SEARCH = "yyyy-MM-dd";
+
+
+    private static String CURRENCY = "BD";
+
+
+    public static void setCurrency(String currency) {
+        CURRENCY = currency;
+    }
+
+    public static String getCurrency() {
+        return CURRENCY;
+    }
 
     public static String convertDateToDisplayFormat(String dateString) throws ParseException {
         DateFormat sdf = new SimpleDateFormat(REAL_DATE_FORMAT);
@@ -42,7 +53,7 @@ public final class CommonInformation {
         } else {
             df = new DecimalFormat("#0.000");
         }
-        return df.format(truncateValue) ;
+        return df.format(truncateValue);
     }
 
     public static int GET_PHONE_NUMBER_LENGTH() {

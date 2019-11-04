@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
 import static com.officialakbarali.fabiz.data.CommonInformation.convertToCamelCase;
+import static com.officialakbarali.fabiz.data.CommonInformation.getCurrency;
 
 public class Home extends AppCompatActivity {
     private String custId;
@@ -244,7 +245,7 @@ public class Home extends AppCompatActivity {
 
         custDueAmt = provider.getCount(FabizContract.BillDetail.TABLE_NAME, FabizContract.BillDetail.COLUMN_DUE, FabizContract.BillDetail.COLUMN_CUST_ID + "=?",
                 new String[]{custId + ""});
-        custDueView.setText("Due Amount :" + TruncateDecimal(custDueAmt + ""));
+        custDueView.setText("Due Amount :" + TruncateDecimal(custDueAmt + "")+ " " + getCurrency());
 
     }
 

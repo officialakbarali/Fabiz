@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
+import static com.officialakbarali.fabiz.data.CommonInformation.getCurrency;
 
 public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.SalesReviewHolder> {
     private Context mContext;
@@ -84,7 +85,7 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
         if (totalS.length() > 17) {
             holder.totV.setText(totalS.substring(0, 13) + "...");
         } else {
-            holder.totV.setText(totalS);
+            holder.totV.setText(totalS+ " " + getCurrency());
         }
 
 
@@ -98,7 +99,7 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             if (paidS.length() > 13) {
                 holder.paidV.setText(paidS.substring(0, 13) + "...");
             } else {
-                holder.paidV.setText(paidS);
+                holder.paidV.setText(paidS+ " " + getCurrency());
             }
 
             holder.dueCont.setVisibility(View.VISIBLE);
@@ -106,7 +107,7 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             if (dueS.length() > 13) {
                 holder.dueV.setText(dueS.substring(0, 13) + "...");
             } else {
-                holder.dueV.setText(dueS);
+                holder.dueV.setText(dueS+ " " + getCurrency());
             }
 
             holder.returnC.setVisibility(View.VISIBLE);
@@ -114,7 +115,7 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             if (returnS.length() > 13) {
                 holder.returnV.setText(returnS.substring(0, 13) + "...");
             } else {
-                holder.returnV.setText(returnS);
+                holder.returnV.setText(returnS+ " " + getCurrency());
             }
 
 
@@ -123,7 +124,7 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             if (currentTotalS.length() > 13) {
                 holder.cTotalV.setText(currentTotalS.substring(0, 13) + "...");
             } else {
-                holder.cTotalV.setText(currentTotalS);
+                holder.cTotalV.setText(currentTotalS+ " " + getCurrency());
             }
 
             holder.discCont.setVisibility(View.VISIBLE);
@@ -131,7 +132,7 @@ public class SalesReviewAdapter extends RecyclerView.Adapter<SalesReviewAdapter.
             if (discountS.length() > 13) {
                 holder.cDiscountV.setText(discountS.substring(0, 13) + "...");
             } else {
-                holder.cDiscountV.setText(discountS);
+                holder.cDiscountV.setText(discountS+ " " + getCurrency());
             }
         }
     }

@@ -9,15 +9,34 @@
         tools:context=".MainHome">
 
 
-    <TextView
+    <LinearLayout
             android:id="@+id/home_cust_head"
-            style="@style/text_size_large"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            tools:text="Hai Salman!"
-            android:textColor="@color/text_color"
-            android:visibility="invisible" />
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+        <TextView
+                android:id="@+id/name_txt"
+                style="@style/text_size_large"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text_color"
+                tools:text="Hai Salman!" />
+
+
+        <ImageButton
+                android:id="@+id/home_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/button_color_app_background"
+                android:padding="30dp"
+                android:src="@drawable/ic_settings" />
+
+    </LinearLayout>
+
 
     <TextView
             android:id="@+id/home_cust_below_head"
@@ -175,41 +194,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="7dp"
-            android:orientation="horizontal">
 
-        <LinearLayout
-                android:id="@+id/home_settings"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="7dp"
-                android:layout_weight="1"
-                android:background="@drawable/button_color_main_home_icon"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="invisible">
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:duplicateParentState="true"
-                    android:src="@drawable/main_home_customer" />
-
-            <TextView
-                    android:id="@+id/home_settings_txt"
-                    style="@style/text_size_med"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="17dp"
-                    android:duplicateParentState="true"
-                    android:text="Settings"
-                    android:textColor="@color/text_color" />
-
-        </LinearLayout>
-
-    </LinearLayout>
 </LinearLayout>

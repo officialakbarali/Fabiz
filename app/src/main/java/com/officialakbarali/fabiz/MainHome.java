@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,16 +25,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.convertToCamelCase;
+import static com.officialakbarali.fabiz.data.CommonInformation.setCurrency;
 import static com.officialakbarali.fabiz.requestStock.RequestStock.itemsForRequest;
 
 public class MainHome extends AppCompatActivity {
-    LinearLayout customerL, stockL, requestL, syncL, settingsL;
+    LinearLayout customerL, stockL, requestL, syncL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home);
-        TextView nameText = findViewById(R.id.home_cust_head);
+        TextView nameText = findViewById(R.id.name_txt);
 
         String nameS = "Hai ";
 
@@ -48,6 +50,7 @@ public class MainHome extends AppCompatActivity {
         nameS += fullName + "!";
         nameText.setText(nameS);
 
+        setUpCurrency();
         setUpHomeButton();
     }
 
@@ -66,13 +69,28 @@ public class MainHome extends AppCompatActivity {
     }
 
 
+    private void setUpCurrency() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        setCurrency(sharedPreferences.getString("currency", "BD"));
+    }
+
     private void setUpHomeButton() {
 
         customerL = findViewById(R.id.home_cust);
         stockL = findViewById(R.id.home_stock);
         requestL = findViewById(R.id.home_request);
         syncL = findViewById(R.id.home_sync);
-        settingsL = findViewById(R.id.home_settings);
+        ImageButton settingsL = findViewById(R.id.home_settings);
+
+
+        settingsL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentSettings = new Intent(MainHome.this, Settings.class);
+                startActivity(intentSettings);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
 
         customerL.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -164,30 +182,6 @@ public class MainHome extends AppCompatActivity {
                 return false;
             }
         });
-        settingsL.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                TextView textView = findViewById(R.id.home_settings_txt);
-
-                switch (event.getAction()) {
-
-                    case MotionEvent.ACTION_DOWN:
-                        settingsL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
-                        textView.setTextColor(getResources().getColor(R.color.pure_white));
-                        return true; // if you want to handle the touch event
-                    case MotionEvent.ACTION_UP:
-                        settingsL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
-                        textView.setTextColor(getResources().getColor(R.color.text_color));
-                        Intent intentSettings = new Intent(MainHome.this, Settings.class);
-                        startActivity(intentSettings);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                        return true; // if you want to handle the touch event
-                }
-                return false;
-            }
-        });
-
-
     }
 
     @Override
@@ -197,11 +191,11 @@ public class MainHome extends AppCompatActivity {
     }
 
     private void hideViews() {
-        TextView head, belowHead;
+        LinearLayout head;
+        TextView belowHead;
         head = findViewById(R.id.home_cust_head);
 
         belowHead = findViewById(R.id.home_cust_below_head);
-
 
 
         head.setVisibility(View.INVISIBLE);
@@ -221,13 +215,12 @@ public class MainHome extends AppCompatActivity {
 
         syncL.setVisibility(View.INVISIBLE);
 
-
-        settingsL.setVisibility(View.INVISIBLE);
     }
 
     private void setUpAnimation() {
         hideViews();
-        final TextView head, belowHead;
+        final TextView belowHead;
+        final LinearLayout head;
         head = findViewById(R.id.home_cust_head);
         belowHead = findViewById(R.id.home_cust_below_head);
 
@@ -262,7 +255,6 @@ public class MainHome extends AppCompatActivity {
                                 stockL.setVisibility(View.VISIBLE);
                                 requestL.setVisibility(View.VISIBLE);
                                 syncL.setVisibility(View.VISIBLE);
-                                settingsL.setVisibility(View.VISIBLE);
 
                                 YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(customerL);
                                 YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(stockL);
@@ -270,7 +262,6 @@ public class MainHome extends AppCompatActivity {
                                 YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(requestL);
                                 YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(syncL);
 
-                                YoYo.with(Techniques.SlideInUp).duration(400).repeat(0).playOn(settingsL);
                             }
 
                             @Override
@@ -306,7 +297,7 @@ public class MainHome extends AppCompatActivity {
             public void onAnimationRepeat(Animator animation) {
 
             }
-        }).duration(100).repeat(0).playOn(settingsL);
+        }).duration(100).repeat(0).playOn(syncL);
 
 
     }

@@ -17,6 +17,7 @@ import com.officialakbarali.fabiz.customer.data.PaymentReviewDetail;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.TruncateDecimal;
+import static com.officialakbarali.fabiz.data.CommonInformation.getCurrency;
 
 
 public class PaymentReviewAdapter extends RecyclerView.Adapter<PaymentReviewAdapter.PaymentReviewHolder> {
@@ -61,7 +62,7 @@ public class PaymentReviewAdapter extends RecyclerView.Adapter<PaymentReviewAdap
         if (amountS.length() > 17) {
             holder.amountV.setText(amountS.substring(0, 13));
         } else {
-            holder.amountV.setText(amountS);
+            holder.amountV.setText(amountS+ " " + getCurrency());
         }
 
 

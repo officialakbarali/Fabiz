@@ -3,16 +3,20 @@ package com.officialakbarali.fabiz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,6 +98,7 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void performLogIn(final String username, final String password) {
+        hideKeybord();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         HashMap<String, String> hashMap = new HashMap<>();
@@ -161,10 +166,33 @@ public class LogIn extends AppCompatActivity {
         final Intent mainHomeIntent = new Intent(LogIn.this, ForcePull.class);
         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        LinearLayout precisionContainer = findViewById(R.id.precision_cont);
-        LinearLayout logInContainer = findViewById(R.id.log_in_cont);
-        logInContainer.setVisibility(View.GONE);
-        precisionContainer.setVisibility(View.VISIBLE);
+        final LinearLayout precisionContainer = findViewById(R.id.precision_cont);
+        final LinearLayout logInContainer = findViewById(R.id.log_in_cont);
+
+        YoYo.with(Techniques.SlideOutUp).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                logInContainer.setVisibility(View.GONE);
+                precisionContainer.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.SlideInUp).duration(600).repeat(0).playOn(precisionContainer);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(450).repeat(0).playOn(logInContainer);
+
 
         Button pre2 = findViewById(R.id.pre_2);
         pre2.setOnClickListener(new View.OnClickListener() {
@@ -173,8 +201,7 @@ public class LogIn extends AppCompatActivity {
                 editor.putInt("decimal_precision", 2);
                 SET_DECIMAL_LENGTH(2);
                 editor.apply();
-                startActivity(mainHomeIntent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                setUpCurrency(mainHomeIntent);
             }
         });
         Button pre3 = findViewById(R.id.pre_3);
@@ -184,7 +211,61 @@ public class LogIn extends AppCompatActivity {
                 editor.putInt("decimal_precision", 3);
                 SET_DECIMAL_LENGTH(3);
                 editor.apply();
-                startActivity(mainHomeIntent);
+                setUpCurrency(mainHomeIntent);
+            }
+        });
+    }
+
+
+    private void setUpCurrency(final Intent pIntent) {
+
+        final LinearLayout precisionContainer = findViewById(R.id.precision_cont);
+
+
+        final RelativeLayout currencyContainer = findViewById(R.id.currency_cont);
+
+
+        YoYo.with(Techniques.SlideOutUp).withListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                precisionContainer.setVisibility(View.GONE);
+                currencyContainer.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.SlideInUp).duration(600).repeat(0).playOn(currencyContainer);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).duration(600).repeat(0).playOn(precisionContainer);
+
+
+        ImageButton proceedBtn = findViewById(R.id.proceed);
+        proceedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText currecyText = findViewById(R.id.currency);
+                String currency = currecyText.getText().toString().trim().toUpperCase();
+                SharedPreferences
+                        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LogIn.this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                if (currency.length() > 0 && currency.length() <= 3) {
+                    editor.putString("currency", currency);
+                } else {
+                    editor.putString("currency", "BD");
+                }
+                editor.apply();
+                startActivity(pIntent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
@@ -318,5 +399,10 @@ public class LogIn extends AppCompatActivity {
 
             }
         }).duration(100).repeat(0).playOn(remember);
+    }
+
+    private void hideKeybord() {
+        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }
