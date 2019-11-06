@@ -79,6 +79,11 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
     public void onClick(int indexToRemove) {
         itemsForRequest.remove(indexToRemove);
         adapter.swapAdapter(itemsForRequest);
+        if (itemsForRequest.size() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
     }
 
     private void showToast() {
@@ -116,6 +121,11 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
                 } else {
                     itemsForRequest.add(new RequestItem(nameS, qtyS));
                     adapter.swapAdapter(itemsForRequest);
+                    if (itemsForRequest.size() > 0) {
+                        displayEmptyView(false);
+                    } else {
+                        displayEmptyView(true);
+                    }
                     dialog.dismiss();
                 }
             }
@@ -157,7 +167,7 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
         addCont.setVisibility(View.INVISIBLE);
         printCont.setVisibility(View.INVISIBLE);
         pickCont.setVisibility(View.INVISIBLE);
-
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -190,6 +200,11 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
                     public void onAnimationEnd(Animator animation) {
                         recyclerView.setVisibility(View.VISIBLE);
                         adapter.swapAdapter(itemsForRequest);
+                        if (itemsForRequest.size() > 0) {
+                            displayEmptyView(false);
+                        } else {
+                            displayEmptyView(true);
+                        }
                     }
 
                     @Override
@@ -214,7 +229,15 @@ public class RequestStock extends AppCompatActivity implements RequestStockAdapt
 
             }
         }).duration(400).repeat(0).playOn(recyclerView);
+    }
 
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
 
     }
 }

@@ -178,6 +178,11 @@ public class SalesReturnReview extends AppCompatActivity implements SalesReviewF
         }
         recyclerView.setVisibility(View.VISIBLE);
         reviewAdapter.swapAdapter(salesReturnReviewItems);
+        if (salesReturnReviewItems.size() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
 
     }
 
@@ -251,6 +256,8 @@ public class SalesReturnReview extends AppCompatActivity implements SalesReviewF
         LinearLayout seatchCont = findViewById(R.id.search_cont);
         recyclerView.setVisibility(View.INVISIBLE);
         seatchCont.setVisibility(View.INVISIBLE);
+
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -302,6 +309,15 @@ public class SalesReturnReview extends AppCompatActivity implements SalesReviewF
             }
         }).duration(400).repeat(0).playOn(recyclerView);
 
+    }
+
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
 }

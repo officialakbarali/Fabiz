@@ -203,6 +203,11 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
         }
         recyclerView.setVisibility(View.VISIBLE);
         salesReviewAdapter.swapAdapter(salesReviewList);
+        if (salesReviewList.size() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
     }
 
     private void showDatePicker() {
@@ -580,6 +585,8 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
         custDue.setVisibility(View.INVISIBLE);
         searchCont.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
+
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -651,5 +658,14 @@ public class AddPayment extends AppCompatActivity implements SalesReviewAdapter.
 
             }
         }).duration(400).repeat(0).playOn(recyclerView);
+    }
+
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 }

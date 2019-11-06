@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -162,6 +163,12 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         }
         recyclerView.setVisibility(View.VISIBLE);
         adapter.swapAdapter(customerList);
+
+        if (customerList.size() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
     }
 
     private String getSelection(String filterFromForm) {
@@ -213,6 +220,7 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         head.setVisibility(View.INVISIBLE);
         searchEditText.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -282,5 +290,15 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
 
             }
         }).duration(400).repeat(0).playOn(recyclerView);
+    }
+
+
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 }

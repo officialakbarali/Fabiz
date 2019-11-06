@@ -108,7 +108,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         dueAmtPassed = Double.parseDouble(getIntent().getStringExtra("custDueAmt"));
 
         currentDueAmntV = findViewById(R.id.cust_sale_curr_due);
-        currentDueAmntV.setText("Previous Due Amount :" + TruncateDecimal(dueAmtPassed + "")+ " " + getCurrency());
+        currentDueAmntV.setText("Previous Due Amount :" + TruncateDecimal(dueAmtPassed + "") + " " + getCurrency());
         totalDueAmntV = findViewById(R.id.cust_sale_tot_due);
 
         totQtyView = findViewById(R.id.cust_sale_tot_qty);
@@ -229,6 +229,11 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     public void onClick(int indexToBeRemoved, Cart cartItemsF) {
         cartItems.remove(indexToBeRemoved);
         salesAdapter.swapAdapter(cartItems);
+        if (cartItems.size() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
         setTotalAndTotalQuantity();
     }
 
@@ -285,11 +290,11 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
             totQtyForSave += cart.getQty();
         }
         totQtyView.setText("Total Item :" + TruncateDecimal(totQtyForSave + ""));
-        totalView.setText("Total :" + TruncateDecimal(totAmountToSave + "")+ " " + getCurrency());
+        totalView.setText("Total :" + TruncateDecimal(totAmountToSave + "") + " " + getCurrency());
 
         totalDueAmnt = totAmountToSave + dueAmtPassed;
         double amntDisplayed = totalDueAmnt - getEnteredAmnt();
-        totalDueAmntV.setText("*Total Due Amount :" + TruncateDecimal(amntDisplayed + "")+ " " + getCurrency());
+        totalDueAmntV.setText("*Total Due Amount :" + TruncateDecimal(amntDisplayed + "") + " " + getCurrency());
     }
 
     private void showToast(String msgForToast) {
@@ -499,10 +504,10 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         });
 
 
-        billAmntV.setText( TruncateDecimal(billAmt + ""));
+        billAmntV.setText(TruncateDecimal(billAmt + ""));
         //       dateV.setText( currentTime);
-        enteredAmntV.setText( TruncateDecimal(entAmt + ""));
-        dueAmtV.setText( TruncateDecimal(dueAmt + ""));
+        enteredAmntV.setText(TruncateDecimal(entAmt + ""));
+        dueAmtV.setText(TruncateDecimal(dueAmt + ""));
 
         dialog.show();
     }
@@ -555,6 +560,8 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         addCont.setVisibility(View.INVISIBLE);
         barcodeCont.setVisibility(View.INVISIBLE);
         saveCont.setVisibility(View.INVISIBLE);
+
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -598,6 +605,11 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                             public void onAnimationEnd(Animator animation) {
                                 recyclerView.setVisibility(View.VISIBLE);
                                 salesAdapter.swapAdapter(cartItems);
+                                if (cartItems.size() > 0) {
+                                    displayEmptyView(false);
+                                } else {
+                                    displayEmptyView(true);
+                                }
 
                                 totQtyView.setVisibility(View.VISIBLE);
                                 YoYo.with(Techniques.FadeInLeft).duration(300).repeat(0).playOn(totQtyView);
@@ -691,5 +703,17 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
 
             }
         }).duration(400).repeat(0).playOn(recyclerView);
+    }
+
+
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 }

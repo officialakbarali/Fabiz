@@ -204,6 +204,12 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         }
         recyclerView.setVisibility(View.VISIBLE);
         customerAdapter.swapAdapter(customerList);
+
+        if (customerList.size() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
     }
 
     private String getSelection(String filterFromForm) {
@@ -308,6 +314,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
         addCont.setVisibility(View.INVISIBLE);
         searcheditText.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -419,5 +426,14 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
             }
         }).duration(500).repeat(0).playOn(searcheditText);
 
+    }
+
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 }

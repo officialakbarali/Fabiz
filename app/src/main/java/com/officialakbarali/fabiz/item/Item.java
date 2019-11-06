@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -283,6 +284,11 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         }
         recyclerView.setVisibility(View.VISIBLE);
         itemAdapter.swapAdapter(itemList);
+        if (itemList.size() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
     }
 
 
@@ -351,6 +357,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
         super.onPause();
         recyclerView.setVisibility(View.INVISIBLE);
         searchEditText.setVisibility(View.INVISIBLE);
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -411,5 +418,14 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
             }
         }
         return alredyExits;
+    }
+
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 }

@@ -127,6 +127,11 @@ public class PaymentReview extends AppCompatActivity {
         }
         recyclerView.setVisibility(View.VISIBLE);
         adapter.swapAdapter(details);
+        if (paymentDetailCursor.getCount() > 0) {
+            displayEmptyView(false);
+        } else {
+            displayEmptyView(true);
+        }
     }
 
     private void showDatePicker() {
@@ -156,6 +161,7 @@ public class PaymentReview extends AppCompatActivity {
 
         recyclerView.setVisibility(View.INVISIBLE);
         searchFrame.setVisibility(View.INVISIBLE);
+        displayEmptyView(false);
     }
 
     private void setUpAnimation() {
@@ -204,5 +210,14 @@ public class PaymentReview extends AppCompatActivity {
 
             }
         }).duration(400).repeat(0).playOn(recyclerView);
+    }
+
+    private void displayEmptyView(boolean setOn) {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
+        if (setOn) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
     }
 }
