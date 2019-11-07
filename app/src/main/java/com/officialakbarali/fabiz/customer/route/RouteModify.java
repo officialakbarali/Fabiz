@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.officialakbarali.fabiz.bottomSheets.CustomerFilterBottomSheet.CUSTOMER_FILTER_TAG;
+import static com.officialakbarali.fabiz.data.CommonInformation.convertToCamelCase;
 import static com.officialakbarali.fabiz.data.CommonInformation.getDayNameFromNumber;
 
 public class RouteModify extends AppCompatActivity implements CustomerAdapter.CustomerAdapterOnClickListener, CustomerFilterBottomSheet.CustomerFilterListener {
@@ -48,7 +49,7 @@ public class RouteModify extends AppCompatActivity implements CustomerAdapter.Cu
         TODAY = getIntent().getStringExtra("today");
 
         TextView labelText = findViewById(R.id.route_day);
-        labelText.setText(getDayNameFromNumber(TODAY));
+        labelText.setText(convertToCamelCase(getDayNameFromNumber(TODAY)));
 
         searchEditText = findViewById(R.id.cust_search);
         searchEditText.addTextChangedListener(new TextWatcher() {
