@@ -48,7 +48,7 @@ public class SyncService extends Service {
 
 
     String userName;
-    String password;
+    String mySignature;
 
     @Nullable
     @Override
@@ -79,7 +79,7 @@ public class SyncService extends Service {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userName = sharedPreferences.getString("my_username", null);
-        password = sharedPreferences.getString("my_password", null);
+        mySignature = sharedPreferences.getString("mysign", null);
 
 //    todo uncomment this    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -106,7 +106,7 @@ public class SyncService extends Service {
 
     private void startExecuteThisService() {
 
-        if (userName == null || password == null) {
+        if (userName == null || mySignature == null) {
             stopSetUp("USER");
         } else {
             requestQueue = Volley.newRequestQueue(this);
@@ -244,7 +244,7 @@ public class SyncService extends Service {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);
-        hashMap.put("my_password", "" + password);
+        hashMap.put("mysign", "" + mySignature);
         hashMap.put("confirm_pull", "false");
 
         final VolleyRequest volleyRequest = new VolleyRequest("simple.php", hashMap, new Response.Listener<String>() {

@@ -113,7 +113,7 @@ public class LogIn extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getBoolean("success")) {
-                        proceed(username, password, jsonObject.getInt("precision"), jsonObject.getInt("idOfStaff"), jsonObject.getString("nameOfStaff"));
+                        proceed(username, password, jsonObject.getString("mysign"), jsonObject.getInt("precision"), jsonObject.getInt("idOfStaff"), jsonObject.getString("nameOfStaff"));
                     } else {
                         if (jsonObject.getString("status").equals("VERSION")) {
                             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LogIn.this);
@@ -151,12 +151,13 @@ public class LogIn extends AppCompatActivity {
         requestQueue.add(volleyRequest);
     }
 
-    private void proceed(String username, String password, int precision, int idOfStaff, String staffName) {
+    private void proceed(String username, String password, String mysign, int precision, int idOfStaff, String staffName) {
         final SharedPreferences
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("my_username", username);
         editor.putString("my_password", password);
+        editor.putString("mysign", mysign);
         editor.putBoolean("update_data", false);
         editor.putBoolean("force_pull", true);
         editor.putInt("precision", precision);

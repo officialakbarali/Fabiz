@@ -46,12 +46,12 @@ public class HashMapHelper {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String userName = sharedPreferences.getString("my_username", null);
-        String password = sharedPreferences.getString("my_password", null);
+        String mySignature = sharedPreferences.getString("mysign", null);
         String staffId = sharedPreferences.getInt("idOfStaff", 0) + "";
 
         returnHashMap.put("app_version", "" + GET_MY_APP_VERSION());
         returnHashMap.put("my_username", "" + userName);
-        returnHashMap.put("my_password", "" + password);
+        returnHashMap.put("mysign", "" + mySignature);
         returnHashMap.put("staff_id", "" + staffId);
         returnHashMap.put("OP_CODE", "" + list.get(0).getOpCode());
         returnHashMap.put("time_stamp", "" + list.get(0).getTimestamp());

@@ -38,7 +38,7 @@ import static com.officialakbarali.fabiz.network.syncInfo.NotificationFrame.CHAN
 
 public class ForcePullService extends Service {
     String userName;
-    String password;
+    String mySignature;
     public static String FORCE_SYNC_BROADCAST_URL = "force_services.uiUpdateBroadcast";
     RequestQueue requestQueue;
     FabizProvider provider;
@@ -70,7 +70,7 @@ public class ForcePullService extends Service {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userName = sharedPreferences.getString("my_username", null);
-        password = sharedPreferences.getString("my_password", null);
+        mySignature = sharedPreferences.getString("mysign", null);
 
 //    todo uncomment this    SharedPreferences.Editor editor = sharedPreferences.edit();
 //        editor.putBoolean("force_service_running", true);
@@ -110,7 +110,7 @@ public class ForcePullService extends Service {
     }
 
     private void startExecuteThisService() {
-        if (userName == null || password == null) {
+        if (userName == null || mySignature == null) {
             stopSetUp("USER");
         } else {
             requestQueue = Volley.newRequestQueue(this);
@@ -123,7 +123,8 @@ public class ForcePullService extends Service {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);
-        hashMap.put("my_password", "" + password);
+        Log.i("Job",mySignature);
+        hashMap.put("mysign", "" + mySignature);
 
         final VolleyRequest volleyRequest = new VolleyRequest("forcePull.php", hashMap, new Response.Listener<String>() {
             @Override
@@ -226,7 +227,7 @@ public class ForcePullService extends Service {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);
-        hashMap.put("my_password", "" + password);
+        hashMap.put("mysign", "" + mySignature);
         hashMap.put("confirm_pull", "true");
 
         final VolleyRequest volleyRequest = new VolleyRequest("simple.php", hashMap, new Response.Listener<String>() {
