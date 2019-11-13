@@ -537,6 +537,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
     }
 
     private void hideViews() {
+        LinearLayout emptyView = findViewById(R.id.empty_view);
         LinearLayout prefixCont, columnCont, addCont, barcodeCont, saveCont;
         prefixCont = findViewById(R.id.prefix_cont);
         columnCont = findViewById(R.id.column_name_cont);
@@ -556,6 +557,8 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
         totalDueAmntV.setVisibility(View.INVISIBLE);
         amtEditText.setVisibility(View.INVISIBLE);
 
+        emptyView.setVisibility(View.GONE);
+        salesAdapter.swapAdapter(new ArrayList<Cart>());
 
         addCont.setVisibility(View.INVISIBLE);
         barcodeCont.setVisibility(View.INVISIBLE);
@@ -603,7 +606,6 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
 
                             @Override
                             public void onAnimationEnd(Animator animation) {
-                                recyclerView.setVisibility(View.VISIBLE);
                                 salesAdapter.swapAdapter(cartItems);
                                 if (cartItems.size() > 0) {
                                     displayEmptyView(false);

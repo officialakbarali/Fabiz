@@ -384,7 +384,7 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                                     public void onAnimationRepeat(Animator animation) {
 
                                     }
-                                }).duration(500).repeat(0).playOn(searcheditText);
+                                }).duration(400).repeat(0).playOn(searcheditText);
                             }
 
                             @Override

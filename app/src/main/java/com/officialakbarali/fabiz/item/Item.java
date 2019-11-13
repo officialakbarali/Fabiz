@@ -393,7 +393,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
                     public void onAnimationRepeat(Animator animation) {
 
                     }
-                }).duration(400).repeat(0).playOn(searchEditText);
+                }).duration(300).repeat(0).playOn(searchEditText);
             }
 
             @Override
@@ -405,7 +405,7 @@ public class Item extends AppCompatActivity implements ItemAdapter.ItemAdapterOn
             public void onAnimationRepeat(Animator animation) {
 
             }
-        }).duration(400).repeat(0).playOn(searchEditText);
+        }).duration(300).repeat(0).playOn(searchEditText);
     }
 
     private boolean checkAlreadyExist(String itemId, String unitId) {

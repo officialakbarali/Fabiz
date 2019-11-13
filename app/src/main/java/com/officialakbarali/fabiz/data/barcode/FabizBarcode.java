@@ -219,6 +219,9 @@ public class FabizBarcode extends AppCompatActivity implements ZXingScannerView.
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //*************
 
+        final TextView labelText = dialog.findViewById(R.id.cust_sale_add_item_label_pop);
+        labelText.setText(String.format("%s / %s / %s", itemDetail.getName(), itemDetail.getBrand(), itemDetail.getCategory()));
+
         final EditText priceText = dialog.findViewById(R.id.cust_sale_add_item_price);
         priceText.setText(TruncateDecimal(itemDetail.getPrice() + ""));
         final EditText quantityText = dialog.findViewById(R.id.cust_sale_add_item_qty);
