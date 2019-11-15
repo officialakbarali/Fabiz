@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.officialakbarali.fabiz.LogIn;
@@ -20,6 +21,8 @@ import com.officialakbarali.fabiz.R;
 import com.officialakbarali.fabiz.ServiceResumeCheck;
 import com.officialakbarali.fabiz.network.syncInfo.services.ForcePullService;
 
+
+import pl.droidsonroids.gif.GifImageView;
 
 import static com.officialakbarali.fabiz.network.syncInfo.services.ForcePullService.FORCE_SYNC_BROADCAST_URL;
 
@@ -46,17 +49,17 @@ public class ForcePull extends AppCompatActivity {
                     Intent versionIntent = new Intent(ForcePull.this, AppVersion.class);
                     versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(versionIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else if (msgPassed.matches("USER")) {
                     Intent logIntent = new Intent(ForcePull.this, LogIn.class);
                     logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(logIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else if (msgPassed.matches("SUCCESS")) {
                     Intent mainHomeIntent = new Intent(ForcePull.this, MainHome.class);
                     mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(mainHomeIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else if (msgPassed.matches("FAILED")) {
                     textMsg.setVisibility(View.VISIBLE);
                     textMsg.setText("Failed to Sync");
@@ -74,6 +77,7 @@ public class ForcePull extends AppCompatActivity {
                     textMsg.setText(msgPassed);
                     pullDataBtn.setVisibility(View.GONE);
                 }
+                showLoading(false);
             }
         };
 
@@ -91,17 +95,16 @@ public class ForcePull extends AppCompatActivity {
                     if (!isServiceRunning) {
                         Intent serviceIntent = new Intent(ForcePull.this, ForcePullService.class);
                         ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
-                        pullDataBtn.setVisibility(View.GONE);
-                        textMsg.setVisibility(View.VISIBLE);
-                    } else {
-                        pullDataBtn.setVisibility(View.GONE);
-                        textMsg.setVisibility(View.VISIBLE);
+
                     }
+                    pullDataBtn.setVisibility(View.GONE);
+                    textMsg.setVisibility(View.VISIBLE);
+                    showLoading(true);
                 } else {
                     Intent loginIntent = new Intent(ForcePull.this, LogIn.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             }
         });
@@ -123,7 +126,7 @@ public class ForcePull extends AppCompatActivity {
                 Intent logIntent = new Intent(ForcePull.this, LogIn.class);
                 logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(logIntent);
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
@@ -140,6 +143,7 @@ public class ForcePull extends AppCompatActivity {
         if (isServiceRunning) {
             pullDataBtn.setVisibility(View.GONE);
             textMsg.setVisibility(View.VISIBLE);
+            showLoading(true);
         }
     }
 
@@ -153,5 +157,17 @@ public class ForcePull extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private void showLoading(boolean show) {
+        GifImageView loadingV = findViewById(R.id.loading);
+        ImageView normalImage = findViewById(R.id.nImage);
+        if (show) {
+            loadingV.setVisibility(View.VISIBLE);
+            normalImage.setVisibility(View.GONE);
+        } else {
+            loadingV.setVisibility(View.GONE);
+            normalImage.setVisibility(View.VISIBLE);
+        }
     }
 }

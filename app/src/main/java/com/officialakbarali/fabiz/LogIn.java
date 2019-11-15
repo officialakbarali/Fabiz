@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -98,6 +99,7 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void performLogIn(final String username, final String password) {
+        showLoading(true);
         hideKeybord();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
@@ -109,6 +111,7 @@ public class LogIn extends AppCompatActivity {
         final VolleyRequest volleyRequest = new VolleyRequest("login.php", hashMap, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                showLoading(false);
                 Log.i("Response :", response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -139,6 +142,7 @@ public class LogIn extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                showLoading(false);
                 if (error instanceof ServerError) {
                     showToast("Server Error");
                 } else if (error instanceof TimeoutError) {
@@ -168,7 +172,7 @@ public class LogIn extends AppCompatActivity {
         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 
         final LinearLayout precisionContainer = findViewById(R.id.precision_cont);
-        final LinearLayout logInContainer = findViewById(R.id.log_in_cont);
+        final RelativeLayout logInContainer = findViewById(R.id.main_log_in_cont);
 
         YoYo.with(Techniques.SlideOutUp).withListener(new Animator.AnimatorListener() {
             @Override
@@ -403,7 +407,37 @@ public class LogIn extends AppCompatActivity {
     }
 
     private void hideKeybord() {
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null) {
+            view = new View(this);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+
+    private void showLoading(boolean show) {
+        LinearLayout loadingV = findViewById(R.id.loading);
+        if (show) {
+            loadingV.setVisibility(View.VISIBLE);
+        } else {
+            loadingV.setVisibility(View.GONE);
+        }
+
+        disableAllView(show);
+    }
+
+    public void disableAllView(boolean hide) {
+        EditText username, password;
+        Button logIn = findViewById(R.id.log_in_btn);
+        logIn.setEnabled(!hide);
+
+        TextView forgot = findViewById(R.id.login_forgot);
+        forgot.setEnabled(!hide);
+
+        username = findViewById(R.id.log_in_usr);
+        username.setEnabled(!hide);
+        password = findViewById(R.id.log_in_pass);
+        password.setEnabled(!hide);
     }
 }

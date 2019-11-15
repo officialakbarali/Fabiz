@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.officialakbarali.fabiz.LogIn;
@@ -21,6 +23,8 @@ import com.officialakbarali.fabiz.blockPages.AppVersion;
 import com.officialakbarali.fabiz.blockPages.ForcePull;
 import com.officialakbarali.fabiz.blockPages.UpdateData;
 import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
+
+import pl.droidsonroids.gif.GifImageView;
 
 import static com.officialakbarali.fabiz.network.syncInfo.services.SyncService.SYNC_BROADCAST_URL;
 
@@ -46,27 +50,28 @@ public class SyncInformation extends AppCompatActivity {
                     Intent versionIntent = new Intent(SyncInformation.this, AppVersion.class);
                     versionIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(versionIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else if (msgPassed.matches("PUSH")) {
                     Intent forcePullIntent = new Intent(SyncInformation.this, ForcePull.class);
                     forcePullIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(forcePullIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else if (msgPassed.matches("UPDATE")) {
                     Intent updateDataIntent = new Intent(SyncInformation.this, UpdateData.class);
                     updateDataIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(updateDataIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else if (msgPassed.matches("USER")) {
                     Intent logIntent = new Intent(SyncInformation.this, LogIn.class);
                     logIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(logIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 } else {
                     checkingText.setVisibility(View.VISIBLE);
                     checkingText.setText(msgPassed);
                     checkUpdationButton.setVisibility(View.GONE);
                 }
+                showLoading(false);
             }
         };
         checkUpdationButton.setOnClickListener(new View.OnClickListener() {
@@ -83,17 +88,15 @@ public class SyncInformation extends AppCompatActivity {
                     if (!isServiceRunning) {
                         Intent serviceIntent = new Intent(SyncInformation.this, SyncService.class);
                         ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
-                        checkUpdationButton.setVisibility(View.GONE);
-                        checkingText.setVisibility(View.VISIBLE);
-                    } else {
-                        checkUpdationButton.setVisibility(View.GONE);
-                        checkingText.setVisibility(View.VISIBLE);
                     }
+                    checkUpdationButton.setVisibility(View.GONE);
+                    checkingText.setVisibility(View.VISIBLE);
+                    showLoading(true);
                 } else {
                     Intent loginIntent = new Intent(SyncInformation.this, LogIn.class);
                     loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(loginIntent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             }
         });
@@ -109,6 +112,7 @@ public class SyncInformation extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
         if (isServiceRunning) {
+            showLoading(true);
             checkUpdationButton.setVisibility(View.GONE);
             checkingText.setVisibility(View.VISIBLE);
         }
@@ -124,5 +128,17 @@ public class SyncInformation extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private void showLoading(boolean show) {
+        GifImageView loadingV = findViewById(R.id.loading);
+        ImageView normalImage = findViewById(R.id.nImage);
+        if (show) {
+            loadingV.setVisibility(View.VISIBLE);
+            normalImage.setVisibility(View.GONE);
+        } else {
+            loadingV.setVisibility(View.GONE);
+            normalImage.setVisibility(View.VISIBLE);
+        }
     }
 }

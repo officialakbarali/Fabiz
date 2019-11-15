@@ -35,4 +35,5 @@ dependencies {
 
     implementation 'com.daimajia.easing:library:2.0@aar'
     implementation 'com.daimajia.androidanimations:library:2.3@aar'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 }
