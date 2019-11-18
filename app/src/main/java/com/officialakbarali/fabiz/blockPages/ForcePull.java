@@ -93,7 +93,7 @@ public class ForcePull extends AppCompatActivity {
                 if (userName != null && password != null) {
                     boolean isServiceRunning = sharedPreferences.getBoolean("force_service_running", false);
                     if (!isServiceRunning) {
-                        Intent serviceIntent = new Intent(ForcePull.this, ForcePullService.class);
+                        Intent serviceIntent = new Intent(getBaseContext(), ForcePullService.class);
                         ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
 
                     }

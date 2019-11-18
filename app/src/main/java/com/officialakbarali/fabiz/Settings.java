@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.officialakbarali.fabiz.data.db.FabizContract;
@@ -34,6 +35,25 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        ImageButton saveCurrencyBtn = findViewById(R.id.save_currency);
+        saveCurrencyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText currecyText = findViewById(R.id.currency);
+                String currency = currecyText.getText().toString().trim().toUpperCase();
+                if (currency.length() > 0 && currency.length() <= 3) {
+                    SharedPreferences
+                            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("currency", currency);
+                    editor.apply();
+                    setCurrency(currency);
+                }
+                Intent mainHomeIntent = new Intent(Settings.this, MainHome.class);
+                mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mainHomeIntent);
+            }
+        });
 
         Button pre2 = findViewById(R.id.pre_2);
         pre2.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +68,6 @@ public class Settings extends AppCompatActivity {
                 editor.putInt("decimal_precision", 2);
                 SET_DECIMAL_LENGTH(2);
                 editor.apply();
-                setUpCurrency();
                 startActivity(mainHomeIntent);
             }
         });
@@ -65,7 +84,6 @@ public class Settings extends AppCompatActivity {
                 editor.putInt("decimal_precision", 3);
                 SET_DECIMAL_LENGTH(3);
                 editor.apply();
-                setUpCurrency();
                 startActivity(mainHomeIntent);
             }
         });
@@ -112,18 +130,5 @@ public class Settings extends AppCompatActivity {
         }
         toast = Toast.makeText(this, msgForToast, Toast.LENGTH_LONG);
         toast.show();
-    }
-
-    private void setUpCurrency() {
-        EditText currecyText = findViewById(R.id.currency);
-        String currency = currecyText.getText().toString().trim().toUpperCase();
-        if (currency.length() > 0 && currency.length() <= 3) {
-            SharedPreferences
-                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Settings.this);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("currency", currency);
-            editor.apply();
-            setCurrency(currency);
-        }
     }
 }

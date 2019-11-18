@@ -2,11 +2,14 @@ package com.officialakbarali.fabiz.network.syncInfo;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
 import com.officialakbarali.fabiz.network.syncInfo.data.SyncLogDetail;
@@ -47,7 +50,8 @@ public class SetupSync {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
             if (!isServiceRunning) {
-                new SyncService();
+                Intent serviceIntent = new Intent(context, SyncService.class);
+                ContextCompat.startForegroundService(context, serviceIntent);
             } else {
                 //TODO IF ON THEN SETUP SOME FLAG FOR RE-CHECK THE SYNC_TABLE
             }

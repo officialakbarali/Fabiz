@@ -1,6 +1,7 @@
 package com.officialakbarali.fabiz.customer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -274,7 +275,8 @@ public class Customer extends AppCompatActivity implements CustomerAdapter.Custo
                     } else {
                         boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
                         if (!isServiceRunning) {
-                            new SyncService();
+                            Intent serviceIntent = new Intent(getBaseContext(), SyncService.class);
+                            ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
                         }
                     }
                 }

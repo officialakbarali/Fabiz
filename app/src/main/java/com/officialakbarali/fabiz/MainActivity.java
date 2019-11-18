@@ -1,6 +1,7 @@
 package com.officialakbarali.fabiz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 
@@ -22,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.officialakbarali.fabiz.blockPages.AppVersion;
 import com.officialakbarali.fabiz.blockPages.ForcePull;
 import com.officialakbarali.fabiz.blockPages.UpdateData;
+import com.officialakbarali.fabiz.network.syncInfo.SyncInformation;
 import com.officialakbarali.fabiz.network.syncInfo.services.SyncService;
 import com.officialakbarali.fabiz.network.VolleyRequest;
 
@@ -85,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
                         if (!isServiceRunning) {
-                            new SyncService();
+                            Intent serviceIntent = new Intent(getBaseContext(), SyncService.class);
+                            ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
                         }
                         Intent mainHomeIntent = new Intent(this, MainHome.class);
                         mainHomeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

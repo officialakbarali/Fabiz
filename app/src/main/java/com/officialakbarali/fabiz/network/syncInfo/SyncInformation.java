@@ -86,7 +86,7 @@ public class SyncInformation extends AppCompatActivity {
                 if (userName != null && password != null) {
                     boolean isServiceRunning = sharedPreferences.getBoolean("service_running", false);
                     if (!isServiceRunning) {
-                        Intent serviceIntent = new Intent(SyncInformation.this, SyncService.class);
+                        Intent serviceIntent = new Intent(getBaseContext(), SyncService.class);
                         ContextCompat.startForegroundService(getBaseContext(), serviceIntent);
                     }
                     checkUpdationButton.setVisibility(View.GONE);

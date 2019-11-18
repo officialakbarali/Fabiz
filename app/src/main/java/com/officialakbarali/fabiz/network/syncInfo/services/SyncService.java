@@ -81,10 +81,9 @@ public class SyncService extends Service {
         userName = sharedPreferences.getString("my_username", null);
         mySignature = sharedPreferences.getString("mysign", null);
 
-//    todo uncomment this    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putBoolean("service_running", true);
-//        editor.apply();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("service_running", true);
+        editor.apply();
     }
 
     @Override
@@ -135,7 +134,7 @@ public class SyncService extends Service {
     }
 
     private void sendToServer() {
-        Log.i("SyncLog","Main Request");
+        Log.i("SyncLog", "Main Request");
         String timeStampOfTransaction = logDetailsList.get(indexOfLog);
         HashMapHelper hashMapHelper = new HashMapHelper(this, timeStampOfTransaction);
         HashMap<String, String> hashMap = hashMapHelper.getHashmapForSync();
@@ -149,7 +148,7 @@ public class SyncService extends Service {
                         if (jsonObject.getBoolean("success")) {
                             if (deleteRowFromSyncLog(indexOfLog)) {
                                 indexOfLog++;
-                                Log.i("SyncLog",indexOfLog + " Synced");
+                                Log.i("SyncLog", indexOfLog + " Synced");
                                 if (indexOfLog == lengthOfLogList) {
                                     stopSetUp("Sync Successfully");
                                 } else {
@@ -240,7 +239,7 @@ public class SyncService extends Service {
     }
 
     private void checkForUpdate() {
-        Log.i("SyncLog","Simple Request");
+        Log.i("SyncLog", "Simple Request");
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);

@@ -72,9 +72,9 @@ public class ForcePullService extends Service {
         userName = sharedPreferences.getString("my_username", null);
         mySignature = sharedPreferences.getString("mysign", null);
 
-//    todo uncomment this    SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putBoolean("force_service_running", true);
-//        editor.apply();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("force_service_running", true);
+        editor.apply();
     }
 
     @Override
@@ -123,7 +123,7 @@ public class ForcePullService extends Service {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);
-        Log.i("Job",mySignature);
+        Log.i("Job", mySignature);
         hashMap.put("mysign", "" + mySignature);
 
         final VolleyRequest volleyRequest = new VolleyRequest("forcePull.php", hashMap, new Response.Listener<String>() {
