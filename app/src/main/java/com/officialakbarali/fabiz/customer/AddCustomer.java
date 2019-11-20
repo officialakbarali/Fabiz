@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.officialakbarali.fabiz.CommonResumeCheck;
 import com.officialakbarali.fabiz.network.syncInfo.SetupSync;
 import com.officialakbarali.fabiz.R;
@@ -36,7 +38,7 @@ import static com.officialakbarali.fabiz.network.syncInfo.SetupSync.OP_INSERT;
 
 
 public class AddCustomer extends AppCompatActivity {
-    EditText nameE, phoneE, emailE, addresssE, crE, shopNameE, telephoneE, vatNoE;
+    TextInputEditText nameE, phoneE, emailE, addresssE, crE, shopNameE, telephoneE, vatNoE;
     private Toast toast;
     FabizProvider fabizProvider;
     Button saveCustomerB;
@@ -190,7 +192,7 @@ public class AddCustomer extends AppCompatActivity {
         return !matcher.find();
     }
 
-    private boolean validateAddressInformation(String passedString){
+    private boolean validateAddressInformation(String passedString) {
         if (passedString.matches("NA")) return false;
         Pattern pattern = Pattern.compile("[^A-Za-z0-9 ._,-]");
         Matcher matcher = pattern.matcher(passedString);
@@ -290,15 +292,25 @@ public class AddCustomer extends AppCompatActivity {
         prefixContainer.setVisibility(View.INVISIBLE);
         dayContainer.setVisibility(View.INVISIBLE);
 
-        nameE.setVisibility(View.INVISIBLE);
-        phoneE.setVisibility(View.INVISIBLE);
-        emailE.setVisibility(View.INVISIBLE);
-        addresssE.setVisibility(View.INVISIBLE);
-        vatNoE.setVisibility(View.INVISIBLE);
-        crE.setVisibility(View.INVISIBLE);
-        shopNameE.setVisibility(View.INVISIBLE);
-        telephoneE.setVisibility(View.INVISIBLE);
         saveCustomerB.setVisibility(View.INVISIBLE);
+
+        TextInputLayout nameC = findViewById(R.id.namec);
+        TextInputLayout phoneC = findViewById(R.id.phonec);
+        TextInputLayout emailC = findViewById(R.id.emailc);
+        TextInputLayout addresssC = findViewById(R.id.addc);
+        TextInputLayout vatNoC = findViewById(R.id.vatc);
+        TextInputLayout crC = findViewById(R.id.crc);
+        TextInputLayout shopNameC = findViewById(R.id.shopc);
+        TextInputLayout telephoneC = findViewById(R.id.telec);
+
+        nameC.setVisibility(View.INVISIBLE);
+        phoneC.setVisibility(View.INVISIBLE);
+        emailC.setVisibility(View.INVISIBLE);
+        vatNoC.setVisibility(View.INVISIBLE);
+        crC.setVisibility(View.INVISIBLE);
+        addresssC.setVisibility(View.INVISIBLE);
+        shopNameC.setVisibility(View.INVISIBLE);
+        telephoneC.setVisibility(View.INVISIBLE);
     }
 
     private void setUpAnimation() {
@@ -308,6 +320,15 @@ public class AddCustomer extends AppCompatActivity {
 
         head = findViewById(R.id.cust_add_head);
         belowHead = findViewById(R.id.cust_add_below_head);
+
+        final TextInputLayout nameC = findViewById(R.id.namec);
+        final TextInputLayout phoneC = findViewById(R.id.phonec);
+        final TextInputLayout emailC = findViewById(R.id.emailc);
+        final TextInputLayout addresssC = findViewById(R.id.addc);
+        final TextInputLayout vatNoC = findViewById(R.id.vatc);
+        final TextInputLayout crC = findViewById(R.id.crc);
+        final TextInputLayout shopNameC = findViewById(R.id.shopc);
+        final TextInputLayout telephoneC = findViewById(R.id.telec);
 
         prefixContainer = findViewById(R.id.cust_add_prefix_cont);
         dayContainer = findViewById(R.id.cust_add_day_container);
@@ -334,28 +355,28 @@ public class AddCustomer extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        shopNameE.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInRight).duration(300).repeat(0).playOn(shopNameE);
+                        shopNameC.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(300).repeat(0).playOn(shopNameC);
 
-                        emailE.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInLeft).duration(300).repeat(0).playOn(emailE);
+                        emailC.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(300).repeat(0).playOn(emailC);
 
-                        crE.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInRight).duration(350).repeat(0).playOn(crE);
+                        crC.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(350).repeat(0).playOn(crC);
 
-                        telephoneE.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInLeft).duration(350).repeat(0).playOn(telephoneE);
+                        telephoneC.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(350).repeat(0).playOn(telephoneC);
 
-                        phoneE.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(phoneE);
+                        phoneC.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(400).repeat(0).playOn(phoneC);
 
-                        vatNoE.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(vatNoE);
+                        vatNoC.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInLeft).duration(400).repeat(0).playOn(vatNoC);
 
-                        nameE.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.SlideInRight).duration(450).repeat(0).playOn(nameE);
+                        nameC.setVisibility(View.VISIBLE);
+                        YoYo.with(Techniques.SlideInRight).duration(450).repeat(0).playOn(nameC);
 
-                        addresssE.setVisibility(View.VISIBLE);
+                        addresssC.setVisibility(View.VISIBLE);
                         YoYo.with(Techniques.SlideInLeft).withListener(new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(Animator animation) {
@@ -380,7 +401,7 @@ public class AddCustomer extends AppCompatActivity {
                             public void onAnimationRepeat(Animator animation) {
 
                             }
-                        }).duration(450).repeat(0).playOn(addresssE);
+                        }).duration(450).repeat(0).playOn(addresssC);
                     }
 
                     @Override

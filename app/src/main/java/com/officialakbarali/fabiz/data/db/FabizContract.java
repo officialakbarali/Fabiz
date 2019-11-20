@@ -4,6 +4,15 @@ import android.provider.BaseColumns;
 
 public class FabizContract {
 
+    //-1 REQUEST ITEM
+    public static final class RequestItem implements BaseColumns {
+        public static final String TABLE_NAME = "tb_request_item";
+
+        public static final String COLUMN_NAME = TABLE_NAME + "_" + "name";
+        public static final String COLUMN_QTY = TABLE_NAME + "_" + "quantity";
+    }
+
+
     //1 TABLE SYNC LOG
     public static final class SyncLog implements BaseColumns {
         public static final String TABLE_NAME = "tb_sync_log";

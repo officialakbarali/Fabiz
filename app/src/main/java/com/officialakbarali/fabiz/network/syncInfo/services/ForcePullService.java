@@ -37,6 +37,7 @@ import static com.officialakbarali.fabiz.data.MyAppVersion.GET_MY_APP_VERSION;
 import static com.officialakbarali.fabiz.network.syncInfo.NotificationFrame.CHANNEL_ID;
 
 public class ForcePullService extends Service {
+    private static String pullTimeStamp;
     String userName;
     String mySignature;
     public static String FORCE_SYNC_BROADCAST_URL = "force_services.uiUpdateBroadcast";
@@ -133,6 +134,7 @@ public class ForcePullService extends Service {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getBoolean("success")) {
+                       // pullTimeStamp = jsonObject.getString("pullSignature");
                         addDataToDb(jsonObject);
 
                     } else {

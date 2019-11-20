@@ -22,11 +22,9 @@ import com.officialakbarali.fabiz.network.syncInfo.SyncInformation;
 import com.officialakbarali.fabiz.requestStock.RequestStock;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.officialakbarali.fabiz.data.CommonInformation.convertToCamelCase;
 import static com.officialakbarali.fabiz.data.CommonInformation.setCurrency;
-import static com.officialakbarali.fabiz.requestStock.RequestStock.itemsForRequest;
 
 public class MainHome extends AppCompatActivity {
     LinearLayout customerL, stockL, requestL, syncL;
@@ -152,7 +150,6 @@ public class MainHome extends AppCompatActivity {
                         requestL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent requestStockShow = new Intent(MainHome.this, RequestStock.class);
-                        itemsForRequest = new ArrayList<>();
                         startActivity(requestStockShow);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         return true; // if you want to handle the touch event

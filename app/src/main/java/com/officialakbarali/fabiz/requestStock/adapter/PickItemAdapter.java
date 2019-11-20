@@ -76,11 +76,11 @@ public class PickItemAdapter extends RecyclerView.Adapter<PickItemAdapter.ItemVi
         }
 
         String price = TruncateDecimal(itemDetail.getPrice() + "");
-        if (price.length() > 20) {
-            holder.itemPrice.setText("Price: " + price.substring(0, 16) + "...");
-        } else {
-            holder.itemPrice.setText("Price: " + TruncateDecimal(price + "")  + " " + getCurrency());
-        }
+//        if (price.length() > 20) {
+//            holder.itemPrice.setText("Price: " + price.substring(0, 16) + "...");
+//        } else {
+//            holder.itemPrice.setText("Price: " + TruncateDecimal(price + "") + " " + getCurrency());
+//        }
 
         String qty = itemDetail.getQty() + "";
         holder.qtyText.setText(qty);
@@ -106,9 +106,9 @@ public class PickItemAdapter extends RecyclerView.Adapter<PickItemAdapter.ItemVi
 
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView itemId, itemName, itemBrand, itemCategory, itemPrice;
+        TextView itemId, itemName, itemBrand, itemCategory;
         EditText qtyText;
-        Button addButton;
+        Button addButton, rmvBtn;
         LinearLayout mainParent;
 
         public ItemViewHolder(@NonNull View itemView) {
@@ -120,24 +120,44 @@ public class PickItemAdapter extends RecyclerView.Adapter<PickItemAdapter.ItemVi
             itemName = itemView.findViewById(R.id.name);
             itemBrand = itemView.findViewById(R.id.brand);
             itemCategory = itemView.findViewById(R.id.category);
-            itemPrice = itemView.findViewById(R.id.price);
 
             qtyText = itemView.findViewById(R.id.qty_for_req);
-            addButton = itemView.findViewById(R.id.add_btn_for_req);
+            addButton = itemView.findViewById(R.id.pos);
+            rmvBtn = itemView.findViewById(R.id.neg);
 
             addButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     String fromQtyText = qtyText.getText().toString().trim();
-                    if (!fromQtyText.matches("") && !fromQtyText.matches("0")) {
+                    int currentQty = Integer.parseInt(fromQtyText);
+                    currentQty++;
+                    qtyText.setText(currentQty + "");
+
+                    int adapterPosition = getAdapterPosition();
+                    PickItemData itemDetail = itemDetailList.get(adapterPosition);
+                    itemDetail.setQty(currentQty);
+                    itemDetailList.set(adapterPosition, itemDetail);
+                    mClickHandler.onClick(itemDetail, adapterPosition);
+                }
+            });
+
+            rmvBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String fromQtyText = qtyText.getText().toString().trim();
+                    int currentQty = Integer.parseInt(fromQtyText);
+                    currentQty--;
+                    if (currentQty < 1) {
+                        currentQty = 0;
+                        qtyText.setText(currentQty + "");
+                        mClickHandler.onClick(itemDetailList.get(getAdapterPosition()), -1);
+                    } else {
+                        qtyText.setText(currentQty + "");
                         int adapterPosition = getAdapterPosition();
                         PickItemData itemDetail = itemDetailList.get(adapterPosition);
-                        itemDetail.setQty(Integer.parseInt(fromQtyText));
+                        itemDetail.setQty(currentQty);
                         itemDetailList.set(adapterPosition, itemDetail);
                         mClickHandler.onClick(itemDetail, adapterPosition);
-                    } else {
-                        mClickHandler.onClick(itemDetailList.get(getAdapterPosition()), -1);
                     }
                 }
             });

@@ -473,6 +473,7 @@ public class Sales extends AppCompatActivity implements SalesAdapter.SalesAdapte
                 dialog.dismiss();
             }
         });
+        okayButton.setText("Done");
 
         final LinearLayout billAmntContainer = dialog.findViewById(R.id.pop_up_for_payment_bill_amt_cont);
         billAmntContainer.setVisibility(View.VISIBLE);

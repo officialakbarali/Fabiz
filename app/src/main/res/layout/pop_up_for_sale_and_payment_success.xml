@@ -10,7 +10,6 @@
         android:padding="20dp">
 
 
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,11 +47,11 @@
 
         <TextView
 
+                style="@style/text_size_med"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Bill Amount"
-                style="@style/text_size_med"
+                android:text="Invoiced Amount"
                 android:textColor="@color/text_color"
                 android:textStyle="bold" />
 
@@ -62,40 +61,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="end"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
-                android:gravity="end"
-                tools:text=": 4500.000" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-        <TextView
-                android:id="@+id/pop_up_for_payment_label_ent_amt"
-                style="@style/text_size_med"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Entered Amount"
-                android:textColor="@color/text_color"
-                android:textStyle="bold" />
-
-        <TextView
-                android:id="@+id/pop_up_for_payment_ent_amt"
-                style="@style/text_size_med"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/text_color"
-                android:textStyle="bold"
-                android:gravity="end"
                 tools:text=": 4500.000" />
 
     </LinearLayout>
@@ -124,10 +92,41 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="end"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
-                android:gravity="end"
                 tools:text=": 5500.000" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/pop_up_for_payment_label_ent_amt"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Paid Amount"
+                android:textColor="@color/text_color"
+                android:textStyle="bold" />
+
+        <TextView
+                android:id="@+id/pop_up_for_payment_ent_amt"
+                style="@style/text_size_med"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:textColor="@color/text_color"
+                android:textStyle="bold"
+                tools:text=": 4500.000" />
 
     </LinearLayout>
 
@@ -156,9 +155,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="end"
                 android:textColor="@color/text_color"
                 android:textStyle="bold"
-                android:gravity="end"
                 tools:text=": 5500.000" />
 
     </LinearLayout>

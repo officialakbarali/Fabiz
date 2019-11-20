@@ -146,6 +146,16 @@ public class FabizDbHelper extends SQLiteOpenHelper {
                 + FabizContract.ItemUnit.COLUMN_QTY + " INTEGER NOT NULL)";
 
         db.execSQL(SQL_CREATE_ITEM_UNIT);
+
+        //CREATING REQUEST ITEM
+        String SQL_CREATE_REQUEST_ITEM = "CREATE TABLE "
+                + FabizContract.RequestItem.TABLE_NAME
+                + " ("
+                + FabizContract.RequestItem._ID + " TEXT PRIMARY KEY , "
+                + FabizContract.RequestItem.COLUMN_NAME + " TEXT NOT NULL, "
+                + FabizContract.RequestItem.COLUMN_QTY + " TEXT NOT NULL)";
+
+        db.execSQL(SQL_CREATE_REQUEST_ITEM);
     }
 
     @Override
@@ -173,6 +183,9 @@ public class FabizDbHelper extends SQLiteOpenHelper {
 
         //DELETING OLD ITEM_UNIT TABLE
         db.execSQL("DROP TABLE IF EXISTS " + FabizContract.ItemUnit.TABLE_NAME);
+
+        //DELETING OLD REQUEST_ITEM TABLE
+        db.execSQL("DROP TABLE IF EXISTS " + FabizContract.RequestItem.TABLE_NAME);
 
         //RE-CREATING EVERY TABLES
         onCreate(db);

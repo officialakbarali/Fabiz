@@ -156,6 +156,12 @@ public class PaymentReview extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     private void hideViews() {
         LinearLayout searchFrame = findViewById(R.id.search_cont);
 
