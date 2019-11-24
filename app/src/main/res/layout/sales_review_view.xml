@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_item_remove_pure_white"
                 android:padding="15dp"
-                android:src="@drawable/ic_select_blue"
+                android:src="@drawable/ic_select_blue_main"
                 android:text="View" />
 
     </LinearLayout>

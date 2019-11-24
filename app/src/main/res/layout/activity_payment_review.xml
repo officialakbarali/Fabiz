@@ -40,7 +40,7 @@
                 android:layout_marginStart="0.7dp"
                 android:background="@drawable/rounded_white2_button"
                 android:padding="18dp"
-                android:src="@drawable/ic_date" />
+                android:src="@drawable/ic_date_main" />
 
     </LinearLayout>
 

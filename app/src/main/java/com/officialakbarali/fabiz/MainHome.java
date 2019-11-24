@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -94,14 +95,16 @@ public class MainHome extends AppCompatActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 TextView textView = findViewById(R.id.home_cust_txt);
-
+                ImageView btn = findViewById(R.id.home_cust_img);
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
                         customerL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
+                        btn.setImageResource(R.drawable.main_home_customer_p);
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
+                        btn.setImageResource(R.drawable.main_home_customer);
                         customerL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent custIntent = new Intent(MainHome.this, Customer.class);
@@ -116,15 +119,19 @@ public class MainHome extends AppCompatActivity {
         stockL.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
+                ImageView btn = findViewById(R.id.home_stock_img);
                 TextView textView = findViewById(R.id.home_stock_txt);
 
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
+                        btn.setImageResource(R.drawable.main_home_item_detail_p);
                         stockL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
+                        btn.setImageResource(R.drawable.main_home_item_detail);
                         stockL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent itemShow = new Intent(MainHome.this, Item.class);
@@ -138,15 +145,18 @@ public class MainHome extends AppCompatActivity {
         requestL.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ImageView btn = findViewById(R.id.req_img);
                 TextView textView = findViewById(R.id.home_request_txt);
 
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
+                        btn.setImageResource(R.drawable.main_home_item_p);
                         requestL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
+                        btn.setImageResource(R.drawable.main_home_item);
                         requestL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent requestStockShow = new Intent(MainHome.this, RequestStock.class);
@@ -160,15 +170,18 @@ public class MainHome extends AppCompatActivity {
         syncL.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                ImageView btn = findViewById(R.id.syn_img);
                 TextView textView = findViewById(R.id.home_sync_txt);
 
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
+                        btn.setImageResource(R.drawable.main_home_sync_p);
                         syncL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon_pressed));
                         textView.setTextColor(getResources().getColor(R.color.pure_white));
                         return true; // if you want to handle the touch event
                     case MotionEvent.ACTION_UP:
+                        btn.setImageResource(R.drawable.main_home_sync);
                         syncL.setBackground(getResources().getDrawable(R.drawable.button_color_main_home_icon));
                         textView.setTextColor(getResources().getColor(R.color.text_color));
                         Intent viewSyncIntent = new Intent(MainHome.this, SyncInformation.class);
