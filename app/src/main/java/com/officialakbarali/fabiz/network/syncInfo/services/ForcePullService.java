@@ -39,6 +39,7 @@ import static com.officialakbarali.fabiz.network.syncInfo.NotificationFrame.CHAN
 public class ForcePullService extends Service {
     private static String pullTimeStamp;
     String userName;
+    String userId;
     String mySignature;
     public static String FORCE_SYNC_BROADCAST_URL = "force_services.uiUpdateBroadcast";
     RequestQueue requestQueue;
@@ -71,6 +72,7 @@ public class ForcePullService extends Service {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userName = sharedPreferences.getString("my_username", null);
+        userId= sharedPreferences.getInt("idOfStaff", 0) + "";
         mySignature = sharedPreferences.getString("mysign", null);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -124,6 +126,7 @@ public class ForcePullService extends Service {
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("app_version", "" + GET_MY_APP_VERSION());
         hashMap.put("my_username", "" + userName);
+        hashMap.put("userId", "" + userId);
         Log.i("Job", mySignature);
         hashMap.put("mysign", "" + mySignature);
 
